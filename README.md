@@ -1,6 +1,7 @@
 # Qt Tools
 
 Qt/C++ の開発支援ツール、対話的プログラミング環境、資料作成ツール、
+作業コンテキストを管理する文書テンプレート、
 日常的に使用するユーティリティーなどをまとめたリポジトリーです。
 
 Qt を使ったアプリケーションやライブラリーを中心に、
@@ -136,11 +137,12 @@ ObjectSelector と組み合わせるほか、
 | `propertyeditor` | PropertyEditor | `QObject` のプロパティーを表示・編集します |
 
 
-### AI-assisted Qt Development
+### Development Instructions and Work Templates
 
 | Directory | Tool | Description |
 |---|---|---|
 | `ai-cmake` | AI CMake instructions | 生成 AI が Qt 6 の `CMakeLists.txt` を生成・修正するための指示と検証環境です |
+| `work-templates` | Work context templates | 作業状態・長期課題・設計判断を Markdown で分離して管理し、人、ホスト、AIセッションが変わっても作業を再開できるようにします |
 
 
 ### Documents, Images and Diagrams
