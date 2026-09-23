@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: notes block
+# key: gnotesblock
+# --
+!notes{
+${1:ここで補足したい内容}
+${2:次の行も同じメモに含める}
+}
+$0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: include code with line range
+# key: gincludelines
+# --
+!include-code{path=${1:src/main.py} lang=${2:python} lines=${3:10-30}}
+$0

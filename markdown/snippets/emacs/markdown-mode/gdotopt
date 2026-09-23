@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: graphviz dot with options
+# key: gdotopt
+# --
+!dot{align=${1:right} scale=${2:1}}
+```dot
+${3:digraph G \{}
+  ${4:graph [rankdir=LR]}
+  ${5:A -> B -> C}
+${6:\}}
+```
+$0

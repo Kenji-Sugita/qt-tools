@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: fit code block
+# key: gfitcode
+# --
+!fit-code
+```${1:python}
+${2:print("hello")}
+```
+$0

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: copyright front matter
+# key: gcopyright
+# --
+---
+copyright: ${1:2026 Example, Inc. All rights reserved.}
+genpdf:
+  copyright: ${2:2026 Example Override}
+---
+$0

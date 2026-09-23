@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: slides pause
+# key: gpause
+# --
+${1:最初に見せる本文}
+
+!pause
+
+${2:次に見せる本文}
+$0

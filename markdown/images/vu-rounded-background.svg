@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     width="1000" height="1000" viewBox="0 0 1000 1000"
+     version="1.1"
+     id="vu_rounded_background"
+     inkscape:label="needleless round VU meter background">
+  <title id="title">Needleless Round Analog VU Meter Background</title>
+  <desc id="description">Transparent background with a circular black frame, yellow VU meter dial, curved scale, numeric labels, VU mark, and plus sign. No movable needle or pivot hub is drawn.</desc>
+
+  <defs id="definitions" inkscape:label="SVG definitions">
+    <radialGradient id="outer_black_frame_gradient" inkscape:label="outer black frame gradient" cx="50%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#3e403a"/>
+      <stop offset="0.32" stop-color="#151614"/>
+      <stop offset="0.72" stop-color="#22241f"/>
+      <stop offset="1" stop-color="#040504"/>
+    </radialGradient>
+    <radialGradient id="inner_shadow_gradient" inkscape:label="inner circular shadow gradient" cx="50%" cy="38%" r="72%">
+      <stop offset="0" stop-color="#211a0c"/>
+      <stop offset="0.62" stop-color="#060606"/>
+      <stop offset="1" stop-color="#000000"/>
+    </radialGradient>
+    <radialGradient id="yellow_dial_face_gradient" inkscape:label="yellow dial face gradient" cx="48%" cy="30%" r="74%">
+      <stop offset="0" stop-color="#fff6bc"/>
+      <stop offset="0.38" stop-color="#ffd66e"/>
+      <stop offset="0.76" stop-color="#dea13a"/>
+      <stop offset="1" stop-color="#986018"/>
+    </radialGradient>
+    <linearGradient id="gold_inner_frame_gradient" inkscape:label="gold inner frame gradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff0a4"/>
+      <stop offset="0.36" stop-color="#d39324"/>
+      <stop offset="0.72" stop-color="#6e450d"/>
+      <stop offset="1" stop-color="#2f1b04"/>
+    </linearGradient>
+    <filter id="soft_recess_shadow" inkscape:label="soft recess shadow" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#000000" flood-opacity="0.48"/>
+    </filter>
+  </defs>
+
+  <rect id="transparent_background"
+        inkscape:label="transparent background same size as VU meter"
+        x="0" y="0" width="1000" height="1000"
+        fill="none"/>
+
+  <g id="circular_meter_body" inkscape:label="black circular meter body">
+    <circle id="outer_black_circular_frame"
+            inkscape:label="outer black circular frame"
+            cx="500" cy="500" r="480"
+            fill="url(#outer_black_frame_gradient)"/>
+    <circle id="subtle_top_frame_highlight"
+            inkscape:label="subtle top highlight on black frame"
+            cx="500" cy="500" r="452"
+            fill="none" stroke="#ffffff" stroke-width="10" opacity="0.12"/>
+    <circle id="inner_black_circular_recess"
+            inkscape:label="inner black circular recess"
+            cx="500" cy="500" r="410"
+            fill="url(#inner_shadow_gradient)"
+            filter="url(#soft_recess_shadow)"/>
+  </g>
+
+  <g id="yellow_circular_dial_panel" inkscape:label="yellow circular VU meter dial panel">
+    <circle id="yellow_circular_dial_face"
+            inkscape:label="yellow circular dial face"
+            cx="500" cy="500" r="374"
+            fill="url(#yellow_dial_face_gradient)"/>
+    <circle id="warm_dial_center_glow"
+            inkscape:label="warm glow on yellow dial face"
+            cx="486" cy="385" r="248"
+            fill="#fff6c9" opacity="0.22"/>
+    <circle id="gold_circular_inner_frame"
+            inkscape:label="gold circular inner frame"
+            cx="500" cy="500" r="374"
+            fill="none" stroke="url(#gold_inner_frame_gradient)" stroke-width="12"/>
+    <circle id="thin_dark_inner_frame"
+            inkscape:label="thin dark circular inner frame"
+            cx="500" cy="500" r="358"
+            fill="none" stroke="#3a2407" stroke-width="2" opacity="0.82"/>
+  </g>
+
+  <g id="curved_scale_arcs" inkscape:label="curved VU scale arcs with equal end clearance">
+    <path id="black_negative_scale_arc"
+          inkscape:label="black scale arc from -20 to 0"
+          d="M 205.1 492.5 A 385 385 0 0 1 644.2 383.0"
+          fill="none" stroke="#11130d" stroke-width="7"
+          stroke-linecap="square" stroke-linejoin="round"/>
+    <path id="red_positive_scale_arc"
+          inkscape:label="red scale arc from 0 to +3"
+          d="M 644.2 383.0 A 385 385 0 0 1 794.9 492.5"
+          fill="none" stroke="#bd160f" stroke-width="7"
+          stroke-linecap="square" stroke-linejoin="round"/>
+  </g>
+
+  <g id="major_scale_ticks" inkscape:label="major scale ticks for specified VU values only">
+    <line id="tick_minus_20" inkscape:label="-20 scale tick" x1="205.1" y1="492.5" x2="170.6" y2="463.6" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_minus_10" inkscape:label="-10 scale tick" x1="263.0" y1="436.6" x2="235.3" y2="401.2" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_minus_7" inkscape:label="-7 scale tick" x1="331.2" y1="394.0" x2="311.5" y2="353.5" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_minus_5" inkscape:label="-5 scale tick" x1="406.9" y1="366.4" x2="396.0" y2="322.8" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_minus_3" inkscape:label="-3 scale tick" x1="486.6" y1="355.2" x2="485.0" y2="310.3" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_minus_1" inkscape:label="-1 scale tick" x1="566.9" y1="360.8" x2="574.7" y2="316.5" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_zero" inkscape:label="0 scale tick" x1="644.2" y1="383.0" x2="661.1" y2="341.3" stroke="#11130d" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_plus_1" inkscape:label="+1 scale tick" x1="715.3" y1="420.8" x2="740.5" y2="383.5" stroke="#bd160f" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_plus_2" inkscape:label="+2 scale tick" x1="757.6" y1="453.9" x2="787.7" y2="420.4" stroke="#bd160f" stroke-width="7" stroke-linecap="square"/>
+    <line id="tick_plus_3" inkscape:label="+3 scale tick" x1="794.9" y1="492.5" x2="829.4" y2="463.6" stroke="#bd160f" stroke-width="7" stroke-linecap="square"/>
+  </g>
+
+  <g id="numeric_scale_labels" inkscape:label="numeric labels for specified VU scale values">
+    <text id="label_minus_20" inkscape:label="-20 numeric label" x="184" y="421" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-20</text>
+    <text id="label_minus_10" inkscape:label="-10 numeric label" x="252" y="357" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-10</text>
+    <text id="label_minus_7" inkscape:label="-7 numeric label" x="324" y="316" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-7</text>
+    <text id="label_minus_5" inkscape:label="-5 numeric label" x="405" y="290" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-5</text>
+    <text id="label_minus_3" inkscape:label="-3 numeric label" x="486" y="275" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-3</text>
+    <text id="label_minus_1" inkscape:label="-1 numeric label" x="580" y="281" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">-1</text>
+    <text id="label_zero" inkscape:label="0 numeric label" x="672" y="310" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#11130d">0</text>
+    <text id="label_plus_1" inkscape:label="+1 numeric label" x="758" y="352" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#bd160f">+1</text>
+    <text id="label_plus_2" inkscape:label="+2 numeric label" x="812" y="403" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#bd160f">+2</text>
+    <text id="label_plus_3" inkscape:label="+3 numeric label" x="820" y="452" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" fill="#bd160f">+3</text>
+  </g>
+
+  <g id="meter_face_text" inkscape:label="VU and plus markings on dial face">
+    <text id="vu_text_mark"
+          inkscape:label="large VU text mark"
+          x="500" y="655"
+          text-anchor="middle"
+          font-family="Arial, Helvetica, sans-serif"
+          font-size="104" font-weight="800"
+          fill="#11130d">VU</text>
+    <text id="red_plus_symbol"
+          inkscape:label="standalone red plus symbol"
+          x="702" y="607"
+          text-anchor="middle"
+          font-family="Arial, Helvetica, sans-serif"
+          font-size="62" font-weight="800"
+          fill="#bd160f">+</text>
+  </g>
+</svg>

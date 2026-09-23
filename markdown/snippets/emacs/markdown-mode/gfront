@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: genpdf front matter
+# key: gfront
+# --
+---
+genpdf:
+  format: ${1:book}
+  title: ${2:タイトル}
+  subtitle: ${3:サブタイトル}
+  author: ${4:著者}
+  version: ${5:1.0}
+  date: ${6:2026-05-07}
+  font_size: ${7:24pt}
+  page_numbers: ${8:true}
+  copyright: ${9:2026 Example, Inc.}
+---
+$0

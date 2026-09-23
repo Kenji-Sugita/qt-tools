@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: page footer
+# key: gfooter
+# --
+${1:本文}
+
+!footer{${2:社外秘}}
+$0

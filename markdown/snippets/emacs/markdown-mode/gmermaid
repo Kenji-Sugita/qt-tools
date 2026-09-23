@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: mermaid block
+# key: gmermaid
+# --
+```mermaid
+${1:flowchart TD}
+  ${2:A[入力] --> B{分岐}}
+  ${3:B -->|Yes| C[続行]}
+  ${4:B -->|No| D[停止]}
+```
+$0

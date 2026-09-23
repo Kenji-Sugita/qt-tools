@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: columns
+# key: gcolumns
+# --
+!columns
+:::column
+${1:左側の内容}
+:::
+:::column
+${2:右側の内容}
+:::
+!end-columns
+$0

@@ -1,0 +1,186 @@
+priority -10
+
+snippet gfront "genpdf front matter" b
+---
+genpdf:
+  format: ${1|book,slides|}
+  title: ${2:タイトル}
+  subtitle: ${3:サブタイトル}
+  author: ${4:著者}
+  version: ${5:1.0}
+  date: ${6:2026-05-07}
+  font_size: ${7:24pt}
+  page_numbers: ${8:true}
+  copyright: ${9:2026 Example, Inc.}
+---
+$0
+endsnippet
+
+snippet gpagebreak "page break" b
+<div class="page-break"></div>
+$0
+endsnippet
+
+snippet gfontsize "page font size" b
+!font-size{${1:32pt}}
+$0
+endsnippet
+
+snippet gtoc "book toc" b
+!toc
+$0
+endsnippet
+
+snippet gpause "slides pause" b
+${1:最初に見せる本文}
+
+!pause
+
+${2:次に見せる本文}
+$0
+endsnippet
+
+snippet gincremental "slides incremental list" b
+!incremental-list
+- ${1:項目 1}
+- ${2:項目 2}
+- ${3:項目 3}
+$0
+endsnippet
+
+snippet gcover "cover image" b
+!cover-image{path=${1:images/hero.png} alt=${2:概要図} caption=${3:全体構成} width=${4:82%}}
+$0
+endsnippet
+
+snippet gsvg "svg figure" b
+!svg{path=${1:images/vu-background.svg} alt=${2:SVG図} caption=${3:SVG図} width=${4:80%} align=${5|left,center,right|}}
+$0
+endsnippet
+
+snippet gcallout "callout" b
+!callout{type=${1|note,warning,success,important|} title=${2:注意}}
+  ${3:この操作は元に戻せません。}
+$0
+endsnippet
+
+snippet gfitcode "fit code block" b
+!fit-code
+\`\`\`${1:python}
+${2:print("hello")}
+\`\`\`
+$0
+endsnippet
+
+snippet gcolumns "columns" b
+!columns
+:::column
+${1:左側の内容}
+:::
+:::column
+${2:右側の内容}
+:::
+!end-columns
+$0
+endsnippet
+
+snippet gcolumnsdiv "columns with divider" b
+!columns{divider}
+:::column
+${1:左側の内容}
+:::
+:::column
+${2:右側の内容}
+:::
+!end-columns
+$0
+endsnippet
+
+snippet gmermaid "mermaid block" b
+\`\`\`mermaid
+${1:flowchart TD}
+  ${2:A[入力] --> B{分岐}}
+  ${3:B -->|Yes| C[続行]}
+  ${4:B -->|No| D[停止]}
+\`\`\`
+$0
+endsnippet
+
+snippet gmermaidopt "mermaid with options" b
+!mermaid{align=${1|left,center,right|} scale=${2:1}}
+\`\`\`mermaid
+${3:flowchart TD}
+  ${4:A[入力] --> B{分岐}}
+  ${5:B -->|Yes| C[続行]}
+  ${6:B -->|No| D[停止]}
+\`\`\`
+$0
+endsnippet
+
+snippet gdot "graphviz dot block" b
+\`\`\`dot
+${1:digraph G \{}
+  ${2:graph [rankdir=LR]}
+  ${3:A -> B -> C}
+${4:\}}
+\`\`\`
+$0
+endsnippet
+
+snippet gdotopt "graphviz dot with options" b
+!dot{align=${1|left,center,right|} scale=${2:1}}
+\`\`\`dot
+${3:digraph G \{}
+  ${4:graph [rankdir=LR]}
+  ${5:A -> B -> C}
+${6:\}}
+\`\`\`
+$0
+endsnippet
+
+snippet ginclude "include code" b
+!include-code{path=${1:src/main.py} lang=${2:python}}
+$0
+endsnippet
+
+snippet gincludelines "include code with line range" b
+!include-code{path=${1:src/main.py} lang=${2:python} lines=${3:10-30}}
+$0
+endsnippet
+
+snippet gnotes "notes single line" b
+!notes{${1:ここで補足したい内容}}
+$0
+endsnippet
+
+snippet gnotesblock "notes block" b
+!notes{
+${1:ここで補足したい内容}
+${2:次の行も同じメモに含める}
+}
+$0
+endsnippet
+
+snippet gfooter "page footer" b
+${1:本文}
+
+!footer{${2:社外秘}}
+$0
+endsnippet
+
+snippet gcopyright "copyright front matter" b
+---
+copyright: ${1:2026 Example, Inc. All rights reserved.}
+genpdf:
+  copyright: ${2:2026 Example Override}
+---
+$0
+endsnippet
+
+snippet gpagenums "page numbers front matter" b
+---
+genpdf:
+  page_numbers: true
+---
+$0
+endsnippet

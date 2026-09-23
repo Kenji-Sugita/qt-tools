@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: page break
+# key: gpagebreak
+# --
+<div class="page-break"></div>
+$0

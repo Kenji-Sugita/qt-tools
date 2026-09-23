@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850">
+  <rect width="1200" height="850" fill="none"/>
+  <g transform="translate(600 425) rotate(-28)" fill="none" stroke="#1f2937" stroke-width="8" opacity="0.42">
+    <rect x="-365" y="-92" width="730" height="184" rx="24"/>
+  </g>
+  <g transform="translate(600 425) rotate(-28)" fill="#1f2937" opacity="0.42"
+     font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <text y="-16" font-size="76" font-weight="700">SRA INTERNAL</text>
+    <text y="54" font-size="34" font-weight="600" letter-spacing="8">COMPANY MATERIAL</text>
+  </g>
+</svg>

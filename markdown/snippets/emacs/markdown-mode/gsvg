@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: svg figure
+# key: gsvg
+# --
+!svg{path=${1:images/vu-background.svg} alt=${2:SVG図} caption=${3:SVG図} width=${4:80%} align=${5:center}}
+$0

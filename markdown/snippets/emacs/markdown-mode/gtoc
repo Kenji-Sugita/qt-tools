@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: book toc
+# key: gtoc
+# --
+!toc
+$0

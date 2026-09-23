@@ -1,0 +1,59 @@
+body {
+    /* background-color: #f0f0f0; */
+    font-family: Geneva, Tahoma, Verdana, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.page {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 50px;
+    /* border: 1px solid #cccccc; */
+}
+
+.cover {
+    text-align: center;
+}
+
+.title {
+    font-size: 36px;
+    line-height: 1.2;
+    margin-top: 160px;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 30px;
+}
+
+.author {
+    font-size: 18px;
+}
+
+.version {
+    font-size: 16px;
+    margin-top: 12px;
+}
+
+.date {
+    font-size: 16px;
+    margin-top: 12px;
+}
+
+.content {
+    text-align: left;
+}
+
+pre code {
+    font-size: 12px;
+    font-family: "Cascadia Mono", Consolas, "Ricty", monospace;
+    line-height: 1.1;
+    border:1px solid #e0e0e0;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: page font size
+# key: gfontsize
+# --
+!font-size{${1:32pt}}
+$0

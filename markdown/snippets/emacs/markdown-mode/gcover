@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: cover image
+# key: gcover
+# --
+!cover-image{path=${1:images/hero.png} alt=${2:概要図} caption=${3:全体構成} width=${4:82%}}
+$0

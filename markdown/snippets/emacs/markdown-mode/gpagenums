@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: page numbers front matter
+# key: gpagenums
+# --
+---
+genpdf:
+  page_numbers: true
+---
+$0

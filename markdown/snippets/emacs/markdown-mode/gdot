@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: graphviz dot block
+# key: gdot
+# --
+```dot
+${1:digraph G \{}
+  ${2:graph [rankdir=LR]}
+  ${3:A -> B -> C}
+${4:\}}
+```
+$0

@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: mermaid with options
+# key: gmermaidopt
+# --
+!mermaid{align=${1:right} scale=${2:1}}
+```mermaid
+${3:flowchart TD}
+  ${4:A[入力] --> B{分岐}}
+  ${5:B -->|Yes| C[続行]}
+  ${6:B -->|No| D[停止]}
+```
+$0

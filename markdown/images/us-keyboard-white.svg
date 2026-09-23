@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="1088" height="406" viewBox="0 0 1088 406" role="img" aria-labelledby="title desc" version="1.1" id="us_keyboard_white" sodipodi:docname="us-keyboard-white.svg" inkscape:version="1.4.3 (0d15f750, 2025-12-25)" inkscape:label="us_keyboard_white">
+  <sodipodi:namedview id="namedview" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" inkscape:zoom="0.80882353" inkscape:cx="565.63636" inkscape:cy="153.92727" inkscape:window-width="1829" inkscape:window-height="1198" inkscape:window-x="621" inkscape:window-y="49" inkscape:window-maximized="0" inkscape:current-layer="us_keyboard_white" />
+  <title id="title">US Mac-style software keyboard</title>
+  <desc id="desc">A transparent-background US software keyboard following a typical Mac keyboard layout, with a white base, white keys, light gray borders, and centered black key legends.</desc>
+  <defs id="defs" inkscape:label="defs">
+    <style id="style" inkscape:label="style">
+      .key { fill: #ffffff; stroke: #cfd4dc; stroke-width: 1.5; }
+      .wide { fill: #ffffff; stroke: #cfd4dc; stroke-width: 1.5; }
+      .base { fill: #ffffff; stroke: #cfd4dc; stroke-width: 1.5; }
+      .legend { fill: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 20px; font-weight: 650; text-anchor: middle; }
+      .small { fill: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 650; text-anchor: middle; }
+      .tiny { fill: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; font-weight: 650; text-anchor: middle; }
+      .dual { fill: #000000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; font-weight: 650; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect class="base" x="0.75" y="0.75" width="1086.5" height="404.5" rx="18" id="base" inkscape:label="base" />
+  <g transform="translate(20 20)" id="keyboard" inkscape:label="keyboard">
+    <g id="function_row" inkscape:label="function_row">
+      <rect class="wide" x="0" y="0" width="80" height="44" rx="8" id="escbox" inkscape:label="escbox" />
+      <text class="small" x="40" y="27" id="esc" inkscape:label="esc">esc</text>
+      <rect class="key" x="96" y="0" width="62" height="44" rx="8" id="f1box" inkscape:label="f1box" />
+      <text class="small" x="127" y="27" id="f1" inkscape:label="f1">F1</text>
+      <rect class="key" x="166" y="0" width="62" height="44" rx="8" id="f2box" inkscape:label="f2box" />
+      <text class="small" x="197" y="27" id="f2" inkscape:label="f2">F2</text>
+      <rect class="key" x="236" y="0" width="62" height="44" rx="8" id="f3box" inkscape:label="f3box" />
+      <text class="small" x="267" y="27" id="f3" inkscape:label="f3">F3</text>
+      <rect class="key" x="306" y="0" width="62" height="44" rx="8" id="f4box" inkscape:label="f4box" />
+      <text class="small" x="337" y="27" id="f4" inkscape:label="f4">F4</text>
+      <rect class="key" x="392" y="0" width="62" height="44" rx="8" id="f5box" inkscape:label="f5box" />
+      <text class="small" x="423" y="27" id="f5" inkscape:label="f5">F5</text>
+      <rect class="key" x="462" y="0" width="62" height="44" rx="8" id="f6box" inkscape:label="f6box" />
+      <text class="small" x="493" y="27" id="f6" inkscape:label="f6">F6</text>
+      <rect class="key" x="532" y="0" width="62" height="44" rx="8" id="f7box" inkscape:label="f7box" />
+      <text class="small" x="563" y="27" id="f7" inkscape:label="f7">F7</text>
+      <rect class="key" x="602" y="0" width="62" height="44" rx="8" id="f8box" inkscape:label="f8box" />
+      <text class="small" x="633" y="27" id="f8" inkscape:label="f8">F8</text>
+      <rect class="key" x="688" y="0" width="62" height="44" rx="8" id="f9box" inkscape:label="f9box" />
+      <text class="small" x="719" y="27" id="f9" inkscape:label="f9">F9</text>
+      <rect class="key" x="758" y="0" width="62" height="44" rx="8" id="f10box" inkscape:label="f10box" />
+      <text class="small" x="789" y="27" id="f10" inkscape:label="f10">F10</text>
+      <rect class="key" x="828" y="0" width="62" height="44" rx="8" id="f11box" inkscape:label="f11box" />
+      <text class="small" x="859" y="27" id="f11" inkscape:label="f11">F11</text>
+      <rect class="key" x="898" y="0" width="62" height="44" rx="8" id="f12box" inkscape:label="f12box" />
+      <text class="small" x="929" y="27" id="f12" inkscape:label="f12">F12</text>
+      <rect class="key" x="984" y="0" width="62" height="44" rx="8" id="ejectbox" inkscape:label="ejectbox" />
+      <text class="tiny" x="1015" y="26" id="eject" inkscape:label="eject">eject</text>
+    </g>
+    <g transform="translate(0 62)" id="number_row" inkscape:label="number_row">
+      <rect class="key" x="0" y="0" width="62" height="54" rx="8" id="backquotebox" inkscape:label="backquotebox" />
+      <text class="dual" x="31" y="21" id="tilde" inkscape:label="tilde">~</text>
+      <text class="dual" x="31" y="39" id="backquote" inkscape:label="backquote">`</text>
+      <rect class="key" x="70" y="0" width="62" height="54" rx="8" id="key_1box" inkscape:label="1box" />
+      <text class="dual" x="101" y="21" id="key_1_shift" inkscape:label="1_shift">!</text>
+      <text class="dual" x="101" y="39" id="key_1" inkscape:label="1">1</text>
+      <rect class="key" x="140" y="0" width="62" height="54" rx="8" id="key_2box" inkscape:label="2box" />
+      <text class="dual" x="171" y="21" id="key_2_shift" inkscape:label="2_shift">@</text>
+      <text class="dual" x="171" y="39" id="key_2" inkscape:label="2">2</text>
+      <rect class="key" x="210" y="0" width="62" height="54" rx="8" id="key_3box" inkscape:label="3box" />
+      <text class="dual" x="241" y="21" id="key_3_shift" inkscape:label="3_shift">#</text>
+      <text class="dual" x="241" y="39" id="key_3" inkscape:label="3">3</text>
+      <rect class="key" x="280" y="0" width="62" height="54" rx="8" id="key_4box" inkscape:label="4box" />
+      <text class="dual" x="311" y="21" id="key_4_shift" inkscape:label="4_shift">$</text>
+      <text class="dual" x="311" y="39" id="key_4" inkscape:label="4">4</text>
+      <rect class="key" x="350" y="0" width="62" height="54" rx="8" id="key_5box" inkscape:label="5box" />
+      <text class="dual" x="381" y="21" id="key_5_shift" inkscape:label="5_shift">%</text>
+      <text class="dual" x="381" y="39" id="key_5" inkscape:label="5">5</text>
+      <rect class="key" x="420" y="0" width="62" height="54" rx="8" id="key_6box" inkscape:label="6box" />
+      <text class="dual" x="451" y="21" id="key_6_shift" inkscape:label="6_shift">^</text>
+      <text class="dual" x="451" y="39" id="key_6" inkscape:label="6">6</text>
+      <rect class="key" x="490" y="0" width="62" height="54" rx="8" id="key_7box" inkscape:label="7box" />
+      <text class="dual" x="521" y="21" id="key_7_shift" inkscape:label="7_shift">&amp;</text>
+      <text class="dual" x="521" y="39" id="key_7" inkscape:label="7">7</text>
+      <rect class="key" x="560" y="0" width="62" height="54" rx="8" id="key_8box" inkscape:label="8box" />
+      <text class="dual" x="591" y="21" id="asterisk" inkscape:label="asterisk">*</text>
+      <text class="dual" x="591" y="39" id="key_8" inkscape:label="8">8</text>
+      <rect class="key" x="630" y="0" width="62" height="54" rx="8" id="key_9box" inkscape:label="9box" />
+      <text class="dual" x="661" y="21" id="key_9_shift" inkscape:label="9_shift">(</text>
+      <text class="dual" x="661" y="39" id="key_9" inkscape:label="9">9</text>
+      <rect class="key" x="700" y="0" width="62" height="54" rx="8" id="key_0box" inkscape:label="0box" />
+      <text class="dual" x="731" y="21" id="key_0_shift" inkscape:label="0_shift">)</text>
+      <text class="dual" x="731" y="39" id="key_0" inkscape:label="0">0</text>
+      <rect class="key" x="770" y="0" width="62" height="54" rx="8" id="minusbox" inkscape:label="minusbox" />
+      <text class="dual" x="801" y="17" id="minus_shift" inkscape:label="minus_shift">_</text>
+      <text class="dual" x="801" y="37" id="minus" inkscape:label="minus">-</text>
+      <rect class="key" x="840" y="0" width="62" height="54" rx="8" id="equalbox" inkscape:label="equalbox" />
+      <text class="dual" x="871" y="21" id="plus" inkscape:label="plus">+</text>
+      <text class="dual" x="871" y="39" id="equal" inkscape:label="equal">=</text>
+      <rect class="wide" x="910" y="0" width="136" height="54" rx="8" id="deletebox" inkscape:label="deletebox" />
+      <text class="small" x="978" y="32" id="delete" inkscape:label="delete">delete</text>
+    </g>
+    <g transform="translate(0 124)" id="qwerty_row" inkscape:label="qwerty_row">
+      <rect class="wide" x="0" y="0" width="92" height="54" rx="8" id="tabbox" inkscape:label="tabbox" />
+      <text class="small" x="46" y="32" id="tab" inkscape:label="tab">tab</text>
+      <rect class="key" x="100" y="0" width="62" height="54" rx="8" id="qbox" inkscape:label="qbox" />
+      <text class="legend" x="131" y="34" id="q" inkscape:label="q">Q</text>
+      <rect class="key" x="170" y="0" width="62" height="54" rx="8" id="wbox" inkscape:label="wbox" />
+      <text class="legend" x="201" y="34" id="w" inkscape:label="w">W</text>
+      <rect class="key" x="240" y="0" width="62" height="54" rx="8" id="ebox" inkscape:label="ebox" />
+      <text class="legend" x="271" y="34" id="e" inkscape:label="e">E</text>
+      <rect class="key" x="310" y="0" width="62" height="54" rx="8" id="rbox" inkscape:label="rbox" />
+      <text class="legend" x="341" y="34" id="r" inkscape:label="r">R</text>
+      <rect class="key" x="380" y="0" width="62" height="54" rx="8" id="tbox" inkscape:label="tbox" />
+      <text class="legend" x="411" y="34" id="t" inkscape:label="t">T</text>
+      <rect class="key" x="450" y="0" width="62" height="54" rx="8" id="ybox" inkscape:label="ybox" />
+      <text class="legend" x="481" y="34" id="y" inkscape:label="y">Y</text>
+      <rect class="key" x="520" y="0" width="62" height="54" rx="8" id="ubox" inkscape:label="ubox" />
+      <text class="legend" x="551" y="34" id="u" inkscape:label="u">U</text>
+      <rect class="key" x="590" y="0" width="62" height="54" rx="8" id="ibox" inkscape:label="ibox" />
+      <text class="legend" x="621" y="34" id="i" inkscape:label="i">I</text>
+      <rect class="key" x="660" y="0" width="62" height="54" rx="8" id="obox" inkscape:label="obox" />
+      <text class="legend" x="691" y="34" id="o" inkscape:label="o">O</text>
+      <rect class="key" x="730" y="0" width="62" height="54" rx="8" id="pbox" inkscape:label="pbox" />
+      <text class="legend" x="761" y="34" id="p" inkscape:label="p">P</text>
+      <rect class="key" x="800" y="0" width="62" height="54" rx="8" id="leftbracketbox" inkscape:label="leftbracketbox" />
+      <text class="dual" x="831" y="21" id="leftbracket_shift" inkscape:label="leftbracket_shift">{</text>
+      <text class="dual" x="831" y="39" id="leftbracket" inkscape:label="leftbracket">[</text>
+      <rect class="key" x="870" y="0" width="62" height="54" rx="8" id="rightbracketbox" inkscape:label="rightbracketbox" />
+      <text class="dual" x="901" y="21" id="rightbracket_shift" inkscape:label="rightbracket_shift">}</text>
+      <text class="dual" x="901" y="39" id="rightbracket" inkscape:label="rightbracket">]</text>
+      <rect class="key" x="940" y="0" width="106" height="54" rx="8" id="backslashbox" inkscape:label="backslashbox" />
+      <text class="dual" x="993" y="21" id="backslash_shift" inkscape:label="backslash_shift">|</text>
+      <text class="dual" x="993" y="39" id="backslash" inkscape:label="backslash">\</text>
+    </g>
+    <g transform="translate(0 186)" id="home_row" inkscape:label="home_row">
+      <rect class="wide" x="0" y="0" width="110" height="54" rx="8" id="capslockbox" inkscape:label="capslockbox" />
+      <text class="small" x="55" y="32" id="capslock" inkscape:label="capslock">caps lock</text>
+      <rect class="key" x="118" y="0" width="62" height="54" rx="8" id="abox" inkscape:label="abox" />
+      <text class="legend" x="149" y="34" id="a" inkscape:label="a">A</text>
+      <rect class="key" x="188" y="0" width="62" height="54" rx="8" id="sbox" inkscape:label="sbox" />
+      <text class="legend" x="219" y="34" id="s" inkscape:label="s">S</text>
+      <rect class="key" x="258" y="0" width="62" height="54" rx="8" id="dbox" inkscape:label="dbox" />
+      <text class="legend" x="289" y="34" id="d" inkscape:label="d">D</text>
+      <rect class="key" x="328" y="0" width="62" height="54" rx="8" id="fbox" inkscape:label="fbox" />
+      <text class="legend" x="359" y="34" id="f" inkscape:label="f">F</text>
+      <rect class="key" x="398" y="0" width="62" height="54" rx="8" id="gbox" inkscape:label="gbox" />
+      <text class="legend" x="429" y="34" id="g" inkscape:label="g">G</text>
+      <rect class="key" x="468" y="0" width="62" height="54" rx="8" id="hbox" inkscape:label="hbox" />
+      <text class="legend" x="499" y="34" id="h" inkscape:label="h">H</text>
+      <rect class="key" x="538" y="0" width="62" height="54" rx="8" id="jbox" inkscape:label="jbox" />
+      <text class="legend" x="569" y="34" id="j" inkscape:label="j">J</text>
+      <rect class="key" x="608" y="0" width="62" height="54" rx="8" id="kbox" inkscape:label="kbox" />
+      <text class="legend" x="639" y="34" id="k" inkscape:label="k">K</text>
+      <rect class="key" x="678" y="0" width="62" height="54" rx="8" id="lbox" inkscape:label="lbox" />
+      <text class="legend" x="709" y="34" id="l" inkscape:label="l">L</text>
+      <rect class="key" x="748" y="0" width="62" height="54" rx="8" id="semicolonbox" inkscape:label="semicolonbox" />
+      <text class="dual" x="779" y="21" id="semicolon_shift" inkscape:label="semicolon_shift">:</text>
+      <text class="dual" x="779" y="39" id="semicolon" inkscape:label="semicolon">;</text>
+      <rect class="key" x="818" y="0" width="62" height="54" rx="8" id="quotebox" inkscape:label="quotebox" />
+      <text class="dual" x="849" y="21" id="quote_shift" inkscape:label="quote_shift">"</text>
+      <text class="dual" x="849" y="39" id="quote" inkscape:label="quote">'</text>
+      <rect class="wide" x="888" y="0" width="158" height="54" rx="8" id="returnbox" inkscape:label="returnbox" />
+      <text class="small" x="967" y="32" id="return" inkscape:label="return">return</text>
+    </g>
+    <g transform="translate(0 248)" id="shift_row" inkscape:label="shift_row">
+      <rect class="wide" x="0" y="0" width="146" height="54" rx="8" id="shift_leftbox" inkscape:label="shift_leftbox" />
+      <text class="small" x="73" y="32" id="shift_left" inkscape:label="shift_left">shift</text>
+      <rect class="key" x="154" y="0" width="62" height="54" rx="8" id="zbox" inkscape:label="zbox" />
+      <text class="legend" x="185" y="34" id="z" inkscape:label="z">Z</text>
+      <rect class="key" x="224" y="0" width="62" height="54" rx="8" id="xbox" inkscape:label="xbox" />
+      <text class="legend" x="255" y="34" id="x" inkscape:label="x">X</text>
+      <rect class="key" x="294" y="0" width="62" height="54" rx="8" id="cbox" inkscape:label="cbox" />
+      <text class="legend" x="325" y="34" id="c" inkscape:label="c">C</text>
+      <rect class="key" x="364" y="0" width="62" height="54" rx="8" id="vbox" inkscape:label="vbox" />
+      <text class="legend" x="395" y="34" id="v" inkscape:label="v">V</text>
+      <rect class="key" x="434" y="0" width="62" height="54" rx="8" id="bbox" inkscape:label="bbox" />
+      <text class="legend" x="465" y="34" id="b" inkscape:label="b">B</text>
+      <rect class="key" x="504" y="0" width="62" height="54" rx="8" id="nbox" inkscape:label="nbox" />
+      <text class="legend" x="535" y="34" id="n" inkscape:label="n">N</text>
+      <rect class="key" x="574" y="0" width="62" height="54" rx="8" id="mbox" inkscape:label="mbox" />
+      <text class="legend" x="605" y="34" id="m" inkscape:label="m">M</text>
+      <rect class="key" x="644" y="0" width="62" height="54" rx="8" id="commabox" inkscape:label="commabox" />
+      <text class="dual" x="675" y="21" id="comma_shift" inkscape:label="comma_shift">&lt;</text>
+      <text class="dual" x="675" y="39" id="comma" inkscape:label="comma">,</text>
+      <rect class="key" x="714" y="0" width="62" height="54" rx="8" id="periodbox" inkscape:label="periodbox" />
+      <text class="dual" x="745" y="21" id="period_shift" inkscape:label="period_shift">&gt;</text>
+      <text class="dual" x="745" y="39" id="period" inkscape:label="period">.</text>
+      <rect class="key" x="784" y="0" width="62" height="54" rx="8" id="slashbox" inkscape:label="slashbox" />
+      <text class="dual" x="815" y="21" id="slash_shift" inkscape:label="slash_shift">?</text>
+      <text class="dual" x="815" y="39" id="slash" inkscape:label="slash">/</text>
+      <rect class="wide" x="854" y="0" width="192" height="54" rx="8" id="shift_rightbox" inkscape:label="shift_rightbox" />
+      <text class="small" x="950" y="32" id="shift_right" inkscape:label="shift_right">shift</text>
+    </g>
+    <g transform="translate(0 310)" id="bottom_row" inkscape:label="bottom_row">
+      <rect class="wide" x="0" y="0" width="70" height="54" rx="8" id="fnbox" inkscape:label="fnbox" />
+      <text class="small" x="35" y="32" id="fn" inkscape:label="fn">fn</text>
+      <rect class="wide" x="78" y="0" width="84" height="54" rx="8" id="controlbox" inkscape:label="controlbox" />
+      <text class="small" x="120" y="32" id="control" inkscape:label="control">control</text>
+      <rect class="wide" x="170" y="0" width="84" height="54" rx="8" id="option_leftbox" inkscape:label="option_leftbox" />
+      <text class="small" x="212" y="32" id="option_left" inkscape:label="option_left">option</text>
+      <rect class="wide" x="262" y="0" width="96" height="54" rx="8" id="command_leftbox" inkscape:label="command_leftbox" />
+      <text class="small" x="310" y="32" id="command_left" inkscape:label="command_left">command</text>
+      <rect class="wide" x="366" y="0" width="256" height="54" rx="8" id="spacebox" inkscape:label="spacebox" />
+      <text class="small" x="494" y="32" id="space" inkscape:label="space">space</text>
+      <rect class="wide" x="630" y="0" width="96" height="54" rx="8" id="command_rightbox" inkscape:label="command_rightbox" />
+      <text class="small" x="678" y="32" id="command_right" inkscape:label="command_right">command</text>
+      <rect class="wide" x="734" y="0" width="84" height="54" rx="8" id="option_rightbox" inkscape:label="option_rightbox" />
+      <text class="small" x="776" y="32" id="option_right" inkscape:label="option_right">option</text>
+      <rect class="key" x="844.31116" y="1.1111689" width="61.377663" height="52.577663" rx="6.9297361" id="leftbox" inkscape:label="leftbox" />
+      <text class="small" x="875" y="31.400013" id="left" inkscape:label="left">◀</text>
+      <rect class="key" x="914" y="0" width="62" height="26" rx="7" id="upbox" inkscape:label="upbox" />
+      <text class="small" x="945" y="17.000195" id="up" inkscape:label="up">▲</text>
+      <rect class="key" x="914" y="28" width="62" height="26" rx="7" id="downbox" inkscape:label="downbox" />
+      <text class="small" x="945" y="46.600281" id="down" inkscape:label="down">▼</text>
+      <rect class="key" x="984.31116" y="1.111169" width="61.377663" height="52.577663" rx="6.9297361" id="rightbox" inkscape:label="rightbox" />
+      <text class="small" x="1015" y="31.400013" id="right" inkscape:label="right">▶</text>
+    </g>
+  </g>
+</svg>

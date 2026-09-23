@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: slides incremental list
+# key: gincremental
+# --
+!incremental-list
+- ${1:項目 1}
+- ${2:項目 2}
+- ${3:項目 3}
+$0

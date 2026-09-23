@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: notes single line
+# key: gnotes
+# --
+!notes{${1:ここで補足したい内容}}
+$0

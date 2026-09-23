@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+from __future__ import annotations
+
+import runpy
+import os
+import sys
+from pathlib import Path
+
+
+def main() -> None:
+    root_dir = Path(__file__).resolve().parent.parent
+    script_path = root_dir / "src" / "main.py"
+    os.environ.setdefault("GENPDF_RESOURCE_DIR", str(root_dir / "src" / "resources"))
+    sys.argv[0] = str(Path(__file__).resolve())
+    runpy.run_path(str(script_path), run_name="__main__")
+
+
+if __name__ == "__main__":
+    main()

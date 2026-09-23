@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: callout
+# key: gcallout
+# --
+!callout{type=${1:warning} title=${2:注意}}
+  ${3:この操作は元に戻せません。}
+$0
