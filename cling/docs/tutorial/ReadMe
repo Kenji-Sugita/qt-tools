@@ -1,0 +1,10 @@
+* 内部のウィジェットにアクセスするには QObject::findChild() を使用する。
+
+    auto w = new LCDNumber()
+    auto layout = w->findChild<QVBoxLayout*>()
+    auto lcd = w->findChild<QLCDNumber*>()
+    auto slider = w->findChild<QSlider*>()
+
+* レイアウトの周りのスペースを削除するには、レイアウトの setContentsMargins()を使用する。
+
+    layout->setContentsMargins(0, 0, 0, 0)

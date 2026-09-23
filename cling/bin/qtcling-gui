@@ -1,0 +1,20 @@
+#!/bin/sh
+
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+# shellcheck source=qtcling-defaults.sh
+. "$script_directory_path/qtcling-defaults.sh"
+
+build_dir=${QTCLING_GUI_BUILD_DIR:-"$dev_root/build-qtcling-gui"}
+executable_path="$build_dir/qtcling-gui"
+default_qt_root=${QTCLING_DEFAULT_QT_ROOT:-/usr/local/qt/Qt/6.11.1/macos}
+
+if [ ! -x "$executable_path" ]; then
+    echo "qtcling-gui: executable not found: $executable_path" >&2
+    echo "qtcling-gui: build it with:" >&2
+    echo "  cmake -S $dev_root/qtcling-gui -B $build_dir -DCling_DIR=$dev_root/build/tools/cling/lib/cmake/cling -DQt6_DIR=${default_qt_root}/lib/cmake/Qt6" >&2
+    echo "  cmake --build $build_dir" >&2
+    exit 1
+fi
+
+exec "$executable_path" "$@"

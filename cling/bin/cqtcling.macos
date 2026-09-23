@@ -1,0 +1,55 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <source-file> [clang-options...]"
+    exit 1
+fi
+
+program_path=$1
+shift
+
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+default_dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+# shellcheck source=qtcling-defaults.sh
+. "$script_directory_path/qtcling-defaults.sh"
+cling_root=${QTCLING_CLING_ROOT:-/usr/local/qtcling}
+cling_path="${cling_root}/bin/cling"
+#qt_base_path=/usr/local/qt/Qt/6.10.2/macos
+default_qt_base_path=/usr/local/qt/Qt/6.11.1/macos
+qt_base_path=${QTCLING_QT_ROOT:-${QTCLING_DEFAULT_QT_ROOT:-$default_qt_base_path}}
+dev_root=${QTCLING_DEV_ROOT:-$default_dev_root}
+
+qt_framework_path="$qt_base_path/lib"
+
+qt_core_header_path="$qt_framework_path/QtCore.framework/Headers"
+qt_gui_header_path="$qt_framework_path/QtGui.framework/Headers"
+qt_widgets_header_path="$qt_framework_path/QtWidgets.framework/Headers"
+
+qt_core_library="$qt_framework_path/QtCore.framework/Versions/A/QtCore"
+qt_gui_library="$qt_framework_path/QtGui.framework/Versions/A/QtGui"
+qt_widgets_library="$qt_framework_path/QtWidgets.framework/Versions/A/QtWidgets"
+
+if [ ! -d "$qt_base_path" ]; then
+    echo "qtcling: Qt root not found: $qt_base_path" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
+    exit 1
+fi
+
+if [ ! -f "$qt_core_library" ]; then
+    echo "qtcling: QtCore framework library not found under: $qt_framework_path" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to a Qt macOS kit directory." >&2
+    exit 1
+fi
+
+"$cling_path" \
+    -std=c++2c \
+    -I "$qt_core_header_path" \
+    -I "$qt_gui_header_path" \
+    -I "$qt_widgets_header_path" \
+    -I "${dev_root}/src" \
+    -F "$qt_framework_path" \
+    "$qt_core_library" \
+    "$qt_gui_library" \
+    "$qt_widgets_library" \
+    "$@" \
+    "$program_path"

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+DEV_ROOT=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+
+if [ -z "${PYTHON_WRAPPER_REEXECUTED:-}" ]; then
+    export PYTHON_WRAPPER_REEXECUTED=1
+
+    if [ -x /usr/bin/env ]; then
+        exec /usr/bin/env python3 "$DEV_ROOT/bin/run_uic.py" "$@"
+    elif [ -x /bin/env ]; then
+        exec /bin/env python3 "$DEV_ROOT/bin/run_uic.py" "$@"
+    elif command -v python3 >/dev/null 2>&1; then
+        exec "$(command -v python3)" "$DEV_ROOT/bin/run_uic.py" "$@"
+    else
+        echo "python3 が見つかりません。" >&2
+        exit 1
+    fi
+fi

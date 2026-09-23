@@ -1,0 +1,21 @@
+diff --git a/clang/lib/Lex/UnicodeCharSets.h b/clang/lib/Lex/UnicodeCharSets.h
+index b63908024e5a..784b33f4294a 100644
+--- a/clang/lib/Lex/UnicodeCharSets.h
++++ b/clang/lib/Lex/UnicodeCharSets.h
+@@ -392,11 +392,11 @@ static const llvm::sys::UnicodeCharRange
+ // Math_Continue
+ static const llvm::sys::UnicodeCharRange
+     MathematicalNotationProfileIDContinueRanges[] = {
+-        {0x000B2, 0x000B3}, // ²-³
+-        {0x000B9, 0x000B9}, // ¹
+-        {0x02070, 0x02070}, // ⁰
+-        {0x02074, 0x0207E}, // ⁴-⁾
+-        {0x02080, 0x0208E}, // ₀-₎
++        {0x000B2, 0x000B3}, //
++        {0x000B9, 0x000B9}, //
++        {0x02070, 0x02070}, //
++        {0x02074, 0x0207E}, //
++        {0x02080, 0x0208E}, //
+ };
+ 
+ // C11 D.1, C++11 [charname.allowed]

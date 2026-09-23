@@ -1,0 +1,21 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>icons/1.png</file>
+  <file>icons/2.png</file>
+  <file>icons/3.png</file>
+  <file>icons/black.png</file>
+  <file>icons/blue.png</file>
+  <file>icons/dash.xpm</file>
+  <file>icons/dashdot.xpm</file>
+  <file>icons/dashdotdot.xpm</file>
+  <file>icons/dot.xpm</file>
+  <file>icons/green.png</file>
+  <file>icons/load.png</file>
+  <file>icons/print.png</file>
+  <file>icons/quit.png</file>
+  <file>icons/red.png</file>
+  <file>icons/save.png</file>
+  <file>icons/solid.xpm</file>
+  <file>icons/yellow.png</file>
+</qresource>
+</RCC>

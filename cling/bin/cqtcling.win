@@ -1,0 +1,48 @@
+#!/bin/sh
+
+program_path=$1
+
+if [ -z "$program_path" ]; then
+    echo "Usage: $0 <source-file>"
+    exit 1
+fi
+
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+default_dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+cling_root=${QTCLING_CLING_ROOT:-${default_dev_root}/qtcling-win-arm64}
+cling_path="${cling_root}/bin/cling.exe"
+#cling_path=build/bin/cling.exe
+default_qt_base_path=/c/Qt/6.11.1/msvc2022_arm64
+qt_base_path=${QTCLING_QT_ROOT:-$default_qt_base_path}
+
+qt_library_path=${qt_base_path}/bin
+qt_include_path=${qt_base_path}/include
+qt_library_path_windows=$(cygpath -w "$qt_library_path")
+qt_include_path_windows=$(cygpath -w "$qt_include_path")
+export PATH="$qt_library_path:$PATH"
+export QT_PLUGIN_PATH="${qt_base_path}/plugins"
+export LIBEDIT_TERMCAP="${default_dev_root}/libedit-win-arm64/share/libedit/termcap"
+
+if [ ! -d "$qt_base_path" ]; then
+    echo "qtcling: Qt root not found: $qt_base_path" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
+    exit 1
+fi
+
+if [ ! -d "$qt_include_path/QtCore" ]; then
+    echo "qtcling: QtCore headers not found under: $qt_include_path" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to a Qt Windows kit directory." >&2
+    exit 1
+fi
+
+"$cling_path" \
+    -std=c++2c \
+    -I "$qt_include_path_windows" \
+    -I "$qt_include_path_windows/QtCore" \
+    -I "$qt_include_path_windows/QtGui" \
+    -I "$qt_include_path_windows/QtWidgets" \
+    -L "$qt_library_path_windows" \
+    -lQt6Core.dll \
+    -lQt6Gui.dll \
+    -lQt6Widgets.dll \
+    "$program_path"

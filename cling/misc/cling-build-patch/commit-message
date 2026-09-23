@@ -1,0 +1,10 @@
+Do not bake LLVM_BINARY_DIR into clingInterpreter
+
+clingInterpreter was built with LLVM_PATH set to LLVM_BINARY_DIR,
+which makes installed binaries look for Clang resources in the build
+tree, e.g. <build>/lib/clang/<version>.
+
+This breaks installed cling when the build directory is unavailable.
+
+Remove the compile definition and rely on Clang's normal runtime
+resource directory discovery instead.

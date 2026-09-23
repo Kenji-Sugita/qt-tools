@@ -1,0 +1,39 @@
+vcpkg install libedit:x64-windows
+
+error: Could not locate a manifest (vcpkg.json) above the current working directory.
+This vcpkg distribution does not have a classic mode instance.
+See https://learn.microsoft.com/vcpkg/troubleshoot/build-failures?WT.mc_id=vcpkg_inproduct_cli for more information.
+
+PS C:\cygwin64\usr\local\src\cling\libedit> vcpkg install --triplet x64-windows
+error: this vcpkg instance requires a manifest with a specified baseline in order to interact with ports. Please add 'builtin-baseline' to the manifest or add a 'vcpkg-configuration.json' that redefines the default registry.
+PS C:\cygwin64\usr\local\src\cling\libedit>
+
+PS C:\cygwin64\usr\local\src\cling\libedit> vcpkg install --triplet x64-windows
+A suitable version of git was not found (required v2.7.4).
+Downloading https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.2/PortableGit-2.47.1.2-64-bit.7z.exe -> PortableGit-2.47.1.2-64-bit.7z.exe
+Successfully downloaded PortableGit-2.47.1.2-64-bit.7z.exe
+Extracting git...
+A suitable version of 7zr was not found (required v25.1.0).
+Downloading https://github.com/ip7z/7zip/releases/download/25.01/7zr.exe -> 7d84fcad-7zr.exe
+Successfully downloaded 7d84fcad-7zr.exe
+the top-level builtin-baseline (x-update-baseline --add-initial-baseline) was not a valid commit sha: expected 40 hexadecimal characters.You can use the current commit as a baseline, which is:
+        "builtin-baseline": "b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01"
+note: updating vcpkg by rerunning bootstrap-vcpkg may resolve this failure.
+PS C:\cygwin64\usr\local\src\cling\libedit>
+
+PS C:\cygwin64\usr\local\src\cling\libedit> vcpkg install --triplet x64-windows
+Fetching registry information from https://github.com/microsoft/vcpkg (HEAD)...
+libedit is only supported on '(!windows | mingw) & !android', which does not match x64-windows.
+This usually means that there are known build failures, or runtime problems, when building other platforms. 
+To ignore this and attempt to build libedit anyway, rerun vcpkg with `--allow-unsupported`.
+PS C:\cygwin64\usr\local\src\cling\libedit>
+
+error: building libedit:x64-windows failed with: BUILD_FAILED
+See https://learn.microsoft.com/vcpkg/troubleshoot/build-failures?WT.mc_id=vcpkg_inproduct_cli for more information.
+Elapsed time to handle libedit:x64-windows: 57 s
+Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
+Then check for known issues at:
+  https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+libedit
+You can submit a new issue at:
+  https://github.com/microsoft/vcpkg/issues/new?title=%5Blibedit%5D%20build%20error%20on%20x64-windows&body=Copy%20issue%20body%20from%20C%3A%2Fcygwin64%2Fusr%2Flocal%2Fsrc%2Fcling%2Flibedit%2Fvcpkg_installed%2Fvcpkg%2Fissue_body.md
+

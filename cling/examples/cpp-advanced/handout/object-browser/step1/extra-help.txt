@@ -1,0 +1,19 @@
+QList<QObject*> ObjectBrowserModel::children(QObject* parent) const
+{
+    QList<QObject*> result = parent->children();
+    return result;
+}
+
+QString ObjectBrowserModel::label(const QObject* object, const int column) const
+{
+    switch (column) {
+    case 0: return object->metaObject()->className();
+    case 1: return object->objectName();
+    case 2: {
+        QString address;
+        QTextStream(&address) << object;
+        return address;
+        }
+    }
+    return QString();
+}

@@ -1,0 +1,247 @@
+diff --git a/bin/cqtcling.linux b/bin/cqtcling.linux
+index e25f996..168776c 100755
+--- a/bin/cqtcling.linux
++++ b/bin/cqtcling.linux
+@@ -12,9 +12,22 @@ shift
+ 
+ CLING=/usr/local/qtcling/bin/cling
+ #QTBASE=/usr/local/qt/Qt/6.10.2/gcc_64
+-QTBASE=/usr/local/qt/Qt/6.11.0/gcc_64
++DEFAULT_QTBASE=/usr/local/qt/Qt/6.11.0/gcc_64
++QTBASE=${QTCLING_QT_ROOT:-$DEFAULT_QTBASE}
+ LIBS="-lQt6Core -lQt6Gui -lQt6Widgets"
+ 
++if [ ! -d "$QTBASE" ]; then
++    echo "qtcling: Qt root not found: $QTBASE" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -f "$QTBASE/lib/libQt6Core.so" ]; then
++    echo "qtcling: libQt6Core.so not found under: $QTBASE/lib" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt Linux kit directory." >&2
++    exit 1
++fi
++
+ ${CLING} \
+     -std=c++2c \
+     -I ${QTBASE}/include \
+diff --git a/bin/cqtcling.macos b/bin/cqtcling.macos
+index 52be43b..90f1bbc 100755
+--- a/bin/cqtcling.macos
++++ b/bin/cqtcling.macos
+@@ -10,7 +10,8 @@ shift
+ 
+ cling_path=/usr/local/cling/bin/cling
+ #qt_base_path=/usr/local/qt/Qt/6.10.2/macos
+-qt_base_path=/usr/local/qt/Qt/6.11.0/macos
++default_qt_base_path=/usr/local/qt/Qt/6.11.0/macos
++qt_base_path=${QTCLING_QT_ROOT:-$default_qt_base_path}
+ dev_root=/usr/local/src/cling
+ 
+ qt_framework_path="$qt_base_path/lib"
+@@ -23,6 +24,18 @@ qt_core_library="$qt_framework_path/QtCore.framework/Versions/A/QtCore"
+ qt_gui_library="$qt_framework_path/QtGui.framework/Versions/A/QtGui"
+ qt_widgets_library="$qt_framework_path/QtWidgets.framework/Versions/A/QtWidgets"
+ 
++if [ ! -d "$qt_base_path" ]; then
++    echo "qtcling: Qt root not found: $qt_base_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -f "$qt_core_library" ]; then
++    echo "qtcling: QtCore framework library not found under: $qt_framework_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt macOS kit directory." >&2
++    exit 1
++fi
++
+ "$cling_path" \
+     -std=c++2c \
+     -I "$qt_core_header_path" \
+diff --git a/bin/cqtcling.win b/bin/cqtcling.win
+index b395765..b9ee2b6 100755
+--- a/bin/cqtcling.win
++++ b/bin/cqtcling.win
+@@ -9,13 +9,26 @@ fi
+ 
+ cling_path=/usr/local/cling/bin/cling.exe
+ #cling_path=build/bin/cling.exe
+-qt_base_path=/usr/local/qt/Qt/6.10.2/msvc2022_64
++default_qt_base_path=/usr/local/qt/Qt/6.10.2/msvc2022_64
++qt_base_path=${QTCLING_QT_ROOT:-$default_qt_base_path}
+ 
+ qt_library_path=${qt_base_path}/bin
+ qt_include_path=${qt_base_path}/include
+ 
+ qt_include_path_windows=c:/cygwin64/${qt_include_path}
+ 
++if [ ! -d "$qt_base_path" ]; then
++    echo "qtcling: Qt root not found: $qt_base_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -d "$qt_include_path/QtCore" ]; then
++    echo "qtcling: QtCore headers not found under: $qt_include_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt Windows kit directory." >&2
++    exit 1
++fi
++
+ "$cling_path" \
+     -std=c++2c \
+     -I "$qt_include_path_windows" \
+diff --git a/bin/iqtcling.linux b/bin/iqtcling.linux
+index b640580..49e9ca2 100755
+--- a/bin/iqtcling.linux
++++ b/bin/iqtcling.linux
+@@ -3,7 +3,8 @@
+ unset LD_LIBRARY_PATH
+ 
+ #QT_ROOT=/usr/local/qt/Qt/6.10.2/gcc_64
+-QT_ROOT=/usr/local/qt/Qt/6.11.0/gcc_64
++DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.11.0/gcc_64
++QT_ROOT=${QTCLING_QT_ROOT:-$DEFAULT_QT_ROOT}
+ CLING=/usr/local/qtcling/bin/cling
+ LIBS="-lQt6Core -lQt6Gui -lQt6Widgets"
+ 
+@@ -11,6 +12,31 @@ LIBS="-lQt6Core -lQt6Gui -lQt6Widgets"
+ #CLING=build/bin/cling
+ #CLING=build-z-fix/bin/cling
+ 
++if [ ! -d "$QT_ROOT" ]; then
++    echo "qtcling: Qt root not found: $QT_ROOT" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -f "$QT_ROOT/lib/libQt6Core.so" ]; then
++    echo "qtcling: libQt6Core.so not found under: $QT_ROOT/lib" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt Linux kit directory." >&2
++    exit 1
++fi
++
++PRELOAD_HEADER=$(mktemp "${TMPDIR:-/tmp}/qtcling-preload.XXXXXX.h") || exit 1
++trap 'rm -f "$PRELOAD_HEADER"' EXIT HUP INT TERM
++
++printf '#pragma cling load("%s")\n' "$QT_ROOT/lib/libQt6Core.so" > "$PRELOAD_HEADER"
++printf '#pragma cling load("%s")\n' "$QT_ROOT/lib/libQt6Gui.so" >> "$PRELOAD_HEADER"
++printf '#pragma cling load("%s")\n' "$QT_ROOT/lib/libQt6Widgets.so" >> "$PRELOAD_HEADER"
++
++DEV_ROOT=/usr/local/src/cling
++if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
++    QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
++fi
++export QTCLING_STARTUP_FILE
++
+ exec "${CLING}" \
+     --nologo \
+     -std=c++2c \
+@@ -20,5 +46,5 @@ exec "${CLING}" \
+     -I "${QT_ROOT}/include" \
+     -L ${QT_ROOT}/lib \
+     ${LIBS} \
+-    -include preload_qt_linux.h \
++    -include "$PRELOAD_HEADER" \
+     "$@"
+diff --git a/bin/iqtcling.macos b/bin/iqtcling.macos
+index 7600eaf..0c71954 100755
+--- a/bin/iqtcling.macos
++++ b/bin/iqtcling.macos
+@@ -1,7 +1,8 @@
+ #!/bin/sh
+ 
+ #QT_ROOT=/usr/local/qt/Qt/6.10.2/macos
+-QT_ROOT=/usr/local/qt/Qt/6.11.0/macos
++DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.11.0/macos
++QT_ROOT=${QTCLING_QT_ROOT:-$DEFAULT_QT_ROOT}
+ 
+ CLING_ROOT=/usr/local/qtcling
+ CLING_ROOT=/usr/local/src/cling/build
+@@ -11,15 +12,43 @@ CLING_ROOT=/usr/local/src/cling/build
+ 
+ CLING=${CLING_ROOT}/bin/cling
+ DEV_ROOT=/usr/local/src/cling
++QT_FRAMEWORK_PATH="${QT_ROOT}/lib"
++QT_CORE_LIBRARY="${QT_FRAMEWORK_PATH}/QtCore.framework/Versions/A/QtCore"
++QT_GUI_LIBRARY="${QT_FRAMEWORK_PATH}/QtGui.framework/Versions/A/QtGui"
++QT_WIDGETS_LIBRARY="${QT_FRAMEWORK_PATH}/QtWidgets.framework/Versions/A/QtWidgets"
++
++if [ ! -d "$QT_ROOT" ]; then
++    echo "qtcling: Qt root not found: $QT_ROOT" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -f "$QT_CORE_LIBRARY" ]; then
++    echo "qtcling: QtCore framework library not found under: $QT_FRAMEWORK_PATH" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt macOS kit directory." >&2
++    exit 1
++fi
++
++PRELOAD_HEADER=$(mktemp "${TMPDIR:-/tmp}/qtcling-preload.XXXXXX.h") || exit 1
++trap 'rm -f "$PRELOAD_HEADER"' EXIT HUP INT TERM
++
++printf '#pragma cling load("%s")\n' "$QT_CORE_LIBRARY" > "$PRELOAD_HEADER"
++printf '#pragma cling load("%s")\n' "$QT_GUI_LIBRARY" >> "$PRELOAD_HEADER"
++printf '#pragma cling load("%s")\n' "$QT_WIDGETS_LIBRARY" >> "$PRELOAD_HEADER"
++
++if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
++    QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
++fi
++export QTCLING_STARTUP_FILE
+ 
+ exec "${CLING}" \
+     --nologo \
+     -std=c++2c \
+-    -I "${QT_ROOT}/lib/QtCore.framework/Headers" \
+-    -I "${QT_ROOT}/lib/QtGui.framework/Headers" \
+-    -I "${QT_ROOT}/lib/QtWidgets.framework/Headers" \
++    -I "${QT_FRAMEWORK_PATH}/QtCore.framework/Headers" \
++    -I "${QT_FRAMEWORK_PATH}/QtGui.framework/Headers" \
++    -I "${QT_FRAMEWORK_PATH}/QtWidgets.framework/Headers" \
+     -I "${DEV_ROOT}/include" \
+     -I "${DEV_ROOT}/src" \
+-    -F "${QT_ROOT}/lib" \
+-    -include ${DEV_ROOT}/include/preload_qt_macos.h \
++    -F "${QT_FRAMEWORK_PATH}" \
++    -include "$PRELOAD_HEADER" \
+     "$@"
+diff --git a/bin/iqtcling.win b/bin/iqtcling.win
+index 206da58..ffc53ac 100755
+--- a/bin/iqtcling.win
++++ b/bin/iqtcling.win
+@@ -2,13 +2,32 @@
+ 
+ cling_path=/usr/local/cling/bin/cling.exe
+ #cling_path=build/bin/cling.exe
+-qt_base_path=/usr/local/qt/Qt/6.10.2/msvc2022_64
++default_qt_base_path=/usr/local/qt/Qt/6.10.2/msvc2022_64
++qt_base_path=${QTCLING_QT_ROOT:-$default_qt_base_path}
+ 
+ qt_library_path=${qt_base_path}/bin
+ qt_include_path=${qt_base_path}/include
+ 
+ qt_include_path_windows=c:/cygwin64/${qt_include_path}
+ 
++if [ ! -d "$qt_base_path" ]; then
++    echo "qtcling: Qt root not found: $qt_base_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++    exit 1
++fi
++
++if [ ! -d "$qt_include_path/QtCore" ]; then
++    echo "qtcling: QtCore headers not found under: $qt_include_path" >&2
++    echo "qtcling: set QTCLING_QT_ROOT to a Qt Windows kit directory." >&2
++    exit 1
++fi
++
++dev_root=/usr/local/src/cling
++if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
++    QTCLING_STARTUP_FILE="${dev_root}/src/qtgui.cpp"
++fi
++export QTCLING_STARTUP_FILE
++
+ "$cling_path" \
+     -std=c++2c \
+     -I "$qt_include_path_windows" \

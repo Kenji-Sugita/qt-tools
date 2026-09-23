@@ -1,0 +1,61 @@
+diff --git a/lib/UserInterface/UserInterface.cpp b/lib/UserInterface/UserInterface.cpp
+index c0b89576..cb79f1eb 100644
+--- a/lib/UserInterface/UserInterface.cpp
++++ b/lib/UserInterface/UserInterface.cpp
+@@ -23,6 +23,8 @@
+ #include "clang/Basic/LangOptions.h"
+ #include "clang/Frontend/CompilerInstance.h"
+ 
++#include <chrono>
++
+ namespace {
+   ///\brief Class that specialises the textinput TabCompletion to allow Cling
+   /// to code complete through its own textinput mechanism which is part of the
+@@ -121,6 +123,31 @@ namespace {
+     cling::errs() << "Failed to create command history file\n";
+     return {};
+   }
++
++  llvm::LineEditor* activeLineEditor = nullptr;
++}
++
++extern "C" void cling_set_periodic_callback(void (*callbackFunction)(),
++                                             int intervalMilliseconds) {
++  if (activeLineEditor == nullptr) {
++    return;
++  }
++
++  if (callbackFunction == nullptr || intervalMilliseconds <= 0) {
++    activeLineEditor->clearPeriodicCallback();
++    return;
++  }
++
++  activeLineEditor->setPeriodicCallback(
++      callbackFunction, std::chrono::milliseconds{intervalMilliseconds});
++}
++
++extern "C" void cling_clear_periodic_callback() {
++  if (activeLineEditor == nullptr) {
++    return;
++  }
++
++  activeLineEditor->clearPeriodicCallback();
+ }
+ 
+ namespace cling {
+@@ -151,6 +178,7 @@ namespace cling {
+     }
+ 
+     LE.setPrompt(Prompt);
++    activeLineEditor = &LE;
+ 
+     LE.setListCompleter(ClingListCompleter(m_MetaProcessor->getInterpreter()));
+     while (std::optional<std::string> Line = LE.readLine()) {
+@@ -189,6 +217,7 @@ namespace cling {
+ 
+       LE.setPrompt(Prompt);
+     }
++    activeLineEditor = nullptr;
+     m_MetaProcessor->getOuts().flush(); // Do we need this now?
+   }
+ 

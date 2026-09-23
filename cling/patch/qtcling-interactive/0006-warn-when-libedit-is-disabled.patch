@@ -1,0 +1,21 @@
+diff --git a/cling/CMakeLists.txt b/cling/CMakeLists.txt
+index c9945bb9..2089d8a1 100644
+--- a/cling/CMakeLists.txt
++++ b/cling/CMakeLists.txt
+@@ -125,6 +125,15 @@ set(LLVM_TOOLS_BINARY_DIR "${LLVM_BINARY_DIR}/bin")
+ if(DEFINED CLING_ROOT_BUILD)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${LLVM_TOOLS_BINARY_DIR}")
+ endif()
+ 
++if(DEFINED LLVM_ENABLE_LIBEDIT AND NOT LLVM_ENABLE_LIBEDIT)
++  message(WARNING
++    "qtcling interactive needs LLVM libedit LineEditor support for "
++    "periodic Qt event processing while the REPL waits for input. "
++    "Install the libedit development package, for example "
++    "'sudo apt install libedit-dev' on Ubuntu/WSL, then reconfigure "
++    "from a clean build directory.")
++endif()
++
+ if( CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR AND NOT MSVC_IDE )
+   message(FATAL_ERROR "In-source builds are not allowed. CMake would overwrite "
+ "the makefiles distributed with LLVM. Please create a directory and run cmake "

@@ -1,0 +1,9 @@
+QT += widgets
+
+TEMPLATE = app
+TARGET = vectorint
+INCLUDEPATH += .
+
+DEFINES += QT_DISABLE_DEPRECATED_UP_TO=0x060000
+
+SOURCES += main.cpp

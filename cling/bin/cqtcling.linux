@@ -1,0 +1,45 @@
+#!/bin/sh
+
+unset LD_LIBRARY_PATH
+
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+# shellcheck source=qtcling-defaults.sh
+. "$script_directory_path/qtcling-defaults.sh"
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <source-file> [clang-options...]"
+     exit 1
+fi
+
+PROG=$1
+shift
+
+CLING_ROOT=${QTCLING_CLING_ROOT:-/usr/local/qtcling}
+CLING=${CLING_ROOT}/bin/cling
+#QTBASE=/usr/local/qt/Qt/6.10.2/gcc_64
+DEFAULT_QTBASE=/usr/local/qt/Qt/6.11.1/gcc_64
+QTBASE=${QTCLING_QT_ROOT:-${QTCLING_DEFAULT_QT_ROOT:-$DEFAULT_QTBASE}}
+LIBS="-lQt6Core -lQt6Gui -lQt6Widgets"
+
+if [ ! -d "$QTBASE" ]; then
+    echo "qtcling: Qt root not found: $QTBASE" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
+    exit 1
+fi
+
+if [ ! -f "$QTBASE/lib/libQt6Core.so" ]; then
+    echo "qtcling: libQt6Core.so not found under: $QTBASE/lib" >&2
+    echo "qtcling: set QTCLING_QT_ROOT to a Qt Linux kit directory." >&2
+    exit 1
+fi
+
+${CLING} \
+    -std=c++2c \
+    -I ${QTBASE}/include \
+    -I ${QTBASE}/include/QtCore \
+    -I ${QTBASE}/include/QtGui \
+    -I ${QTBASE}/include/QtWidgets \
+    -L ${QTBASE}/lib \
+    ${LIBS} \
+    "$@" \
+    ${PROG}

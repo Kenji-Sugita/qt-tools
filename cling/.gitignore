@@ -1,0 +1,9 @@
+/libedit/
+/cling/
+/llvm-project/
+/build-libedit-win/
+/libedit-win-arm64/
+/build-win-arm64/
+/qtcling-win-arm64/
+/build-qtcling-win-runtime/
+/bin/qtcling-win.dll

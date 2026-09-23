@@ -1,0 +1,11 @@
+# cling/lib/Interpreter/CMakeLists.txt
+
+# target_compile_definitions(clingInterpreter PUBLIC "LLVM_PATH=\"${LLVM_BINARY_DIR}\"")
+
+今回の不具合の原因は、cling/lib/Interpreter/CMakeLists.txt のこの行です。
+
+target_compile_definitions(clingInterpreter PUBLIC "LLVM_PATH=\"${LLVM_BINARY_DIR}\"")
+
+これにより install 後も LLVM_PATH が build ディレクトリーを指し続けます。
+その結果、CIFactory.cpp が resource directory を <build>/lib/clang/<major>
+として組み立ててしまいます。

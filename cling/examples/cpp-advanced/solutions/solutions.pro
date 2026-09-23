@@ -1,0 +1,12 @@
+TEMPLATE = subdirs
+SUBDIRS += cartesianwithimage/cartesian.pro
+SUBDIRS += drag-and-drop
+SUBDIRS += fibonacci
+SUBDIRS += model-view/ModelFlip/ModelFlip.pro
+SUBDIRS += multithreading
+SUBDIRS += object-browser
+SUBDIRS += sif
+SUBDIRS += siftest
+SUBDIRS += statecombobox
+SUBDIRS += tcp-local-server
+SUBDIRS += tcp-server

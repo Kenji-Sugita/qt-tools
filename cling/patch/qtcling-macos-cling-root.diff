@@ -1,0 +1,26 @@
+diff --git a/bin/iqtcling.macos b/bin/iqtcling.macos
+index 3ced247..2a1f2f0 100755
+--- a/bin/iqtcling.macos
++++ b/bin/iqtcling.macos
+@@ -33,12 +33,7 @@ else
+     QT_ROOT_SOURCE=default
+ fi
+ 
+-CLING_ROOT=/usr/local/qtcling
+-CLING_ROOT=/usr/local/src/cling/build
+-#CLING_ROOT=/usr/local/cling
+-#CLING_ROOT=build
+-#CLING_ROOT=build-z-fix
+-
++CLING_ROOT=${QTCLING_CLING_ROOT:-/usr/local/qtcling}
+ CLING=${CLING_ROOT}/bin/cling
+ DEV_ROOT=/usr/local/src/cling
+ QT_FRAMEWORK_PATH="${QT_ROOT}/lib"
+@@ -81,6 +76,7 @@ print_config() {
+     echo "  qt_root: $QT_ROOT"
+     echo "  qt_root_source: $QT_ROOT_SOURCE"
+     echo "  modules: $QT_MODULES"
++    echo "  cling_root: $CLING_ROOT"
+     echo "  cling: $CLING"
+     echo "  dev_root: $DEV_ROOT"
+     echo

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+use_compiled_mode=false
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+version_file="$dev_root/QTCLING_VERSION"
+
+print_version() {
+    if [ -f "$version_file" ]; then
+        version=$(sed -n '1p' "$version_file")
+    else
+        version=unknown
+    fi
+    echo "qtcling $version"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -c)
+            use_compiled_mode=true
+            shift
+            ;;
+        --version|-v)
+            print_version
+            exit 0
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+platform_name=$(uname)
+
+case "$platform_name" in
+    Darwin)
+        if [ "$use_compiled_mode" = true ]; then
+            target_script_name="cqtcling.macos"
+        else
+            target_script_name="iqtcling.macos"
+        fi
+        ;;
+    Linux)
+        if [ "$use_compiled_mode" = true ]; then
+            target_script_name="cqtcling.linux"
+        else
+            target_script_name="iqtcling.linux"
+        fi
+        ;;
+    CYGWIN*|MINGW*|MSYS*)
+        if [ "$use_compiled_mode" = true ]; then
+            target_script_name="cqtcling.win"
+        else
+            target_script_name="iqtcling.win"
+        fi
+        ;;
+    *)
+        echo "Unsupported platform: $platform_name" >&2
+        exit 1
+        ;;
+esac
+
+target_script_path="$script_directory_path/$target_script_name"
+
+if [ ! -f "$target_script_path" ]; then
+    echo "Script not found: $target_script_path" >&2
+    exit 1
+fi
+
+exec "$target_script_path" "$@"

@@ -1,0 +1,143 @@
+diff --git a/bin/iqtcling.macos b/bin/iqtcling.macos
+index c32640b..3ced247 100755
+--- a/bin/iqtcling.macos
++++ b/bin/iqtcling.macos
+@@ -42,9 +42,7 @@ CLING_ROOT=/usr/local/src/cling/build
+ CLING=${CLING_ROOT}/bin/cling
+ DEV_ROOT=/usr/local/src/cling
+ QT_FRAMEWORK_PATH="${QT_ROOT}/lib"
+-QT_CORE_LIBRARY="${QT_FRAMEWORK_PATH}/QtCore.framework/Versions/A/QtCore"
+-QT_GUI_LIBRARY="${QT_FRAMEWORK_PATH}/QtGui.framework/Versions/A/QtGui"
+-QT_WIDGETS_LIBRARY="${QT_FRAMEWORK_PATH}/QtWidgets.framework/Versions/A/QtWidgets"
++QT_MODULES=${QTCLING_MODULES:-"Core Gui Widgets"}
+ 
+ if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
+     QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
+@@ -58,26 +56,46 @@ path_exists() {
+     fi
+ }
+ 
++qt_framework_name() {
++    echo "Qt$1"
++}
++
++qt_framework_directory() {
++    module_framework_name=$(qt_framework_name "$1")
++    echo "${QT_FRAMEWORK_PATH}/${module_framework_name}.framework"
++}
++
++qt_framework_headers() {
++    echo "$(qt_framework_directory "$1")/Headers"
++}
++
++qt_framework_library() {
++    module_framework_name=$(qt_framework_name "$1")
++    echo "$(qt_framework_directory "$1")/Versions/A/${module_framework_name}"
++}
++
+ print_config() {
+     echo "qtcling config"
+     echo "  mode: interactive"
+     echo "  platform: Darwin"
+     echo "  qt_root: $QT_ROOT"
+     echo "  qt_root_source: $QT_ROOT_SOURCE"
++    echo "  modules: $QT_MODULES"
+     echo "  cling: $CLING"
+     echo "  dev_root: $DEV_ROOT"
+     echo
+     echo "Qt paths"
+     echo "  framework_path: $QT_FRAMEWORK_PATH exists=$(path_exists "$QT_FRAMEWORK_PATH")"
+-    echo "  QtCore: $QT_CORE_LIBRARY exists=$(path_exists "$QT_CORE_LIBRARY")"
+-    echo "  QtGui: $QT_GUI_LIBRARY exists=$(path_exists "$QT_GUI_LIBRARY")"
+-    echo "  QtWidgets: $QT_WIDGETS_LIBRARY exists=$(path_exists "$QT_WIDGETS_LIBRARY")"
++    for module in $QT_MODULES; do
++        module_library=$(qt_framework_library "$module")
++        echo "  $(qt_framework_name "$module"): $module_library exists=$(path_exists "$module_library")"
++    done
+     echo
+     echo "Cling args"
+     echo "  -std=c++2c"
+-    echo "  -I ${QT_FRAMEWORK_PATH}/QtCore.framework/Headers"
+-    echo "  -I ${QT_FRAMEWORK_PATH}/QtGui.framework/Headers"
+-    echo "  -I ${QT_FRAMEWORK_PATH}/QtWidgets.framework/Headers"
++    for module in $QT_MODULES; do
++        echo "  -I $(qt_framework_headers "$module")"
++    done
+     echo "  -I ${DEV_ROOT}/include"
+     echo "  -I ${DEV_ROOT}/src"
+     echo "  -F ${QT_FRAMEWORK_PATH}"
+@@ -101,20 +119,13 @@ check_config() {
+         ok=false
+     fi
+ 
+-    if [ ! -f "$QT_CORE_LIBRARY" ]; then
+-        echo "qtcling: missing QtCore framework library: $QT_CORE_LIBRARY" >&2
+-        ok=false
+-    fi
+-
+-    if [ ! -f "$QT_GUI_LIBRARY" ]; then
+-        echo "qtcling: missing QtGui framework library: $QT_GUI_LIBRARY" >&2
+-        ok=false
+-    fi
+-
+-    if [ ! -f "$QT_WIDGETS_LIBRARY" ]; then
+-        echo "qtcling: missing QtWidgets framework library: $QT_WIDGETS_LIBRARY" >&2
+-        ok=false
+-    fi
++    for module in $QT_MODULES; do
++        module_library=$(qt_framework_library "$module")
++        if [ ! -f "$module_library" ]; then
++            echo "qtcling: missing $(qt_framework_name "$module") framework library: $module_library" >&2
++            ok=false
++        fi
++    done
+ 
+     if [ ! -f "$QTCLING_STARTUP_FILE" ]; then
+         echo "qtcling: missing startup file: $QTCLING_STARTUP_FILE" >&2
+@@ -124,9 +135,9 @@ check_config() {
+     if [ "$ok" = true ]; then
+         echo "qtcling check: OK"
+         echo "  Qt root exists"
+-        echo "  QtCore library exists"
+-        echo "  QtGui library exists"
+-        echo "  QtWidgets library exists"
++        for module in $QT_MODULES; do
++            echo "  $(qt_framework_name "$module") library exists"
++        done
+         echo "  Cling executable exists"
+         echo "  startup file exists"
+         return 0
+@@ -154,20 +165,22 @@ fi
+ PRELOAD_HEADER=$(mktemp "${TMPDIR:-/tmp}/qtcling-preload.XXXXXX.h") || exit 1
+ trap 'rm -f "$PRELOAD_HEADER"' EXIT HUP INT TERM
+ 
+-printf '#pragma cling load("%s")\n' "$QT_CORE_LIBRARY" > "$PRELOAD_HEADER"
+-printf '#pragma cling load("%s")\n' "$QT_GUI_LIBRARY" >> "$PRELOAD_HEADER"
+-printf '#pragma cling load("%s")\n' "$QT_WIDGETS_LIBRARY" >> "$PRELOAD_HEADER"
++for module in $QT_MODULES; do
++    printf '#pragma cling load("%s")\n' "$(qt_framework_library "$module")" >> "$PRELOAD_HEADER"
++done
+ 
+ export QTCLING_STARTUP_FILE
+ 
+-exec "${CLING}" \
+-    --nologo \
+-    -std=c++2c \
+-    -I "${QT_FRAMEWORK_PATH}/QtCore.framework/Headers" \
+-    -I "${QT_FRAMEWORK_PATH}/QtGui.framework/Headers" \
+-    -I "${QT_FRAMEWORK_PATH}/QtWidgets.framework/Headers" \
++set -- --nologo -std=c++2c "$@"
++
++for module in $QT_MODULES; do
++    set -- "$@" -I "$(qt_framework_headers "$module")"
++done
++
++set -- "$@" \
+     -I "${DEV_ROOT}/include" \
+     -I "${DEV_ROOT}/src" \
+     -F "${QT_FRAMEWORK_PATH}" \
+-    -include "$PRELOAD_HEADER" \
+-    "$@"
++    -include "$PRELOAD_HEADER"
++
++exec "${CLING}" "$@"

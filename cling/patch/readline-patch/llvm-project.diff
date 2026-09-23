@@ -1,0 +1,222 @@
+diff --git a/llvm/include/llvm/LineEditor/LineEditor.h b/llvm/include/llvm/LineEditor/LineEditor.h
+index ca0312bf6297..026d7a9c0121 100644
+--- a/llvm/include/llvm/LineEditor/LineEditor.h
++++ b/llvm/include/llvm/LineEditor/LineEditor.h
+@@ -10,6 +10,7 @@
+ #define LLVM_LINEEDITOR_LINEEDITOR_H
+ 
+ #include "llvm/ADT/StringRef.h"
++#include <chrono>
+ #include <cstdio>
+ #include <memory>
+ #include <optional>
+@@ -43,6 +44,16 @@ public:
+   void loadHistory();
+   void setHistorySize(int size);
+ 
++  using PeriodicCallbackFunction = void (*)();
++
++  LLVM_ABI void
++  setPeriodicCallback(PeriodicCallbackFunction callbackFunction,
++                      std::chrono::milliseconds callbackInterval);
++
++  LLVM_ABI void clearPeriodicCallback();
++
++  LLVM_ABI bool hasPeriodicCallback() const;
++
+   static std::string getDefaultHistoryPath(StringRef ProgName);
+ 
+   /// The action to perform upon a completion request.
+diff --git a/llvm/lib/LineEditor/LineEditor.cpp b/llvm/lib/LineEditor/LineEditor.cpp
+index c7d5fd7dcf8a..63908219f8b2 100644
+--- a/llvm/lib/LineEditor/LineEditor.cpp
++++ b/llvm/lib/LineEditor/LineEditor.cpp
+@@ -14,9 +14,18 @@
+ #include "llvm/Support/raw_ostream.h"
+ #include <algorithm>
+ #include <cassert>
++#include <chrono>
+ #include <cstdio>
++#include <thread>
+ #ifdef HAVE_LIBEDIT
++#include <cerrno>
++#include <fcntl.h>
+ #include <histedit.h>
++#include <sys/types.h>
++#include <unistd.h>
++#if defined(FIONREAD)
++#include <sys/ioctl.h>
++#endif
+ constexpr int DefaultHistorySize = 800;
+ #endif
+ 
+@@ -104,10 +113,19 @@ struct LineEditor::InternalData {
+   std::string ContinuationOutput;
+ 
+   FILE *Out;
++  FILE *In;
++
++  bool UsingPeriodicCallback = false;
++  PeriodicCallbackFunction PeriodicCallback = nullptr;
++  std::chrono::milliseconds PeriodicCallbackInterval{0};
++  std::chrono::steady_clock::time_point NextPeriodicCallbackTime =
++      std::chrono::steady_clock::time_point::min();
+ };
+ 
+ namespace {
+ 
++using Clock = std::chrono::steady_clock;
++
+ const char *ElGetPromptFn(EditLine *EL) {
+   LineEditor::InternalData *Data;
+   if (el_get(EL, EL_CLIENTDATA, &Data) == 0)
+@@ -115,6 +133,99 @@ const char *ElGetPromptFn(EditLine *EL) {
+   return "> ";
+ }
+ 
++static int ReadCharacterWithPeriodicCallback(EditLine *EL, wchar_t *WC) {
++  LineEditor::InternalData *Data = nullptr;
++  if (WC == nullptr)
++    return -1;
++  if (el_get(EL, EL_CLIENTDATA, &Data) != 0 || Data == nullptr ||
++      Data->In == nullptr)
++    return -1;
++
++  const int inputFileDescriptor = ::fileno(Data->In);
++  if (inputFileDescriptor < 0)
++    return -1;
++
++  *WC = L'\0';
++
++  for (;;) {
++    const auto now = Clock::now();
++
++    if (Data->PeriodicCallback != nullptr &&
++        Data->PeriodicCallbackInterval.count() > 0 &&
++        (Data->NextPeriodicCallbackTime == Clock::time_point::min() ||
++         now >= Data->NextPeriodicCallbackTime)) {
++      Data->PeriodicCallback();
++      Data->NextPeriodicCallbackTime = now + Data->PeriodicCallbackInterval;
++    }
++
++    char character = '\0';
++    ssize_t readSize = -1;
++
++#if defined(FIONREAD)
++    int availableByteCount = 0;
++    if (::ioctl(inputFileDescriptor, FIONREAD, &availableByteCount) < 0)
++      return -1;
++    if (availableByteCount > 0) {
++      readSize = ::read(inputFileDescriptor, &character, 1);
++    } else {
++      readSize = 0;
++    }
++#elif defined(F_GETFL) && defined(F_SETFL) && defined(O_NONBLOCK)
++    const int originalFlags = ::fcntl(inputFileDescriptor, F_GETFL, 0);
++    if (originalFlags < 0)
++      return -1;
++
++    const bool wasNonBlocking = (originalFlags & O_NONBLOCK) != 0;
++    if (!wasNonBlocking &&
++        ::fcntl(inputFileDescriptor, F_SETFL, originalFlags | O_NONBLOCK) < 0)
++      return -1;
++
++    readSize = ::read(inputFileDescriptor, &character, 1);
++
++    if (!wasNonBlocking)
++      (void)::fcntl(inputFileDescriptor, F_SETFL, originalFlags);
++#else
++    readSize = ::read(inputFileDescriptor, &character, 1);
++#endif
++
++    if (readSize > 0) {
++      *WC = static_cast<unsigned char>(character);
++      return 1;
++    }
++
++    if (readSize < 0) {
++      if (errno == EAGAIN || errno == EINTR)
++        continue;
++      return -1;
++    }
++
++    std::this_thread::sleep_for(std::chrono::milliseconds(1));
++  }
++}
++
++static void EnablePeriodicCallback(LineEditor::InternalData &Data) {
++  if (Data.UsingPeriodicCallback)
++    return;
++
++  ::el_set(Data.EL, EL_GETCFN, ReadCharacterWithPeriodicCallback);
++  Data.UsingPeriodicCallback = true;
++  Data.NextPeriodicCallbackTime = Clock::time_point::min();
++}
++
++static void DisablePeriodicCallback(LineEditor::InternalData &Data) {
++  if (!Data.UsingPeriodicCallback)
++    return;
++
++  Data.PeriodicCallback = nullptr;
++  Data.PeriodicCallbackInterval = std::chrono::milliseconds{0};
++  Data.NextPeriodicCallbackTime = Clock::time_point::min();
++
++#ifdef EL_BUILTIN_GETCFN
++  ::el_set(Data.EL, EL_GETCFN, EL_BUILTIN_GETCFN);
++#endif
++  Data.UsingPeriodicCallback = false;
++}
++
+ // Handles tab completion.
+ //
+ // This function is really horrible. But since the alternative is to get into
+@@ -200,6 +311,7 @@ LineEditor::LineEditor(StringRef ProgName, StringRef HistoryPath, FILE *In,
+ 
+   Data->LE = this;
+   Data->Out = Out;
++  Data->In = In;
+ 
+   Data->Hist = ::history_init();
+   assert(Data->Hist);
+@@ -254,6 +366,26 @@ void LineEditor::setHistorySize(int size) {
+   ::history(Data->Hist, &HE, H_SETSIZE, size);
+ }
+ 
++void LineEditor::setPeriodicCallback(
++    PeriodicCallbackFunction callbackFunction,
++    std::chrono::milliseconds callbackInterval) {
++  if (callbackFunction == nullptr || callbackInterval.count() <= 0) {
++    clearPeriodicCallback();
++    return;
++  }
++
++  Data->PeriodicCallback = callbackFunction;
++  Data->PeriodicCallbackInterval = callbackInterval;
++  Data->NextPeriodicCallbackTime = Clock::time_point::min();
++  EnablePeriodicCallback(*Data);
++}
++
++void LineEditor::clearPeriodicCallback() { DisablePeriodicCallback(*Data); }
++
++bool LineEditor::hasPeriodicCallback() const {
++  return Data->UsingPeriodicCallback;
++}
++
+ std::optional<std::string> LineEditor::readLine() const {
+   // Call el_gets to prompt the user and read the user's input.
+   int LineLen = 0;
+@@ -298,6 +430,14 @@ LineEditor::~LineEditor() {
+ void LineEditor::saveHistory() {}
+ void LineEditor::loadHistory() {}
+ void LineEditor::setHistorySize(int size) {}
++void LineEditor::setPeriodicCallback(
++    PeriodicCallbackFunction callbackFunction,
++    std::chrono::milliseconds callbackInterval) {
++  (void)callbackFunction;
++  (void)callbackInterval;
++}
++void LineEditor::clearPeriodicCallback() {}
++bool LineEditor::hasPeriodicCallback() const { return false; }
+ 
+ std::optional<std::string> LineEditor::readLine() const {
+   ::fprintf(Data->Out, "%s", Prompt.c_str());

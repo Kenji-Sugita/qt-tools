@@ -1,0 +1,89 @@
+1. readline-patch/
+    最初の REPL パッチ。
+    現在は 2 を使うため、通常は適用しない。
+
+2. readline-patch-japanese-input/
+    日本語対応 REPL パッチ (現行)。
+    適用先:
+        cling/
+            0001-cling-add-periodic-callback-api-v2.diff
+        llvm-project/
+            0002-llvm-lineeditor-threaded-periodic-callback-v2.diff
+
+3. cling-for-build-dependency.path
+    build リソース依存を回避するパッチ。
+    適用先:
+        cling/
+
+4. llvm-win-utf8.diff
+    UTF-8 テキストの警告を消すパッチ。
+    適用先:
+        llvm-project/
+    CMake ではこのように指定すればパッチは不要:
+        -DCMAKE_C_FLAGS_INIT="/utf-8"
+        -DCMAKE_CXX_FLAGS_INIT="/utf-8"
+
+5. cling-fix-L-command-silent-failure.patch
+    -L でライブラリーやファイルが存在しないときに警告を出すパッチ。
+    適用先:
+        cling/
+
+6. qtcling-startup-file-hook.diff
+    QTCLING_STARTUP_FILE を Cling interactive UI で読み込むパッチ。
+    readline-patch-japanese-input/0001-cling-add-periodic-callback-api-v2.diff 適用後のソースに適用する。
+    適用先:
+        cling/
+
+7. qtcling-wrapper-qt-root-and-startup.diff
+    qtcling wrapper に QTCLING_QT_ROOT と QTCLING_STARTUP_FILE の導線を追加するパッチ。
+    適用先:
+        /usr/local/src/cling の root repository
+    備考:
+        root repository には実体変更も commit 済みなら、通常は再適用不要。
+        配布差分や再現用の記録として保持する。
+
+8. qtcling-macos-show-config-check.diff
+    macOS interactive wrapper に --show-config / --check を追加するパッチ。
+    適用先:
+        /usr/local/src/cling の root repository
+    備考:
+        bin/iqtcling.macos のみを対象にした最初の実装。
+        Linux / Windows / compiled mode へは未展開。
+
+9. qtcling-macos-module-list-generation.diff
+    macOS interactive wrapper で QTCLING_MODULES から include path / framework path / preload を生成するパッチ。
+    適用先:
+        /usr/local/src/cling の root repository
+    備考:
+        bin/iqtcling.macos のみを対象にした実装。
+        QTCLING_MODULES はスペース区切りで指定する。
+        例: QTCLING_MODULES="Core Gui Widgets Network"
+
+10. qtcling-macos-cling-root.diff
+    macOS interactive wrapper で QTCLING_CLING_ROOT から REPL Cling を選べるようにするパッチ。
+    適用先:
+        /usr/local/src/cling の root repository
+    備考:
+        既定値は /usr/local/qtcling。
+        開発中の build/bin/cling を使う場合:
+            QTCLING_CLING_ROOT=/usr/local/src/cling/build qtcling
+
+適用例
+    macOS、Linux:
+        cling/         2(cling側) 3 5 6
+        llvm-project/  2(llvm側)
+        root repo      7
+
+    macOS interactive の設定診断:
+        root repo      8
+
+    macOS interactive の module list 生成:
+        root repo      9
+
+    macOS interactive の REPL Cling root 指定:
+        root repo      10
+
+    Windows:
+        cling/         3 5 6
+        llvm-project/  必要なら 4
+        root repo      7

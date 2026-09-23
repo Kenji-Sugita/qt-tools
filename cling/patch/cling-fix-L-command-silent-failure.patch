@@ -1,0 +1,47 @@
+--- a/lib/MetaProcessor/MetaSema.cpp	2026-03-29 12:08:08.623354801 +0000
++++ b/lib/MetaProcessor/MetaSema.cpp	2026-03-29 12:08:40.282995660 +0000
+@@ -17,6 +17,7 @@
+ #include "cling/MetaProcessor/MetaSema.h"
+
+ #include "clang/AST/ASTContext.h"
++#include "clang/Basic/Diagnostic.h"
+ #include "clang/Basic/SourceManager.h"
+ #include "clang/Frontend/CompilerInstance.h"
+ #include "clang/Sema/Sema.h"
+@@ -54,6 +55,19 @@
+ }
+
+ namespace cling {
++  template <unsigned MessageSize>
++  static void reportMetaWarning(Interpreter& interpreter,
++                                const char (&messageFormat)[MessageSize],
++                                llvm::StringRef argument) {
++    clang::DiagnosticsEngine& diagnosticsEngine =
++      interpreter.getDiagnostics();
++    unsigned diagnosticIdentifier =
++      diagnosticsEngine.getCustomDiagID(clang::DiagnosticsEngine::Warning,
++                                        messageFormat);
++    diagnosticsEngine.Report(clang::SourceLocation(), diagnosticIdentifier)
++      << argument.str();
++  }
++
+   MetaSema::MetaSema(Interpreter& interp, MetaProcessor& meta)
+     : m_Interpreter(interp), m_MetaProcessor(meta), m_IsQuitRequested(false) { }
+
+@@ -81,6 +95,16 @@
+       registerUnloadPoint(unloadPoint, pathname);
+       return AR_Success;
+     }
++
++    if (pathname == file.str()) {
++      reportMetaWarning(m_Interpreter,
++                        "file or library not found, or failed to load: '%0'",
++                        file);
++    } else {
++      reportMetaWarning(m_Interpreter,
++                        "failed to load file or library: '%0'",
++                        pathname);
++    }
+     return AR_Failure;
+   }
+

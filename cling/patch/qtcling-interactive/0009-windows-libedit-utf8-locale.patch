@@ -1,0 +1,20 @@
+diff --git a/llvm-project/llvm/lib/LineEditor/LineEditor.cpp b/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
+--- a/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
++++ b/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
+@@ -17,6 +17,7 @@
+ #include <cassert>
+ #include <chrono>
+ #include <condition_variable>
++#include <clocale>
+ #include <cstdio>
+ #include <mutex>
+ #include <thread>
+@@ -210,4 +211,8 @@ LineEditor::LineEditor(StringRef ProgName, StringRef HistoryPath, FILE *In,
+     : Prompt((ProgName + "> ").str()), HistoryPath(std::string(HistoryPath)),
+       Data(new InternalData) {
++#ifdef _WIN32
++  // Windows libedit emits UTF-8; make mbrtowc() decode it as UTF-8.
++  (void)std::setlocale(LC_CTYPE, ".UTF-8");
++#endif
+   if (HistoryPath.empty())
+     this->HistoryPath = getDefaultHistoryPath(ProgName);

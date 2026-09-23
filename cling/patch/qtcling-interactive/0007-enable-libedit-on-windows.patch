@@ -1,0 +1,59 @@
+diff --git a/llvm-project/llvm/cmake/config-ix.cmake b/llvm-project/llvm/cmake/config-ix.cmake
+--- a/llvm-project/llvm/cmake/config-ix.cmake
++++ b/llvm-project/llvm/cmake/config-ix.cmake
+@@ -273,19 +273,14 @@ endif()
+ # Don't look for these libraries if we're using MSan, since uninstrumented third
+ # party code may call MSan interceptors like strlen, leading to false positives.
+ if(NOT LLVM_USE_SANITIZER MATCHES "Memory.*")
+-  # Don't look for these libraries on Windows.
+-  if (NOT PURE_WINDOWS)
+-    # Skip libedit if using ASan as it contains memory leaks.
+-    if (LLVM_ENABLE_LIBEDIT AND NOT LLVM_USE_SANITIZER MATCHES ".*Address.*")
+-      if(LLVM_ENABLE_LIBEDIT STREQUAL FORCE_ON)
+-        find_package(LibEdit REQUIRED)
+-      else()
+-        find_package(LibEdit)
+-      endif()
+-      set(HAVE_LIBEDIT "${LibEdit_FOUND}")
++  # Skip libedit if using ASan as it contains memory leaks.
++  if (LLVM_ENABLE_LIBEDIT AND NOT LLVM_USE_SANITIZER MATCHES ".*Address.*")
++    if(LLVM_ENABLE_LIBEDIT STREQUAL FORCE_ON)
++      find_package(LibEdit REQUIRED)
+     else()
+-      set(HAVE_LIBEDIT 0)
++      find_package(LibEdit)
+     endif()
++    set(HAVE_LIBEDIT "${LibEdit_FOUND}")
+   else()
+     set(HAVE_LIBEDIT 0)
+   endif()
+diff --git a/llvm-project/llvm/cmake/modules/FindLibEdit.cmake b/llvm-project/llvm/cmake/modules/FindLibEdit.cmake
+--- a/llvm-project/llvm/cmake/modules/FindLibEdit.cmake
++++ b/llvm-project/llvm/cmake/modules/FindLibEdit.cmake
+@@ -17,6 +17,26 @@ pkg_check_modules(PC_LIBEDIT QUIET libedit)
+ find_path(LibEdit_INCLUDE_DIRS NAMES histedit.h HINTS ${PC_LIBEDIT_INCLUDE_DIRS})
+ find_library(LibEdit_LIBRARIES NAMES edit HINTS ${PC_LIBEDIT_LIBRARY_DIRS})
+ 
++if(WIN32 AND LibEdit_LIBRARIES)
++  get_filename_component(_libedit_library_dir "${LibEdit_LIBRARIES}" DIRECTORY)
++  set(_libedit_all_dependencies_found TRUE)
++  foreach(_libedit_dependency regex compat pdcurses terminfo)
++    find_library(_libedit_${_libedit_dependency}_library
++      NAMES ${_libedit_dependency}
++      HINTS "${_libedit_library_dir}")
++    if(NOT _libedit_${_libedit_dependency}_library)
++      set(_libedit_all_dependencies_found FALSE)
++      break()
++    endif()
++    list(APPEND LibEdit_LIBRARIES "${_libedit_${_libedit_dependency}_library}")
++  endforeach()
++  if(_libedit_all_dependencies_found)
++    list(APPEND LibEdit_LIBRARIES crypt32 secur32 shlwapi userenv wsock32 ws2_32)
++  else()
++    set(LibEdit_LIBRARIES "")
++  endif()
++endif()
++
+ include(CheckIncludeFile)
+ if(LibEdit_INCLUDE_DIRS AND EXISTS "${LibEdit_INCLUDE_DIRS}/histedit.h")
+   include(CMakePushCheckState)

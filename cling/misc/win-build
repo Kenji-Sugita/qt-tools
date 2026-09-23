@@ -1,0 +1,22 @@
+やることは要するに次の流れです。
+Power Shell
+vcpkg install libedit:x64-windows
+
+そのうえで CMake を、vcpkg の toolchain file 付きでやり直します。
+Power Shell
+cmake -S llvm-project/llvm -B build ^
+  -G "Visual Studio 17 2022" -A x64 ^
+  -DCMAKE_TOOLCHAIN_FILE=C:\path\to\vcpkg\scripts\buildsystems\vcpkg.cmake ^
+  -DCMAKE_BUILD_TYPE=Release ^
+  -DLLVM_ENABLE_PROJECTS=clang ^
+  -DLLVM_EXTERNAL_PROJECTS=cling ^
+  -DLLVM_EXTERNAL_CLING_SOURCE_DIR=..\cling ^
+  -DLLVM_BUILD_TOOLS=OFF
+
+その後に、まず HAVE_LIBEDIT を確認してください。
+Power Shell
+findstr /s /n /c:"HAVE_LIBEDIT" build\include\llvm\Config\config.h
+
+ここで #define HAVE_LIBEDIT TRUE が出れば、Linux で効いたのと同じ libedit 経路に入れます。
+出なければ、vcpkg の triplet や toolchain file の指定が CMake に反映されていません。
+vcpkg の CMake 連携は toolchain file 前提です。

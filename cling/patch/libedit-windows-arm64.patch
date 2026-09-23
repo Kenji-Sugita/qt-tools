@@ -1,0 +1,240 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1b29e8d..1c7d51c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,11 +17,14 @@ endif()
+ # Find Windows SDK includes directory and create crtheaders.h
+ #
+ if(WIN32)
+-    if(CMAKE_CL_64)
++    if(CMAKE_GENERATOR_PLATFORM MATCHES "^[Aa][Rr][Mm]64$" OR
++       CMAKE_SYSTEM_PROCESSOR MATCHES "^(ARM64|arm64|aarch64|AARCH64)$")
++        set(CMAKE_MSVC_ARCH arm64)
++    elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+         set(CMAKE_MSVC_ARCH x64)
+-    else(CMAKE_CL_64)
++    else()
+         set(CMAKE_MSVC_ARCH x86)
+-    endif(CMAKE_CL_64)
++    endif()
+ 
+     # Find the Windows Kits directory
+     # code extracted from InstallRequiredSystemLibraries.cmake
+@@ -177,6 +180,10 @@ file(GLOB libedit_source libedit/*.c)
+ include_directories(libedit)
+ add_library(edit STATIC ${libedit_source} ${libedit_extra_source})
+ install(TARGETS edit DESTINATION lib EXPORT edit-targets)
++install(FILES libedit/histedit.h DESTINATION include)
++install(DIRECTORY libedit/readline DESTINATION include
++        FILES_MATCHING PATTERN "*.h")
++install(FILES data/termcap DESTINATION share/libedit)
+ 
+ #
+ # demo
+diff --git a/compat/terminfo/buffer.h b/compat/terminfo/buffer.h
+index b9f7e19..190130d 100644
+--- a/compat/terminfo/buffer.h
++++ b/compat/terminfo/buffer.h
+@@ -38,7 +38,14 @@ static inline unsigned clz(ullong val)
+ #elif defined (_MSC_VER)
+ static inline unsigned clz(ullong val)
+ {
+-    return (unsigned)_lzcnt_u64(val);
++    unsigned count = 0;
++    if (val == 0)
++        return 64;
++    while ((val & (1ull << 63)) == 0) {
++        val <<= 1;
++        ++count;
++    }
++    return count;
+ }
+ #endif
+ 
+diff --git a/compat/terminfo/termcap.c b/compat/terminfo/termcap.c
+index c8abac0..701c4b7 100644
+--- a/compat/terminfo/termcap.c
++++ b/compat/terminfo/termcap.c
+@@ -35,9 +35,13 @@ static lhmap cap_map;
+ 
+ static int tinfo_init()
+ {
++	const char *configured_termcap_file;
+ 	if (initialized) return 0;
+ 	if (tc_init(&tp, opt_debug) < 0) return -1;
+-	if (tc_read(&tp, termcap_file) < 0) return -1;
++	configured_termcap_file = getenv("LIBEDIT_TERMCAP");
++	if (!configured_termcap_file || !configured_termcap_file[0])
++		configured_termcap_file = termcap_file;
++	if (tc_read(&tp, configured_termcap_file) < 0) return -1;
+ 	sym_tc = tc_make_symbol(&tp, "tc", 2);
+ 	lhmap_init_ex(&cap_map, &tp, sizeof(tc_symbol), sizeof(tc_cap_obj),
+ 		tc_table_init_size, tc_symbol_hash_fn, tc_symbol_compare_fn);
+diff --git a/compat/win32/fileio.c b/compat/win32/fileio.c
+index 9dfd1df..3823bf1 100644
+--- a/compat/win32/fileio.c
++++ b/compat/win32/fileio.c
+@@ -583,7 +583,7 @@ fileio_read(struct w32_io* pio, void *dst, size_t max_bytes)
+ 		if (w32_io_is_blocking(pio)) {
+ 			debug4("read - io is pending, blocking call made, io:%p", pio);
+ 			while (fileio_is_io_available(pio, TRUE) == FALSE) {
+-				if (-1 == wait_for_any_event(NULL, 0, INFINITE))
++				if (-1 == wait_for_any_event_with_callback(NULL, 0, INFINITE))
+ 					return -1;
+ 			}
+ 		}
+@@ -621,7 +621,7 @@ fileio_read(struct w32_io* pio, void *dst, size_t max_bytes)
+ 
+ 		if (w32_io_is_blocking(pio)) {
+ 			while (fileio_is_io_available(pio, TRUE) == FALSE) {
+-				if (-1 == wait_for_any_event(NULL, 0, INFINITE))
++				if (-1 == wait_for_any_event_with_callback(NULL, 0, INFINITE))
+ 					return -1;
+ 			}
+ 		}
+diff --git a/compat/win32/getline.c b/compat/win32/getline.c
+index bee4de9..1cc551e 100644
+--- a/compat/win32/getline.c
++++ b/compat/win32/getline.c
+@@ -1,21 +1,52 @@
+ #include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
+ #include <string.h>
++#include <errno.h>
+ 
+ ssize_t getline(char **lineptr, size_t *n, FILE *stream)
+-{       
+-   size_t lim = *n;
+-   char *s = *lineptr;
+-   int c, i = 0;
++{
++   size_t length = 0;
++   int c;
+ 
+-   /* todo if lineptr is null then malloc/realloc and update n */
++   if (lineptr == NULL || n == NULL || stream == NULL) {
++      errno = EINVAL;
++      return -1;
++   }
+ 
+-   while (--lim > 0 && (c=fgetc(stream)) != EOF && c != '\n')           
+-      s[i++] = c;       
++   if (*lineptr == NULL || *n == 0) {
++      *n = 128;
++      *lineptr = (char *)malloc(*n);
++      if (*lineptr == NULL) {
++         errno = ENOMEM;
++         return -1;
++      }
++   }
+ 
+-   if (c == '\n')           
+-      s[i++] = c;       
++   while ((c = fgetc(stream)) != EOF) {
++      if (length + 1 >= *n) {
++         size_t new_size = *n > SIZE_MAX / 2 ? SIZE_MAX : *n * 2;
++         char *new_line;
++         if (new_size <= *n) {
++            errno = EOVERFLOW;
++            return -1;
++         }
++         new_line = (char *)realloc(*lineptr, new_size);
++         if (new_line == NULL) {
++            errno = ENOMEM;
++            return -1;
++         }
++         *lineptr = new_line;
++         *n = new_size;
++      }
++      (*lineptr)[length++] = (char)c;
++      if (c == '\n')
++         break;
++   }
+ 
+-   s[i] = '\0';       
++   if (length == 0 && c == EOF)
++      return -1;
+ 
+-   return i;   
++   (*lineptr)[length] = '\0';
++   return (ssize_t)length;
+ }
+diff --git a/compat/win32/signal.c b/compat/win32/signal.c
+index d035d19..6bc9295 100644
+--- a/compat/win32/signal.c
++++ b/compat/win32/signal.c
+@@ -51,8 +51,8 @@
+ #undef SIG_IGN
+ #undef SIG_ERR
+ #undef NSIG
+-//#include <signal.h>
+-#include "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.22621.0\\ucrt\\signal.h"
++#include <crtheaders.h>
++#include SIGNAL_H
+ #undef NSIG
+ #define NSIG 0
+ 
+@@ -267,6 +267,33 @@ sw_process_pending_signals()
+  *  if milli_seconds is 0, this function returns 0, its called with 0
+  *  to execute any scheduled APCs
+ */
++static void (*wait_callback)(void) = NULL;
++static DWORD wait_callback_interval = 0;
++
++void
++w32_set_wait_callback(void (*callback)(void), DWORD interval_milliseconds)
++{
++	wait_callback = callback;
++	wait_callback_interval = callback && interval_milliseconds
++		? interval_milliseconds : 0;
++}
++
++int
++wait_for_any_event_with_callback(HANDLE* events, int num_events,
++	DWORD milli_seconds)
++{
++	if (!wait_callback || !wait_callback_interval)
++		return wait_for_any_event(events, num_events, milli_seconds);
++
++	DWORD slice = milli_seconds == INFINITE
++		? wait_callback_interval
++		: min(milli_seconds, wait_callback_interval);
++	int result = wait_for_any_event(events, num_events, slice);
++	if (result == 0)
++		wait_callback();
++	return result;
++}
++
+ int
+ wait_for_any_event(HANDLE* events, int num_events, DWORD milli_seconds)
+ {
+diff --git a/compat/win32/w32fd.h b/compat/win32/w32fd.h
+index 181c443..fb99a8e 100644
+--- a/compat/win32/w32fd.h
++++ b/compat/win32/w32fd.h
+@@ -112,7 +112,6 @@ struct w32_io {
+ 		DWORD transferred;
+ 		DWORD error;
+ 	}sync_write_status;
+-
+ 	/*handle specific internal state context, used by sockets and pipes*/
+ 	struct {
+ 		enum w32_io_sock_state state;
+@@ -127,6 +126,9 @@ extern HANDLE main_thread;
+ BOOL w32_io_is_blocking(struct w32_io*);
+ BOOL w32_io_is_io_available(struct w32_io* pio, BOOL rd);
+ int wait_for_any_event(HANDLE* events, int num_events, DWORD milli_seconds);
++void w32_set_wait_callback(void (*callback)(void), DWORD interval_milliseconds);
++int wait_for_any_event_with_callback(HANDLE* events, int num_events,
++	DWORD milli_seconds);
+ 
+ /*POSIX mimic'ing socket API and socket helper API*/
+ int socketio_initialize();
+@@ -166,4 +168,4 @@ long fileio_lseek(struct w32_io* pio, unsigned __int64 offset, int origin);
+ FILE* fileio_fdopen(struct w32_io* pio, const char *mode);
+ ssize_t fileio_readlink(const char *path, char *buf, size_t bufsiz);
+ int fileio_symlink(const char *target, const char *linkpath);
+-int fileio_link(const char *oldpath, const char *newpath);
+\ No newline at end of file
++int fileio_link(const char *oldpath, const char *newpath);

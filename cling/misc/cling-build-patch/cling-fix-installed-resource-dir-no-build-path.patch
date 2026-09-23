@@ -1,0 +1,18 @@
+diff --git a/lib/Interpreter/CMakeLists.txt b/lib/Interpreter/CMakeLists.txt
+index XXXXXXX..YYYYYYY 100644
+--- a/lib/Interpreter/CMakeLists.txt
++++ b/lib/Interpreter/CMakeLists.txt
+@@ -398,10 +398,6 @@ if (WIN32)
+   target_link_libraries(clingInterpreter PRIVATE psapi)
+ endif()
+ 
+-# If both LLVM and Clang are external, we need to define LLVM_PATH in order for
+-# the builtin headers to be found.
+-if (NOT LLVM_EXTERNAL_CLANG_SOURCE_DIR)
+-  target_compile_definitions(clingInterpreter PUBLIC "LLVM_PATH=\"${LLVM_BINARY_DIR}\"")
+-endif()
++# Do not bake the build tree into clingInterpreter.
++# Rely on Clang's normal resource directory discovery at runtime.
+ 
+ set_target_properties(clingInterpreter PROPERTIES
+   VERSION ${CLING_VERSION}

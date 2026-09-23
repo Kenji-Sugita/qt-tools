@@ -1,0 +1,165 @@
+diff --git a/llvm-project/llvm/include/llvm/LineEditor/LineEditor.h b/llvm-project/llvm/include/llvm/LineEditor/LineEditor.h
+index ca0312bf6297..9cc769418191 100644
+--- a/llvm-project/llvm/include/llvm/LineEditor/LineEditor.h
++++ b/llvm-project/llvm/include/llvm/LineEditor/LineEditor.h
+@@ -10,6 +10,7 @@
+ #define LLVM_LINEEDITOR_LINEEDITOR_H
+ 
+ #include "llvm/ADT/StringRef.h"
++#include <chrono>
+ #include <cstdio>
+ #include <memory>
+ #include <optional>
+@@ -43,6 +44,14 @@ public:
+   void loadHistory();
+   void setHistorySize(int size);
+ 
++  using PeriodicCallbackFunction = void (*)();
++
++  void setPeriodicCallback(
++      PeriodicCallbackFunction callbackFunction,
++      std::chrono::milliseconds callbackInterval = std::chrono::milliseconds{100});
++  void clearPeriodicCallback();
++  bool hasPeriodicCallback() const;
++
+   static std::string getDefaultHistoryPath(StringRef ProgName);
+ 
+   /// The action to perform upon a completion request.
+diff --git a/llvm-project/llvm/lib/LineEditor/LineEditor.cpp b/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
+index c7d5fd7dcf8a..7a4f6aa35acd 100644
+--- a/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
++++ b/llvm-project/llvm/lib/LineEditor/LineEditor.cpp
+@@ -13,11 +13,20 @@
+ #include "llvm/Support/Path.h"
+ #include "llvm/Support/raw_ostream.h"
+ #include <algorithm>
++#include <atomic>
+ #include <cassert>
++#include <chrono>
++#include <condition_variable>
+ #include <cstdio>
++#include <mutex>
++#include <thread>
+ #ifdef HAVE_LIBEDIT
+ #include <histedit.h>
+ constexpr int DefaultHistorySize = 800;
++#ifdef _WIN32
++extern "C" void w32_set_wait_callback(void (*callback)(void),
++                                      unsigned long intervalMilliseconds);
++#endif
+ #endif
+ 
+ using namespace llvm;
+@@ -104,6 +113,10 @@ struct LineEditor::InternalData {
+   std::string ContinuationOutput;
+ 
+   FILE *Out;
++
++  PeriodicCallbackFunction CallbackFunction = nullptr;
++  std::chrono::milliseconds CallbackInterval{0};
++  bool UsingPeriodicCallback = false;
+ };
+ 
+ namespace {
+@@ -254,10 +267,85 @@ void LineEditor::setHistorySize(int size) {
+   ::history(Data->Hist, &HE, H_SETSIZE, size);
+ }
+ 
++void LineEditor::setPeriodicCallback(
++    PeriodicCallbackFunction callbackFunction,
++    std::chrono::milliseconds callbackInterval) {
++  Data->CallbackFunction = callbackFunction;
++  Data->CallbackInterval = callbackInterval;
++  Data->UsingPeriodicCallback =
++      callbackFunction != nullptr && callbackInterval.count() > 0;
++#ifdef _WIN32
++  w32_set_wait_callback(callbackFunction,
++                        static_cast<unsigned long>(callbackInterval.count()));
++#endif
++}
++
++void LineEditor::clearPeriodicCallback() {
++  Data->CallbackFunction = nullptr;
++  Data->CallbackInterval = std::chrono::milliseconds{0};
++  Data->UsingPeriodicCallback = false;
++#ifdef _WIN32
++  w32_set_wait_callback(nullptr, 0);
++#endif
++}
++
++bool LineEditor::hasPeriodicCallback() const {
++  return Data->UsingPeriodicCallback;
++}
++
+ std::optional<std::string> LineEditor::readLine() const {
+   // Call el_gets to prompt the user and read the user's input.
+   int LineLen = 0;
+-  const char *Line = ::el_gets(Data->EL, &LineLen);
++  const char *Line = nullptr;
++
++  if (!Data->UsingPeriodicCallback) {
++    Line = ::el_gets(Data->EL, &LineLen);
++#ifdef _WIN32
++  } else {
++    // The portable Windows libedit compatibility layer is thread-affine.
++    // It invokes the callback from its alertable input wait instead.
++    Line = ::el_gets(Data->EL, &LineLen);
++#else
++  } else {
++    std::mutex readMutex;
++    std::condition_variable readCondition;
++    std::atomic<bool> isReadDone{false};
++    const char *threadLine = nullptr;
++    int threadLineLen = 0;
++
++    std::thread readThread([&]() {
++      threadLine = ::el_gets(Data->EL, &threadLineLen);
++      {
++        std::lock_guard<std::mutex> lock(readMutex);
++        isReadDone.store(true, std::memory_order_release);
++      }
++      readCondition.notify_one();
++    });
++
++    {
++      std::unique_lock<std::mutex> lock(readMutex);
++      while (!isReadDone.load(std::memory_order_acquire)) {
++        if (readCondition.wait_for(
++                lock, Data->CallbackInterval,
++                [&]() { return isReadDone.load(std::memory_order_acquire); })) {
++          break;
++        }
++
++        auto callbackFunction = Data->CallbackFunction;
++        lock.unlock();
++        if (callbackFunction != nullptr)
++          callbackFunction();
++        lock.lock();
++      }
++    }
++
++    if (readThread.joinable())
++      readThread.join();
++
++    Line = threadLine;
++    LineLen = threadLineLen;
++#endif
++  }
+ 
+   // Either of these may mean end-of-file.
+   if (!Line || LineLen == 0)
+@@ -298,6 +386,14 @@ LineEditor::~LineEditor() {
+ void LineEditor::saveHistory() {}
+ void LineEditor::loadHistory() {}
+ void LineEditor::setHistorySize(int size) {}
++void LineEditor::setPeriodicCallback(
++    PeriodicCallbackFunction callbackFunction,
++    std::chrono::milliseconds callbackInterval) {
++  (void)callbackFunction;
++  (void)callbackInterval;
++}
++void LineEditor::clearPeriodicCallback() {}
++bool LineEditor::hasPeriodicCallback() const { return false; }
+ 
+ std::optional<std::string> LineEditor::readLine() const {
+   ::fprintf(Data->Out, "%s", Prompt.c_str());

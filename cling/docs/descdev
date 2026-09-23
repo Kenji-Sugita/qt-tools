@@ -1,0 +1,38 @@
+bin/
+    iqtcling.linux
+    iqtcling.macos
+    iqtcling.win
+        対話 Qt Cling
+        対話モード実行
+
+        $ iqtcling.macos
+        [cling]$ .L qtgui.cpp
+        [cling]$ .I examples/wiggly
+        [cling]$ .L startup.cpp
+        [cling]$
+
+    cqtcling.linux
+    cqtcling.macos
+    cqtcling.win
+        バッチ Qt Cling
+        .cpp を実行
+
+    run_moc.py
+        .cpp から <basename>.moc を作成
+        .h から moc_<basename>.cpp を作成
+
+    run_rcc.py
+        .qrc から qrc_<basename>.cpp を作成
+
+    run_uic.py
+        .ui から ui_<basename>.h を作成
+
+include/
+    preload_qt_linux.h
+    preload_qt_macos.h
+        対話 Qt Cling 用ライブラリーロード
+
+src/
+    qtgui.cpp
+    qtguiwin.cpp
+        対話 Qt Cling の GUI 初期化コード

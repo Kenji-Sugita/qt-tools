@@ -1,0 +1,11 @@
+diff --git a/lib/Interpreter/CMakeLists.txt b/lib/Interpreter/CMakeLists.txt
+index cf23baa1..1388a249 100644
+--- a/lib/Interpreter/CMakeLists.txt
++++ b/lib/Interpreter/CMakeLists.txt
+@@ -401,5 +401,5 @@ endif()
+ # If both LLVM and Clang are external, we need to define LLVM_PATH in order for
+ # cling to use the correct (external) LLVM/Clang directories.
+ if ((NOT builtin_llvm) AND (NOT builtin_clang))
+-  target_compile_definitions(clingInterpreter PUBLIC "LLVM_PATH=\"${LLVM_BINARY_DIR}\"")
++# target_compile_definitions(clingInterpreter PUBLIC "LLVM_PATH=\"${LLVM_BINARY_DIR}\"")
+ endif()

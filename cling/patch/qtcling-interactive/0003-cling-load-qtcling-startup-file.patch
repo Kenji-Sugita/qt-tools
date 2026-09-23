@@ -1,0 +1,32 @@
+diff --git a/cling/lib/UserInterface/UserInterface.cpp b/cling/lib/UserInterface/UserInterface.cpp
+index 787a1e6f..b9aecfc5 100644
+--- a/cling/lib/UserInterface/UserInterface.cpp
++++ b/cling/lib/UserInterface/UserInterface.cpp
+@@ -125,6 +125,18 @@ namespace {
+   }
+ 
+   llvm::LineEditor* activeLineEditor = nullptr;
++
++  void LoadStartupFileIfConfigured(cling::MetaProcessor& MetaProcessor) {
++    const char* StartupFile = std::getenv("QTCLING_STARTUP_FILE");
++    if (!StartupFile || !StartupFile[0]) {
++      return;
++    }
++
++    cling::Interpreter::CompilationResult CompRes;
++    std::string Command = ".L ";
++    Command += StartupFile;
++    MetaProcessor.process(Command, CompRes);
++  }
+ }
+ 
+ extern "C" void cling_set_periodic_callback(void (*callbackFunction)(),
+@@ -183,6 +197,8 @@ namespace cling {
+ 
+     LE.setPrompt(Prompt);
+     activeLineEditor = &LE;
++
++    LoadStartupFileIfConfigured(*m_MetaProcessor);
+ 
+     LE.setListCompleter(ClingListCompleter(m_MetaProcessor->getInterpreter()));
+     while (std::optional<std::string> Line = LE.readLine()) {

@@ -1,0 +1,12 @@
+# 再定義可能にする
+
+    * gClingOpts
+
+       gClingOpts->AllowRedefinition = 1;
+
+    * gCling
+
+       #include "cling/Interpreter/Interpreter.h"
+
+       cling::runtime::gCling->allowRedefinition();       // 有効化
+       // cling::runtime::gCling->allowRedefinition(false); // 無効化

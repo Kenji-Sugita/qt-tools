@@ -1,0 +1,94 @@
+Developer Power Shell で操作
+
+git clone https://github.com/microsoft/vcpkg.git C:\src\vcpkg
+cd C:\src\vcpkg
+bootstrap-vcpkg.bat
+
+PS C:\src\vcpkg> .\bootstrap-vcpkg.bat
+プログラム 'bootstrap-vcpkg.bat' の実行に失敗しました: アクセスが拒否されました。発生場所 行:1 文字:1
++ .\bootstrap-vcpkg.bat
++ ~~~~~~~~~~~~~~~~~~~~~。
+発生場所 行:1 文字:1
++ .\bootstrap-vcpkg.bat
++ ~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ResourceUnavailable: (:) [], ApplicationFailedException
+    + FullyQualifiedErrorId : NativeCommandFailed
+
+PS C:\src\vcpkg>
+
+cmd /c bootstrap-vcpkg.bat
+
+PS C:\src\vcpkg> cmd /c bootstrap-vcpkg.bat
+プログラム 'tls12-download.exe' の実行に失敗しました: アクセスが拒否されました。発生場所 C:\src\vcpkg\scripts\bootstrap
+.ps1:55 文字:5
++     & "$scriptsDir/tls12-download.exe" github.com "/microsoft/vcpkg-t ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~。
+発生場所 C:\src\vcpkg\scripts\bootstrap.ps1:55 文字:5
++     & "$scriptsDir/tls12-download.exe" github.com "/microsoft/vcpkg-t ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ResourceUnavailable: (:) [], ApplicationFailedException
+    + FullyQualifiedErrorId : NativeCommandFailed
+
+
+変数 '$LASTEXITCODE' は、設定されていないために取得できません。
+発生場所 C:\src\vcpkg\scripts\bootstrap.ps1:60 文字:5
++ if ($LASTEXITCODE -ne 0)
++     ~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (LASTEXITCODE:String) []、RuntimeException
+    + FullyQualifiedErrorId : VariableIsUndefined
+
+& : 用語 'C:\src\vcpkg\vcpkg.exe' は、コマンドレット、関数、スクリプト ファイル、または操作可能なプログラムの名前として
+認識されません。名前が正しく記述されていることを確認し、パスが含まれている場合はそのパスが正しいことを確認してから、再
+試行してください。
+発生場所 C:\src\vcpkg\scripts\bootstrap.ps1:66 文字:3
++ & "$vcpkgRootDir\vcpkg.exe" version --disable-metrics
++   ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\src\vcpkg\vcpkg.exe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+Telemetry
+---------
+vcpkg collects usage data in order to help us improve your experience.
+The data collected by Microsoft is anonymous.
+You can opt-out of telemetry by re-running the bootstrap-vcpkg script with -disableMetrics,
+passing --disable-metrics to vcpkg on the command line,
+or by setting the VCPKG_DISABLE_METRICS environment variable.
+
+Read more about vcpkg telemetry at docs/about/privacy.md
+
+PS C:\src\vcpkg> cmd /c bootstrap-vcpkg.bat
+Downloading https://github.com/microsoft/vcpkg-tool/releases/download/2026-03-04/vcpkg.exe -> C:\src\vcpkg\vcpkg.exe... done.
+Validating signature... done.
+
+vcpkg package management program version 2026-03-04-4b3e4c276b5b87a649e66341e11553e8c577459c
+
+See LICENSE.txt for license information.
+Telemetry
+---------
+vcpkg collects usage data in order to help us improve your experience.
+The data collected by Microsoft is anonymous.
+You can opt-out of telemetry by re-running the bootstrap-vcpkg script with -disableMetrics,
+passing --disable-metrics to vcpkg on the command line,
+or by setting the VCPKG_DISABLE_METRICS environment variable.
+
+Read more about vcpkg telemetry at docs/about/privacy.md
+PS C:\src\vcpkg>
+
+PS C:\src\vcpkg> ./vcpkg install libedit:x64-windows
+warning: The vcpkg C:\src\vcpkg\vcpkg.exe is using detected vcpkg root C:\src\vcpkg and ignoring mismatched VCPKG_ROOT environment value C:\Program Files\Microsoft Visual Studio\18\Community\VC\vcpkg. To suppress this message, unset the environment variable or use the --vcpkg-root command line switch.
+Computing installation plan...
+libedit is only supported on '(!windows | mingw) & !android', which does not match x64-windows. This usually means that there are known build failures, or runtime problems, when building other platforms. To ignore this and attempt to build libedit anyway, rerun vcpkg with `--allow-unsupported`.
+PS C:\src\vcpkg>
+
+.\vcpkg install libedit:x64-windows --allow-unsupported
+
+error: building libedit:x64-windows failed with: BUILD_FAILED
+See https://learn.microsoft.com/vcpkg/troubleshoot/build-failures?WT.mc_id=vcpkg_inproduct_cli for more information.
+Elapsed time to handle libedit:x64-windows: 3.7 min
+Please ensure you're using the latest port files with `git pull` and `vcpkg update`.
+Then check for known issues at:
+  https://github.com/microsoft/vcpkg/issues?q=is%3Aissue+is%3Aopen+in%3Atitle+libedit
+You can submit a new issue at:
+  https://github.com/microsoft/vcpkg/issues/new?title=%5Blibedit%5D%20build%20error%20on%20x64-windows&body=Copy%20issue%20body%20from%20C%3A%2Fsrc%2Fvcpkg%2Finstalled%2Fvcpkg%2Fissue_body.md
+
+

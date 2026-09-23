@@ -1,0 +1,84 @@
+*animation/easing/easing.pro
+*desktop/screenshot/screenshot.pro
+?desktop/systray/systray.pro
+    通知が表示されない。 
+*dialogs/licensewizard/licensewizard.pro
+*dialogs/standarddialogs/standarddialogs.pro
+*dialogs/tabdialog/tabdialog.pro
+*dialogs/trivialwizard/trivialwizard.pro
+*draganddrop/draggableicons/draggableicons.pro
+*draganddrop/draggabletext/draggabletext.pro
+*draganddrop/dropsite/dropsite.pro
+*gallery/gallery.pro
+*gestures/imagegestures/imagegestures.pro
+*graphicsview/basicgraphicslayouts/basicgraphicslayouts.pro
+*graphicsview/chip/chip.pro
+*graphicsview/diagramscene/diagramscene.pro
+*graphicsview/dragdroprobot/dragdroprobot.pro
+*graphicsview/elasticnodes/elasticnodes.pro
+*graphicsview/chip (対話向けに修正)
+*graphicsview/simpleanchorlayout/simpleanchorlayout.pro
+*itemviews/addressbook/addressbook.pro
+*itemviews/basicsortfiltermodel/basicsortfiltermodel.pro
+*itemviews/combowidgetmapper/combowidgetmapper.pro
+*itemviews/customsortfiltermodel/customsortfiltermodel.pro
+*itemviews/editabletreemodel/editabletreemodel.pro
+*itemviews/fetchmore/fetchmore.pro
+*itemviews/frozencolumn/frozencolumn.pro
+*itemviews/simpletreemodel/simpletreemodel.pro
+*itemviews/spreadsheet/spreadsheet.pro
+*itemviews/stardelegate/stardelegate.pro
+*layouts/basiclayouts/basiclayouts.pro
+*layouts/flowlayout/flowlayout.pro
+*mainwindows/menus/menus.pro
+?painting/affine/affine.pro
+    painting/shared とコンパイルしたリソースのシンボル qt_resource_data が重複してしまう。
+    元のは affine で shared のリソースを取り込んでいる。
+*painting/basicdrawing/basicdrawing.pro
+?painting/composition/composition.pro
+    share 依存
+?painting/deform/deform.pro
+    share 依存
+?painting/gradients/gradients.pro
+    share 依存
+*painting/imagecomposition/imagecomposition.pro
+*painting/painterpaths/painterpaths.pro
+?painting/pathstroke/pathstroke.pro
+    share 依存
+*painting/transformations/transformations.pro
+?painting/shared
+-qnx/foreignwindows/foreignwindows.pro
+*rhi/cuberhiwidget/cuberhiwidget.pro
+    -I を追加して rhi/qrhi.h が見えるようにする。
+*rhi/simplerhiwidget/simplerhiwidget.pro
+    -I を追加して rhi/qrhi.h が見えるようにする。
+*richtext/orderform/orderform.pro
+*richtext/syntaxhighlighter/syntaxhighlighter.pro
+*tools/completer/completer.pro
+*tools/customcompleter/customcompleter.pro
+*tools/regularexpression/regularexpression.pro
+*tools/treemodelcompleter/treemodelcompleter.pro
+*tools/undoframework/undoframework.pro
+*touch/knobs/knobs.pro
+*tutorials/modelview/1_readonly/1_readonly.pro
+*tutorials/modelview/2_formatting/2_formatting.pro
+*tutorials/modelview/3_changingmodel/3_changingmodel.pro
+*tutorials/modelview/4_headers/4_headers.pro
+*tutorials/modelview/5_edit/5_edit.pro
+*tutorials/modelview/6_treeview/6_treeview.pro
+*tutorials/modelview/7_selections/7_selections.pro
+*tutorials/notepad/notepad.pro
+*tutorials/widgets/childwidget/childwidget.pro
+*tutorials/widgets/nestedlayouts/nestedlayouts.pro
+*tutorials/widgets/toplevel/toplevel.pro
+*tutorials/widgets/windowlayout/windowlayout.pro
+*widgets/analogclock/analogclock.pro
+*widgets/calculator/calculator.pro
+*widgets/calendarwidget/calendarwidget.pro
+*widgets/lineedits/lineedits.pro
+*widgets/scribble/scribble.pro
+*widgets/shapedclock/shapedclock.pro
+*widgets/sliders/sliders.pro
+*widgets/spinboxes/spinboxes.pro
+*widgets/tablet/tablet.pro
+*widgets/windowflags/windowflags.pro

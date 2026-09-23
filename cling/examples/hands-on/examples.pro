@@ -1,0 +1,14 @@
+TEMPLATE = subdirs
+SUBDIRS += helloworld
+SUBDIRS += colorwidget_step1/colorwidget.pro
+SUBDIRS += colorwidget_step2/colorwidget.pro
+SUBDIRS += colorwidget_step3/colorwidget.pro
+SUBDIRS += colorwidget_step4/colorwidget.pro
+SUBDIRS += colorwidget_step5/colorwidget.pro
+SUBDIRS += colorwidget_step6/colorwidget.pro
+SUBDIRS += formcreationpractice
+SUBDIRS += lcdslider
+SUBDIRS += lcdwithslider
+SUBDIRS += messagewidget
+SUBDIRS += messagewidget_better/messagewidget.pro
+SUBDIRS += messagewidgetlayout/messagewidget.pro

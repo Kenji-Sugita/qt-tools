@@ -1,0 +1,195 @@
+#!/bin/sh
+
+show_config=false
+check_only=false
+script_directory_path=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+default_dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
+# shellcheck source=qtcling-defaults.sh
+. "$script_directory_path/qtcling-defaults.sh"
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --show-config)
+            show_config=true
+            shift
+            ;;
+        --check)
+            check_only=true
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+#QT_ROOT=/usr/local/qt/Qt/6.10.2/macos
+DEFAULT_QT_ROOT=${QTCLING_DEFAULT_QT_ROOT:-/usr/local/qt/Qt/6.11.1/macos}
+if [ -n "${QTCLING_QT_ROOT+x}" ]; then
+    QT_ROOT=$QTCLING_QT_ROOT
+    QT_ROOT_SOURCE=QTCLING_QT_ROOT
+else
+    QT_ROOT=$DEFAULT_QT_ROOT
+    QT_ROOT_SOURCE=default
+fi
+
+DEV_ROOT=${QTCLING_DEV_ROOT:-$default_dev_root}
+if [ -n "${QTCLING_CLING_ROOT+x}" ]; then
+    CLING_ROOT=$QTCLING_CLING_ROOT
+    CLING_ROOT_SOURCE=QTCLING_CLING_ROOT
+elif [ -x "${DEV_ROOT}/build/bin/cling" ]; then
+    CLING_ROOT="${DEV_ROOT}/build"
+    CLING_ROOT_SOURCE=dev-build
+else
+    CLING_ROOT=/usr/local/qtcling
+    CLING_ROOT_SOURCE=default
+fi
+CLING=${CLING_ROOT}/bin/cling
+QT_FRAMEWORK_PATH="${QT_ROOT}/lib"
+QT_MODULES=${QTCLING_MODULES:-"Core Gui Widgets"}
+
+if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
+    QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
+fi
+
+path_exists() {
+    if [ -e "$1" ]; then
+        echo yes
+    else
+        echo no
+    fi
+}
+
+qt_framework_name() {
+    echo "Qt$1"
+}
+
+qt_framework_directory() {
+    module_framework_name=$(qt_framework_name "$1")
+    echo "${QT_FRAMEWORK_PATH}/${module_framework_name}.framework"
+}
+
+qt_framework_headers() {
+    echo "$(qt_framework_directory "$1")/Headers"
+}
+
+qt_framework_library() {
+    module_framework_name=$(qt_framework_name "$1")
+    echo "$(qt_framework_directory "$1")/Versions/A/${module_framework_name}"
+}
+
+print_config() {
+    echo "qtcling config"
+    echo "  mode: interactive"
+    echo "  platform: Darwin"
+    echo "  default_qt_root: $DEFAULT_QT_ROOT"
+    echo "  qt_root: $QT_ROOT"
+    echo "  qt_root_source: $QT_ROOT_SOURCE"
+    echo "  modules: $QT_MODULES"
+    echo "  cling_root: $CLING_ROOT"
+    echo "  cling_root_source: $CLING_ROOT_SOURCE"
+    echo "  cling: $CLING"
+    echo "  dev_root: $DEV_ROOT"
+    echo
+    echo "Qt paths"
+    echo "  framework_path: $QT_FRAMEWORK_PATH exists=$(path_exists "$QT_FRAMEWORK_PATH")"
+    for module in $QT_MODULES; do
+        module_library=$(qt_framework_library "$module")
+        echo "  $(qt_framework_name "$module"): $module_library exists=$(path_exists "$module_library")"
+    done
+    echo
+    echo "Cling args"
+    echo "  -std=c++2c"
+    for module in $QT_MODULES; do
+        echo "  -I $(qt_framework_headers "$module")"
+    done
+    echo "  -I ${DEV_ROOT}/src"
+    echo "  -F ${QT_FRAMEWORK_PATH}"
+    echo "  -include <generated-preload-header>"
+    echo
+    echo "Startup"
+    echo "  QTCLING_STARTUP_FILE: $QTCLING_STARTUP_FILE exists=$(path_exists "$QTCLING_STARTUP_FILE")"
+}
+
+check_config() {
+    ok=true
+
+    if [ ! -d "$QT_ROOT" ]; then
+        echo "qtcling: missing Qt root: $QT_ROOT" >&2
+        echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
+        ok=false
+    fi
+
+    if [ ! -x "$CLING" ]; then
+        echo "qtcling: missing Cling executable: $CLING" >&2
+        ok=false
+    fi
+
+    for module in $QT_MODULES; do
+        module_library=$(qt_framework_library "$module")
+        if [ ! -f "$module_library" ]; then
+            echo "qtcling: missing $(qt_framework_name "$module") framework library: $module_library" >&2
+            ok=false
+        fi
+    done
+
+    if [ ! -f "$QTCLING_STARTUP_FILE" ]; then
+        echo "qtcling: missing startup file: $QTCLING_STARTUP_FILE" >&2
+        ok=false
+    fi
+
+    if [ "$ok" = true ]; then
+        echo "qtcling check: OK"
+        echo "  Qt root exists"
+        for module in $QT_MODULES; do
+            echo "  $(qt_framework_name "$module") library exists"
+        done
+        echo "  Cling executable exists"
+        echo "  startup file exists"
+        return 0
+    fi
+
+    echo "qtcling check: FAILED" >&2
+    return 1
+}
+
+if [ "$show_config" = true ]; then
+    print_config
+    exit 0
+fi
+
+if [ "$check_only" = true ]; then
+    check_config
+    exit $?
+fi
+
+if ! check_config >/dev/null 2>&1; then
+    check_config
+    exit 1
+fi
+
+PRELOAD_HEADER=$(mktemp "${TMPDIR:-/tmp}/qtcling-preload.XXXXXX") || exit 1
+trap 'rm -f "$PRELOAD_HEADER"' EXIT HUP INT TERM
+
+for module in $QT_MODULES; do
+    printf '#pragma cling load("%s")\n' "$(qt_framework_library "$module")" >> "$PRELOAD_HEADER"
+done
+
+export QTCLING_STARTUP_FILE
+
+set -- --nologo -std=c++2c "$@"
+
+for module in $QT_MODULES; do
+    set -- "$@" -I "$(qt_framework_headers "$module")"
+done
+
+set -- "$@" \
+    -I "${DEV_ROOT}/src" \
+    -F "${QT_FRAMEWORK_PATH}" \
+    -include "$PRELOAD_HEADER"
+
+exec "${CLING}" "$@"

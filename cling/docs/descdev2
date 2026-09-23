@@ -1,0 +1,89 @@
+bin/
+    qtcling
+
+        QtCore、QtGui、QtWidgets を使用できるように Cling を起動します。コマン
+        ドラインオプション -c を指定するとバッチモードで起動し、指定しない場合
+        は対話モードで起動します。残りのコマンドラインオプションはすべて cling
+        に渡されます。これにより -I、-F、-L などを cling に渡して、他のモジュー
+        ルを使用できます。
+
+        macOS で QtGui のライブラリーをロードする場合:
+
+        $ qtcling -c startup.cpp -I \
+        /usr/local/qt/Qt/6.11.1/macos/lib/QtGui.framework/Versions/A/Headers/6.11.1/QtGui
+
+        macOS で QtTest モジュールを使用する場合:
+
+        $ qtcling -c startup.cpp \
+        -I/usr/local/qt/Qt/6.11.1/macos/lib/QtTest.framework/Headers \
+        -L/usr/local/qt/Qt/6.11.1/macos/lib/QtTest.framework/Versions/A/QtTest
+
+        対話モードでの使用例:
+
+        $ qtcling
+        [cling]$ .L qtgui       // GUI の初期化
+        [cling]$ .I examples    // インクルードディレクトリーの追加
+        [cling]$ .L button.cpp  // ボタンの生成
+        [cling]$ button         // button.cpp で変数 button に代入
+        (QPushButton *) 0x60000321cc90
+        [cling]$ button->text()
+        (QString) { @0x600003c390d0, @0x600003c390d2, @0x600003c390d4 }
+        [cling]$ qDebug() << button->text();
+        "OK?"
+        [cling]$ button->setText("Hello!")  // ボタンのテキストが Hello! に変わる
+        [cling]$
+
+    run_moc
+
+        コマンドラインで C++ の実装ファイルおよびヘッダーファイルを指定し、moc
+        ファイルを作成します。.cpp の場合は <basename>.moc を作成し、.h の場合
+        は moc_<basename>.cpp を作成します。
+
+        ファイルを指定しない場合は、カレントディレクトリー内のすべての C++ 実装
+        ファイルおよびヘッダーファイルを対象に処理します。
+
+        moc ファイルを作成する必要がない場合は何も行いません。また、C++ のファ
+        イルでない場合も何も行いません。
+
+        C++ 実装ファイルとして扱うサフィックス:
+
+            .cxx、.cc、.cpp、.c++、.cp
+
+        C++ ヘッダーファイルとして扱うサフィックス:
+
+            .h、.hh、.hpp、.hxx
+
+    run_rcc
+
+        コマンドラインで .qrc ファイルを指定し、qrc_<basename>.cpp ファイルを
+        作成します。他のファイルに対しては何も行いません。
+
+        ファイルを指定しない場合は、カレントディレクトリー内のすべての.qrc ファ
+        イルに対して qrc_<basename>.cpp を作成します。
+
+    run_uic
+
+        コマンドラインで .ui ファイルを指定し、ui_<basename>.h ファイルを作成
+        します。他のファイルに対しては何も行いません。
+
+        ファイルを指定しない場合は、カレントディレクトリー内のすべての.ui ファ
+        イルに対して ui_<basename>.h を作成します。
+
+include/
+    preload_qt_linux.h
+    preload_qt_macos.h
+
+        対話 Qt Cling 用のライブラリーロード設定です。直接使用するものではあり
+        ません。
+
+src/
+    qtgui
+
+        対話 Qt Cling の GUI 初期化コードです。qtcling のインクルードパスに含
+        まれているため、REPL の .L で以下のようにロードできます。
+
+        [cling]$ .L qtgui
+
+        GUI を使用しながら対話するには、qtgui のロードが必要です。QApplication
+        のインスタンスが作成され、イベントループが定期的に処理されるようになり
+        ます。

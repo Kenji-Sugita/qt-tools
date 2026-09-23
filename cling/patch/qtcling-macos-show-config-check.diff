@@ -1,0 +1,169 @@
+diff --git a/bin/iqtcling.macos b/bin/iqtcling.macos
+index 0c71954..c32640b 100755
+--- a/bin/iqtcling.macos
++++ b/bin/iqtcling.macos
+@@ -1,8 +1,37 @@
+ #!/bin/sh
+ 
++show_config=false
++check_only=false
++
++while [ $# -gt 0 ]; do
++    case "$1" in
++        --show-config)
++            show_config=true
++            shift
++            ;;
++        --check)
++            check_only=true
++            shift
++            ;;
++        --)
++            shift
++            break
++            ;;
++        *)
++            break
++            ;;
++    esac
++done
++
+ #QT_ROOT=/usr/local/qt/Qt/6.10.2/macos
+ DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.11.0/macos
+-QT_ROOT=${QTCLING_QT_ROOT:-$DEFAULT_QT_ROOT}
++if [ -n "${QTCLING_QT_ROOT+x}" ]; then
++    QT_ROOT=$QTCLING_QT_ROOT
++    QT_ROOT_SOURCE=QTCLING_QT_ROOT
++else
++    QT_ROOT=$DEFAULT_QT_ROOT
++    QT_ROOT_SOURCE=default
++fi
+ 
+ CLING_ROOT=/usr/local/qtcling
+ CLING_ROOT=/usr/local/src/cling/build
+@@ -17,15 +46,108 @@ QT_CORE_LIBRARY="${QT_FRAMEWORK_PATH}/QtCore.framework/Versions/A/QtCore"
+ QT_GUI_LIBRARY="${QT_FRAMEWORK_PATH}/QtGui.framework/Versions/A/QtGui"
+ QT_WIDGETS_LIBRARY="${QT_FRAMEWORK_PATH}/QtWidgets.framework/Versions/A/QtWidgets"
+ 
+-if [ ! -d "$QT_ROOT" ]; then
+-    echo "qtcling: Qt root not found: $QT_ROOT" >&2
+-    echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
+-    exit 1
++if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
++    QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
++fi
++
++path_exists() {
++    if [ -e "$1" ]; then
++        echo yes
++    else
++        echo no
++    fi
++}
++
++print_config() {
++    echo "qtcling config"
++    echo "  mode: interactive"
++    echo "  platform: Darwin"
++    echo "  qt_root: $QT_ROOT"
++    echo "  qt_root_source: $QT_ROOT_SOURCE"
++    echo "  cling: $CLING"
++    echo "  dev_root: $DEV_ROOT"
++    echo
++    echo "Qt paths"
++    echo "  framework_path: $QT_FRAMEWORK_PATH exists=$(path_exists "$QT_FRAMEWORK_PATH")"
++    echo "  QtCore: $QT_CORE_LIBRARY exists=$(path_exists "$QT_CORE_LIBRARY")"
++    echo "  QtGui: $QT_GUI_LIBRARY exists=$(path_exists "$QT_GUI_LIBRARY")"
++    echo "  QtWidgets: $QT_WIDGETS_LIBRARY exists=$(path_exists "$QT_WIDGETS_LIBRARY")"
++    echo
++    echo "Cling args"
++    echo "  -std=c++2c"
++    echo "  -I ${QT_FRAMEWORK_PATH}/QtCore.framework/Headers"
++    echo "  -I ${QT_FRAMEWORK_PATH}/QtGui.framework/Headers"
++    echo "  -I ${QT_FRAMEWORK_PATH}/QtWidgets.framework/Headers"
++    echo "  -I ${DEV_ROOT}/include"
++    echo "  -I ${DEV_ROOT}/src"
++    echo "  -F ${QT_FRAMEWORK_PATH}"
++    echo "  -include <generated-preload-header>"
++    echo
++    echo "Startup"
++    echo "  QTCLING_STARTUP_FILE: $QTCLING_STARTUP_FILE exists=$(path_exists "$QTCLING_STARTUP_FILE")"
++}
++
++check_config() {
++    ok=true
++
++    if [ ! -d "$QT_ROOT" ]; then
++        echo "qtcling: missing Qt root: $QT_ROOT" >&2
++        echo "qtcling: set QTCLING_QT_ROOT to your Qt installation path." >&2
++        ok=false
++    fi
++
++    if [ ! -x "$CLING" ]; then
++        echo "qtcling: missing Cling executable: $CLING" >&2
++        ok=false
++    fi
++
++    if [ ! -f "$QT_CORE_LIBRARY" ]; then
++        echo "qtcling: missing QtCore framework library: $QT_CORE_LIBRARY" >&2
++        ok=false
++    fi
++
++    if [ ! -f "$QT_GUI_LIBRARY" ]; then
++        echo "qtcling: missing QtGui framework library: $QT_GUI_LIBRARY" >&2
++        ok=false
++    fi
++
++    if [ ! -f "$QT_WIDGETS_LIBRARY" ]; then
++        echo "qtcling: missing QtWidgets framework library: $QT_WIDGETS_LIBRARY" >&2
++        ok=false
++    fi
++
++    if [ ! -f "$QTCLING_STARTUP_FILE" ]; then
++        echo "qtcling: missing startup file: $QTCLING_STARTUP_FILE" >&2
++        ok=false
++    fi
++
++    if [ "$ok" = true ]; then
++        echo "qtcling check: OK"
++        echo "  Qt root exists"
++        echo "  QtCore library exists"
++        echo "  QtGui library exists"
++        echo "  QtWidgets library exists"
++        echo "  Cling executable exists"
++        echo "  startup file exists"
++        return 0
++    fi
++
++    echo "qtcling check: FAILED" >&2
++    return 1
++}
++
++if [ "$show_config" = true ]; then
++    print_config
++    exit 0
++fi
++
++if [ "$check_only" = true ]; then
++    check_config
++    exit $?
+ fi
+ 
+-if [ ! -f "$QT_CORE_LIBRARY" ]; then
+-    echo "qtcling: QtCore framework library not found under: $QT_FRAMEWORK_PATH" >&2
+-    echo "qtcling: set QTCLING_QT_ROOT to a Qt macOS kit directory." >&2
++if ! check_config >/dev/null 2>&1; then
++    check_config
+     exit 1
+ fi
+ 
+@@ -36,9 +158,6 @@ printf '#pragma cling load("%s")\n' "$QT_CORE_LIBRARY" > "$PRELOAD_HEADER"
+ printf '#pragma cling load("%s")\n' "$QT_GUI_LIBRARY" >> "$PRELOAD_HEADER"
+ printf '#pragma cling load("%s")\n' "$QT_WIDGETS_LIBRARY" >> "$PRELOAD_HEADER"
+ 
+-if [ -z "${QTCLING_STARTUP_FILE+x}" ]; then
+-    QTCLING_STARTUP_FILE="${DEV_ROOT}/src/qtgui.cpp"
+-fi
+ export QTCLING_STARTUP_FILE
+ 
+ exec "${CLING}" \

@@ -1,0 +1,69 @@
+diff --git a/cling/lib/MetaProcessor/MetaProcessor.cpp b/cling/lib/MetaProcessor/MetaProcessor.cpp
+--- a/cling/lib/MetaProcessor/MetaProcessor.cpp
++++ b/cling/lib/MetaProcessor/MetaProcessor.cpp
+@@ -31,7 +31,7 @@
+ #include <cctype>
+ #include <sstream>
+ #include <stdio.h>
+-#ifndef WIN32
++#ifndef _WIN32
+ #include <unistd.h>
+ #else
+ #include <io.h>
+diff --git a/cling/CMakeLists.txt b/cling/CMakeLists.txt
+--- a/cling/CMakeLists.txt
++++ b/cling/CMakeLists.txt
+@@ -111,6 +111,7 @@ endif()
+ 
+ set(CLING_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+ set(CLING_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
++option(CLING_BUILD_JUPYTER "Build the Cling Jupyter library" ON)
+ set(LLVM_TOOLS_BINARY_DIR "${LLVM_BINARY_DIR}/bin")
+ if(DEFINED CLING_ROOT_BUILD)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${LLVM_TOOLS_BINARY_DIR}")
+diff --git a/cling/tools/CMakeLists.txt b/cling/tools/CMakeLists.txt
+--- a/cling/tools/CMakeLists.txt
++++ b/cling/tools/CMakeLists.txt
+@@ -9,7 +9,9 @@
+ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../lib/UserInterface/textinput
+    OR CLING_INCLUDE_TESTS)
+   add_subdirectory(driver)
+-  add_subdirectory(Jupyter)
++  if(CLING_BUILD_JUPYTER)
++    add_subdirectory(Jupyter)
++  endif()
+   add_subdirectory(libcling)
+   add_subdirectory(demo)
+ endif()
+diff --git a/cling/lib/Interpreter/CIFactory.cpp b/cling/lib/Interpreter/CIFactory.cpp
+--- a/cling/lib/Interpreter/CIFactory.cpp
++++ b/cling/lib/Interpreter/CIFactory.cpp
+@@ -199,7 +199,13 @@ namespace {
+ #endif
+ 
+   static std::string getResourceDir(const char* llvmdir) {
+-    if (!llvmdir) {
++    if (llvmdir) {
++      llvm::SmallString<512> tmp(llvmdir);
++      llvm::sys::path::append(tmp, "lib", "clang", CLANG_VERSION_MAJOR_STRING);
++      if (llvm::sys::fs::is_directory(tmp))
++        return std::string(tmp);
++    }
++
+       // FIXME: The first arg really does need to be argv[0] on FreeBSD.
+       //
+       // Note: The second arg is not used for Apple, FreeBSD, Linux,
+@@ -213,13 +219,6 @@ namespace {
+       //
+       return CompilerInvocation::GetResourcesPath(
+           "cling", (void*)intptr_t(GetExecutablePath));
+-    } else {
+-      std::string resourcePath;
+-      llvm::SmallString<512> tmp(llvmdir);
+-      llvm::sys::path::append(tmp, "lib", "clang", CLANG_VERSION_MAJOR_STRING);
+-      resourcePath.assign(&tmp[0], tmp.size());
+-      return resourcePath;
+-    }
+   }
+ 
+   ///\brief Adds standard library -I used by whatever compiler is found in PATH.

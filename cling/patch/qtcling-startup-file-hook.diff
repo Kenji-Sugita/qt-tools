@@ -1,0 +1,22 @@
+diff --git a/lib/UserInterface/UserInterface.cpp b/lib/UserInterface/UserInterface.cpp
+--- a/lib/UserInterface/UserInterface.cpp
++++ b/lib/UserInterface/UserInterface.cpp
+@@ -185,6 +185,18 @@ namespace cling {
+ 
+     LE.setListCompleter(ClingListCompleter(m_MetaProcessor->getInterpreter()));
+ 
++    if (const char* startupFile = std::getenv("QTCLING_STARTUP_FILE")) {
++      if (startupFile[0] != '\0') {
++        cling::Interpreter::CompilationResult compRes;
++        m_MetaProcessor->process(std::string(".L ") + startupFile, compRes);
++        if (std::string pendingMessage = m_MetaProcessor->takePendingMessage();
++            !pendingMessage.empty()) {
++          m_MetaProcessor->getOuts() << pendingMessage;
++          m_MetaProcessor->getOuts().flush();
++        }
++      }
++    }
++
+     while (std::optional<std::string> Line = LE.readLine()) {
+       try {
+         m_MetaProcessor->getOuts().flush(); // Do we need this now?

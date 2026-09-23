@@ -1,0 +1,11 @@
+enablePeriodicQtEvents()
+
+libedit を入れる
+apt install libedit-dev
+macOS も
+
+build ディレクトリー依存に気を付ける。
+    インストールしたものが build を見に行かないようにする。
+    CMake のコンフィギュレーション字に -DCMAKE_INSTALL_PREFIX="${INSTALL_PREFIX}" を付ける。
+    cmake --install . --prefix "${INSTALL_PREFIX}" とするとインストールしたものが゛
+    build ディレクトリーに依存してしまう。

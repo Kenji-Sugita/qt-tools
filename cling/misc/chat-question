@@ -1,0 +1,78 @@
+# Cling にメインスレッドで定期的に処理を呼び出す機能を追加してください。
+
+* 処理は関数で渡す
+* デフォルトの間隔は 100ms
+* REPL の会話を妨げずに、指定した関数が呼び出される
+* 使用する cling と llvm は、このようにして取得
+    git clone --branch v1.3 https://github.com/root-project/cling.git
+    git clone --branch cling-latest https://github.com/root-project/llvm-project.git
+
+
+# Cling にこのパッチを適用すると REPL で日本語を入力すると文字化けします。対処
+  方法を考えてください。
+
+* 使用する cling と llvm は、このようにして取得
+    git clone --branch v1.3 https://github.com/root-project/cling.git
+    git clone --branch cling-latest https://github.com/root-project/llvm-project.git
+
+
+# macOS で Cling にこのパッチを適用すると Qt ウィジェットを実行し表示と操作が
+  でき、REPL で対話できます。Linux ではウィジェットの表示はできても、操作がで
+  きません。Linux 用の修正を作成してください。
+
+* 使用する cling と llvm は、このようにして取得
+    git clone --branch v1.3 https://github.com/root-project/cling.git
+    git clone --branch cling-latest https://github.com/root-project/llvm-project.git
+
+
+# macOS で Cling にこのパッチを適用すると Qt ウィジェットを実行し表示と操作が
+  でき、REPL で対話できます。Linux ではウィジェットの表示はできても、操作がで
+  きません。Windows では vcpkg の libedit が MSVC 64bitに対応していないために、
+  このパッチは Linux では libedit-dev を入れないと使えないことから分かるように
+  libedit が使えることが前提です。Windows での別手段での修正を作成してください。
+
+* 使用する cling と llvm は、このようにして取得
+    git clone --branch v1.3 https://github.com/root-project/cling.git
+    git clone --branch cling-latest https://github.com/root-project/llvm-project.git
+
+
+# ファイル名 qtcling でシェルスクリプトを作成してください。
+
+* macOS、Linux、Windows Cygwin で動かします。
+* プラットフォームは uname で判断
+* コマンドラインオプション -c
+
+** オプション -c 指定 ありの場合に以下のスクリプトをプラットフォームに合わせて
+   起動 (exec)
+
+    cqtcling.linux
+    cqtcling.macos
+    cqtcling.win
+
+** オプション -c 指定 なしの場合に以下のスクリプトをプラットフォームに合わせて
+   起動 (exec)
+
+    iqtcling.linux
+    iqtcling.macos
+    iqtcling.win
+
+* コマンドラインで渡された残りの引数を起動するスクリプトに渡す
+
+
+# 以下のスクリプトに、機能を追加してください。
+
+* run_moc.py
+
+  コマンドライン引数がない場合には、カレントディレクトリーのすべての C++ 実装
+  ファイルと、C++ ヘッダーファイルを対象ファイルにして処理する。
+
+* run_rcc.py
+
+  コマンドライン引数がない場合には、カレントディレクトリーのすべての *.qrc ファ
+  イルを対象ファイルにして処理する。
+
+* run_uic.py
+
+  コマンドライン引数がない場合には、カレントディレクトリーのすべての *.ui ファ
+  イルを対象ファイルにして処理する。
+

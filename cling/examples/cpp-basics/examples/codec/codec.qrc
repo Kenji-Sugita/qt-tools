@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>texts/text-chinese</file>
+  <file>texts/text-danish</file>
+  <file>texts/text-english</file>
+  <file>texts/text-greek</file>
+  <file>texts/text-japanese</file>
+  <file>texts/text-japanese-wrong-encoding</file>
+</qresource>
+</RCC>

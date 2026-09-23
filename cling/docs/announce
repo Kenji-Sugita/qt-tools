@@ -1,0 +1,394 @@
+C++ インタープリター Cling 上で Qt の GUI を動作できるようにしました。GUI を表示・
+操作しながら、コマンドラインで対話的に実行できます。編集と実行のサイクルを高速
+に回せるため、効率的にプログラミングできます。
+
+* Cling とは
+
+    Cling (https://root.cern.ch/cling) は、CERN(欧州原子核研究機構、
+    https://home.cern) で開発されているデータ解析環境および関連ライブラリー群
+    ROOT (https://root.cern.ch) で使われている、Clang ベースの C++ インタープ
+    リターです。
+
+    最近の Cling は llvm20 ベースであり、C++26 までの機能を利用できます。Cling
+    の前には、後藤正治氏が開発した CINT が使われていました。
+
+    Cling を使うと、C++ の機能、C++26 の機能もすぐに試せます。
+
+    名前を必要としない変数のための変数名 (Placeholder variables with no name) の例:
+
+        $ cat demo_placeholder_variable.cpp
+        // C++17 では、構造化バインディングでプレースホルダ変数 (通常は '_' と名付けら
+        // れる) を使用して、特定の要素を無視することができます。この例では、タプルの2
+        // 番目の要素を無視しながら、最初と3番目の要素を抽出します。プログラムを実行す
+        // ると、名前とスコアが出力されますが、年齢 (2番目の要素) は無視されます。出力
+        // は以下の通りです。
+
+        #include <iostream>
+        #include <tuple>
+
+        void demo_placeholder_variable()
+        {
+            auto [name, _, score] = std::tuple{"Taro", 20, 95};
+
+            std::cout << "name = " << name << "\n";
+            std::cout << "score = " << score << "\n";
+        }
+        $ qtcling -c demo_placeholder_variable.cpp 
+        name = Taro
+        score = 95
+        $ 
+
+    #embed の例:
+
+        $ cat demo_embed.cpp 
+        // このコードは、#embed ディレクティブを使用してテキストファイルの内容を直接コ
+        // ンパイルされたバイナリに含める方法を示しています。message.txt の内容は、符
+        // 号なし文字の配列として埋め込まれ、その後コンソールに出力されます。コンパイ
+        // ルして実行する前に、このソースコードと同じディレクトリに message.txt ファイ
+        // ルを作成し、いくつかのテキスト内容を追加してください。message.txt の内容が
+        // コンソールに表示されるのを確認してください。
+
+        #include <iostream>
+
+        const unsigned char message[] = {
+        #embed "message.txt"
+        };
+
+        void demo_embed()
+        {
+            for (unsigned char ch : message) {
+                std::cout << ch;
+            }
+            std::cout << "\n";
+        }
+        $ cat message.txt 
+        Brown fox jumps over the lazy dog.
+        $ qtcling -c demo_embed.cpp 
+        Brown fox jumps over the lazy dog.
+
+        $ 
+
+    このように、手軽に C++ コードを実行できます。
+
+    C++26 への対応状況は最後に示します。
+
+* Cling を C++ 開発に適用する意味
+
+    1. 試行錯誤を速くできること
+
+       小さなコード片をその場で実行できるため、ビルド/実行の往復を減らせます。
+
+    2. API の確認がしやすいこと
+
+       関数、クラス、テンプレート、標準ライブラリー、外部ライブラリーの使い方を、
+       短いコードで即座に試せます。
+
+    3. 設計のたたき台を素早く作れること
+
+       クラス設計、関数インターフェース、アルゴリズムの流れを、完成前に対話的に
+       検証できます。
+
+    4. デバッグの補助になること
+
+       問題のある処理を最小例に切り出し、その場で再現や観察をしやすくなります。
+
+    5. 学習用途に向いていること
+
+       C++ の文法、テンプレート、ラムダ式、標準ライブラリーの挙動を、一行ずつ確
+       かめながら学べます。
+
+    6. ライブラリー調査に向いていること
+
+       ヘッダーファイルを読み込み、型、関数、戻り値、暗黙変換などを実験的に確認
+       できます。
+
+    7. プロトタイピングに向いていること
+
+       GUI、数値計算、文字列処理、データ変換などの小規模な試作を短時間で進めら
+       れます。
+
+    8. 既存コードの理解を助けること
+
+       断片を取り出して動かし、どの式がどの値になるかを確認しながら読めます。
+
+    9. ビルドシステム依存を一時的に減らせること
+
+       本格的な CMake/qmake の設定に入る前に、コード自体の成立性を先に確認でき
+       ます。
+
+    10. 対話的な検証ができること
+
+        値を変えながら関数を何度も呼び、境界条件や例外的な入力をすぐ試せます。
+
+    11. C++ でも REPL 的な開発体験を得られること
+
+        Python などに近い反復開発の感覚を、一部の C++ 作業でも得られます。
+
+    12. 小さなユーティリティー作成に便利なこと
+
+        一時的な変換、解析、確認処理を、正式なアプリケーション化をせずに書けま
+        す。
+
+    13. 性能以外の正しさを先に確認しやすいこと
+
+        まず仕様どおりに動くかを対話的に確かめ、その後で最適化に進めます。
+
+    14. 実験コードを正式コードへ育てやすいこと
+
+        Cling で試したコードを整理して、通常の .cpp/.h に移しやすい場合がありま
+        す。
+
+    15. ただし限界もあること
+
+        大規模開発、完全な再現性、複雑なビルド生成、最終的な最適化確認には、通
+        常のコンパイル環境の方が適しています。
+
+    要するに、Cling の意味は「C++ の確認/実験/試作を速くすること」です。一方で、
+    製品向けの最終開発を置き換えるものではなく、前段の探索を速める道具として使
+    うのが最も有効です。
+
+* Cling を Qt 開発に適用する意味
+
+    1. 小さく試す
+
+       * API の挙動確認
+       * プロパティー変更
+       * レイアウト調整
+       * シグナル/スロット接続確認
+
+    2. 実行中に作る
+
+       * ウィジェットをその場で生成
+       * モデル/データを差し替え
+       * スタイルを変える
+
+    3. 調べる
+
+       * オブジェクトツリー確認
+       * メタオブジェクト確認
+       * パレット/フォント/サイズヒント確認
+
+    4. 試作品を素早く作る
+
+       * UI 案のラフ作成
+       * 画面遷移の検証
+       * 可視化実験
+       * ミニツール作成
+
+    5. 教育/検証/デバッグに使う
+
+       * Qt API 学習
+       * 不具合の切り分け
+       * 再現コードの最小化
+       * 挙動比較
+
+* Cling で Qt を使う
+
+    Cling 上で Qt の GUI を動作させられるようにしました。GUI の表示や操作を行い
+    ながら、コマンドラインで対話できます。
+
+    対話を行わない場合でも、Cling に Qt のヘッダーやライブラリーをコマンドライ
+    ンオプションで指定すれば利用できます。しかし、対話的に使えるようになると利
+    便性が大きく高まり、開発効率も向上します。
+
+    この対話を実現するために、Cling に修正を加えています。
+
+    具体的には、Cling に定期的にコールバックを呼び出す機能を追加し、
+    QCoreApplication::processEvents() を呼び出すことで、GUI と対話を両立させて
+    います。
+
+        void processQtEventsPeriodically()
+        {
+            if (QCoreApplication::instance() == nullptr) {
+                return;
+            }
+
+            QCoreApplication::processEvents();
+        }
+
+    この実装でも、アイドル時の CPU 使用率は約 3% であり、GUI の描画速度や操作
+    性は、実行形式と同等です。
+
+* バッチ実行
+
+    QApplication::exec() を呼び出して使う場合は、Cling に Qt のヘッダーとライ
+    ブラリーを指定するだけで実行できます。以下はシェルスクリプトの抜粋です。
+
+        cling_path=/usr/local/cling/bin/cling
+
+        "$cling_path" \
+            -std=c++2c \
+            -I"$qt_core_header_path" \
+            -I"$qt_gui_header_path" \
+            -I"$qt_widgets_header_path" \
+            -I"${dev_root}/include" \
+            -I"${dev_root}/src" \
+            -F"$qt_framework_path" \
+            "$qt_core_library" \
+            "$qt_gui_library" \
+            "$qt_widgets_library" \
+            "$@" \
+            "$program_path"
+
+    実行例:
+
+        $ cat hello.cpp
+        #include <QtWidgets/QtWidgets>
+
+        void hello()
+        {
+            int argc = 1;
+            char appName[] = "qtcling";
+            char* argv[] = {appName, nullptr};
+
+            QApplication app(argc, argv);
+
+            QWidget window{};
+            auto topLayout = new QVBoxLayout(&window);
+
+            auto button = new QPushButton{"Quit"};
+            topLayout->addWidget(button);
+            QObject::connect(button, &QPushButton::clicked, &app, &QApplication::quit);
+
+            window.show();
+
+            app.exec();
+        }
+        $ qtcling -c hello.cpp
+
+    ビルドやコンパイルを事前に行わずに実行できるため、コードの編集と実行を繰り
+    返す開発がしやすくなります。
+
+* 対話的実行
+
+    対話的な実行例です。
+
+        $ cat button.cpp
+        #include <QPushButton>
+        #include <QVBoxLayout>
+        #include <QDebug>
+
+        QPushButton* create_button() {
+            auto window = new QWidget{};
+            auto topLayout = new QVBoxLayout{window};
+
+            auto button = new QPushButton("OK?");
+            QObject::connect(button, &QPushButton::clicked, []() { qDebug() << "OK?"; });
+            topLayout->addWidget(button);
+            topLayout->setAlignment(button, Qt::AlignHCenter);
+
+            window->show();
+            window->raise();
+            window->activateWindow();
+
+            return button;
+        }
+
+        auto button = create_button();
+        $ qtcling
+        [cling]$ .L qtgui.cpp
+        [cling]$ .L button.cpp
+        [cling]$ qPrintable(button->text())
+        (const char *) "OK?"
+        [cling]$ button->setText("Hello!");
+        [cling]$
+
+    このように、GUI を操作しながら対話できます。
+
+    別の実行方法として、以下のように直接入力することもできます。
+
+        [cling]$ qtcling
+        [cling]$ #include <QApplication>
+        [cling]$ #include <QPushButton>
+        [cling]$ int argc = 0;
+        [cling]$ char** argv = {nullptr};
+        [cling]$ QApplication app(argc, argv);
+        [cling]$ auto button = new QPushButton("OK");
+        [cling]$ QObject::connect(button, &QPushButton::clicked, []() { qDebug() << "OK?"; });
+        [cling]$ button->show();
+        [cling]$ app.exec();
+
+    ただし、こちらは QApplication::exec() を呼び出すと対話的な操作はできなくな
+    ります。
+
+* 利用可能なプラットフォーム
+
+    1. 対話的に利用可能
+
+       macOS、Linux。Windows は対応中です。
+
+    2. バッチ実行で利用可能
+
+       macOS、Linux、Windows。
+
+* Cling の C++26 対応
+
+    機能チェックの結果は以下のとおりです。
+
+        $ ./check-cling-cpp26-summary.sh
+        === cling executable ===
+        /usr/local/cling/bin/cling
+
+        === cling execution ===
+        OK: cling -std=c++2c で実行できました
+
+        === summary ===
+        OK: __cplusplus = 202400
+        OK: Pack Indexing macro は 202311 です
+        OK: user-generated static_assert messages macro は 202306 です
+        INFO: __cpp_structured_bindings = 202403
+        OK: Structured Bindings の C++26 拡張の一部が確認できます
+        OK: Variadic friends macro は 202403 です
+        INFO: Trivial Relocatability は未対応です
+        OK: user-generated static_assert message の実コードが通りました
+        OK: Pack Indexing の実行時アクセスが通りました
+        OK: Pack Indexing の型パック確認が通りました
+        OK: structured binding declaration as a condition の実コードが通りました
+
+        === raw RESULT lines ===
+        RESULT:__cplusplus=202400
+        RESULT:__cpp_pack_indexing=202311
+        RESULT:__cpp_static_assert=202306
+        RESULT:__cpp_structured_bindings=202403
+        RESULT:__cpp_variadic_friend=202403
+        RESULT:__cpp_trivial_relocatability=undefined
+        RESULT:static_assert_message=ok
+        RESULT:pack_indexing_runtime_first=10
+        RESULT:pack_indexing_runtime_third=30
+        RESULT:pack_indexing_type=ok
+        RESULT:structured_binding_condition=ok
+        $
+
+    Cling は、OS にインストールされている標準ライブラリーを使用します。したがっ
+    て、C++26 の機能をどこまで使えるかは、インストールされている標準ライブラ
+    リーの実装に依存します。Boost などの外部ライブラリーについても同様です。
+
+* ビルド条件
+
+    OS にインストールしてあるライブラリーに依存しているため、インストールした
+    Cling を配布できるようにはなっていません。現時点では、ビルドが必要です。
+
+    macOS:
+
+        Xcode 15.1 と Xcode 26.1.1 でビルドできています。
+
+        libzstd と libedit が必要です。MacPorts では zstd と libedit が Port
+        で、Homebrew では zstd と libedit Formula をインストールしてからビルド
+        します。
+
+    Linux:
+
+        Ubuntu 24.04、GCC 14.2.0 でビルドできています。
+
+        Ubuntu ならば libzstd-dev と libedit-dev のインストールが必要です。
+
+    Windows:
+
+        MSVC 2026 が必要です。MSVC 2022 では足りないヘッダーファイルがありビル
+        ドできません。
+
+        libedit がないため REPL では文字の入力と削除のみです。vcpkgの libedit
+        は MSVC 64bit サポートしていないためビルドできないので、修正を考えてい
+        ます。
+
+    ビルド時間は、20 分〜1 時間半かかっています。
