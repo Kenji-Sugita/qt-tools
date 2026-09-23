@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a4c46"/>
+      <stop offset="0.25" stop-color="#171815"/>
+      <stop offset="1" stop-color="#050605"/>
+    </linearGradient>
+    <linearGradient id="dial" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe999"/>
+      <stop offset="0.62" stop-color="#f4bf4c"/>
+      <stop offset="1" stop-color="#c77c18"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="56" y="130" width="912" height="764" rx="92" fill="url(#body)"/>
+  <rect x="82" y="158" width="860" height="700" rx="70" fill="none" stroke="#030303" stroke-width="32"/>
+  <rect x="112" y="194" width="800" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+
+  <g transform="translate(134 310)">
+    <rect x="0" y="0" width="340" height="310" rx="30" fill="#050505"/>
+    <rect x="26" y="34" width="288" height="222" rx="24" fill="url(#dial)"/>
+    <path d="M64 170 C126 112 220 98 282 134" fill="none" stroke="#11140d" stroke-width="14" stroke-linecap="round"/>
+    <path d="M242 126 C262 130 276 134 296 146" fill="none" stroke="#ba140e" stroke-width="14" stroke-linecap="round"/>
+    <line x1="170" y1="238" x2="70" y2="172" stroke="#b5150f" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="170" cy="238" r="25" fill="#2d2b21" stroke="#0f0f0c" stroke-width="10"/>
+    <text x="170" y="206" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700" fill="#11140d">VU</text>
+  </g>
+
+  <g transform="translate(550 310)">
+    <rect x="0" y="0" width="340" height="310" rx="30" fill="#050505"/>
+    <rect x="26" y="34" width="288" height="222" rx="24" fill="url(#dial)"/>
+    <path d="M64 170 C126 112 220 98 282 134" fill="none" stroke="#11140d" stroke-width="14" stroke-linecap="round"/>
+    <path d="M242 126 C262 130 276 134 296 146" fill="none" stroke="#ba140e" stroke-width="14" stroke-linecap="round"/>
+    <line x1="170" y1="238" x2="244" y2="126" stroke="#b5150f" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="170" cy="238" r="25" fill="#2d2b21" stroke="#0f0f0c" stroke-width="10"/>
+    <text x="170" y="206" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="700" fill="#11140d">VU</text>
+  </g>
+
+  <rect x="144" y="700" width="736" height="42" rx="21" fill="#000000" opacity="0.55"/>
+</svg>

@@ -1,0 +1,6 @@
+cmake --build build --target VuStereo
+macdeployqt build/VuStereo.app
+codesign --force --deep --timestamp=none \
+  --sign "vu-stereo Local Code Signing" \
+  build/VuStereo.app
+codesign --verify --deep --strict --verbose=2 build/VuStereo.app
