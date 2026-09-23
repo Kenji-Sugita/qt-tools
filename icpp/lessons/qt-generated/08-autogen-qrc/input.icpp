@@ -1,0 +1,8 @@
+.autogen on
+.e widget.cpp
+.defs
+.files
+static auto w = go();
+w->show();
+w->raise();
+.quit

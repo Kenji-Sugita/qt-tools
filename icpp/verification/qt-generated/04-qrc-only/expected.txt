@@ -1,0 +1,11 @@
+生成されるファイル:
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- Added include path: .
+- Added:
+- hello from qrc
+
+手動確認:
+- resource path `:/data/message.txt` を読める
+- `qrc_resources.cpp` は `widget.cpp` から include する。`.add` で直接登録しない

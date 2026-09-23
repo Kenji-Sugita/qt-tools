@@ -1,0 +1,13 @@
+.e widget.h
+.e widget.cpp
+static auto first = go();
+first->show();
+.e message.txt
+.gen
+static auto second = go();
+second->show();
+second->raise();
+.clean
+Y
+.generated
+.quit

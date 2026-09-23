@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/data">
+    <file>message.txt</file>
+  </qresource>
+</RCC>
+

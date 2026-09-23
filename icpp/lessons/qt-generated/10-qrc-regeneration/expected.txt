@@ -1,0 +1,10 @@
+生成されるファイル:
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- function QWidget *go()
+
+手動確認:
+- 1 回目の `go()->show()` で `first resource` が表示される
+- 2 回目の `.gen` 後の `go()->show()` で `second resource` が表示される
+- 画面のない環境では `show()` の確認はできない

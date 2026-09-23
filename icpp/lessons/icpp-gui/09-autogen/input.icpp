@@ -1,0 +1,12 @@
+.autogen
+.autogen on
+.status
+.e widget.h
+.e widget.cpp
+static auto w = go();
+w->show();
+w->raise();
+.clean
+Y
+.generated
+.quit

@@ -1,0 +1,9 @@
+.i .
+.add widget.cpp
+.! printf 'first resource\n' > message.txt
+.gen
+.p resourceText()
+.! printf 'second resource\n' > message.txt
+.gen
+.p resourceText()
+.quit

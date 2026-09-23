@@ -1,0 +1,9 @@
+生成されるファイル:
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- first resource
+- second resource
+
+手動確認:
+- `.gen` の再実行後に `.p resourceText()` が変更後の resource 内容を返す

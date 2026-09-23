@@ -1,0 +1,10 @@
+出力に含まれるべき文字列:
+- no member named 'messageLabel'
+- titleLabel
+
+生成されること:
+- ui_form.h
+
+手動確認:
+- `.uiinfo form.ui` で実際の objectName を確認する
+- `widget.cpp` の `messageLabel` を `titleLabel` に直すと `.gen` が通る

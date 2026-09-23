@@ -1,0 +1,7 @@
+.i .
+.! lrelease app_ja.ts
+.add widget.cpp
+.gen
+.defs
+.p translatedText()
+.quit

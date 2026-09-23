@@ -1,0 +1,13 @@
+.e widget.h
+.e widget.cpp
+.generated
+.! ls -l moc_widget.cpp
+.! cat moc_widget.cpp
+.gen
+static auto w = go();
+w->show();
+w->raise();
+.clean
+Y
+.generated
+.quit

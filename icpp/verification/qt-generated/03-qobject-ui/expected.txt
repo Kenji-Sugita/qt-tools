@@ -1,0 +1,11 @@
+生成されるファイル:
+- moc_widget.cpp
+- ui_form.h
+
+出力に含まれるべき文字列:
+- Added include path: .
+- class Widget
+- function Widget *go()
+
+手動確認:
+- `auto w = go(); w->show();` でボタン付き widget が表示される

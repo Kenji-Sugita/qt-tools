@@ -1,0 +1,18 @@
+icpp 0.2.0 を社内向けに公開します。icpp は cling / qtcling を使いやすくする対話
+型 C++ REPL で、今回が初めて実用的に使える区切りの版です。macOS 版です。順次
+Linux 版、Windows 版も対応予定です。
+
+cling / qtcling のラッパーとして実装されており、cling / qtcling のクラス定義の問
+題を回避するために、クラス定義を含む複数ファイルの管理や再評価をサポートしていま
+す。icpp は、cling / qtcling をサブプロセスで起動するので、クラッシュしても icpp
+自体は影響を受けません。
+
+Qt/C++ の小さな実験、Copilot で生成したコードの確認、クラス定義を含む複数ファイ
+ルの再評価に使えます。.add/.files/.r による複数ファイル管理、.copy/.paste、未保
+存確認、値や型の確認、Qt widget の確認と一括終了を整備しました。
+
+配布物には README、CHANGELOG、ページ番号付き USER_GUIDE.pdf、サンプルコード、ビ
+ルド用 CMakeLists.txt を含めています。まずは小さな Qt 型の確認や UI 部品の試作か
+ら利用してください。
+
+詳しい使い方は USER_GUIDE.pdf を参照してください。

@@ -1,0 +1,6 @@
+.i .
+.add widget.cpp
+.gen
+.defs
+.p resourceText()
+.quit

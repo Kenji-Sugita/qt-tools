@@ -1,0 +1,11 @@
+生成されるファイル:
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- Autogen: on
+- Autogen: run_all
+- function QWidget *go()
+
+手動確認:
+- `static auto w = go(); w->show();` で resource の内容が表示される
+- `.gen` を明示せず、`.autogen on` と `.e widget.cpp` の再評価で rcc が走る

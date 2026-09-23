@@ -1,0 +1,9 @@
+生成されるファイル:
+- ui_form.h
+
+出力に含まれるべき文字列:
+- Generated
+- function QWidget *go()
+
+手動確認:
+- `static auto w = go(); w->show();` で `form.ui` のラベルを持つ widget が表示される

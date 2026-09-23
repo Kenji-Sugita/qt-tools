@@ -1,0 +1,8 @@
+.i .
+.add widget.cpp
+.gen
+.defs
+.x auto w = go();
+.x w->deleteLater();
+.quit
+

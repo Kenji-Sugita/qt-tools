@@ -1,0 +1,11 @@
+生成されるファイル:
+- moc_widget.cpp
+
+出力に含まれるべき文字列:
+- Added include path: .
+- Generated
+- class Widget
+- function Widget *go()
+
+手動確認:
+- `auto w = go(); w->show();` で赤い正方形の widget が表示される

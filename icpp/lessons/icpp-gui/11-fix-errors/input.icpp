@@ -1,0 +1,6 @@
+.designer form.ui
+.gen
+.e widget.h
+.e widget.cpp
+.uiinfo form.ui
+.quit

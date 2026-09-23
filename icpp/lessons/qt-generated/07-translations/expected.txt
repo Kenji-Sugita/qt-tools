@@ -1,0 +1,15 @@
+生成されるファイル:
+- app_ja.qm
+- qrc_translations.cpp
+
+出力に含まれるべき文字列:
+- lrelease
+- function QWidget *go()
+
+手動確認:
+- `static auto w = go(); w->show();` で翻訳後の `こんにちは` が表示される
+- `lrelease` の後に `.gen` を実行し、rcc が最新の `.qm` を含む
+- `qrc_translations.cpp` は `widget.cpp` から include する。`.add` で直接登録しない
+
+メモ:
+- 現時点では `lrelease` は `.gen` に統合されていない

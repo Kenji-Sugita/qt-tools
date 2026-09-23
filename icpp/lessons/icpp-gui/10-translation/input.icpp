@@ -1,0 +1,14 @@
+.e widget.h
+.e widget.cpp
+.! lupdate widget.cpp -ts app_ja.ts
+.linguist app_ja.ts
+.! lrelease app_ja.ts
+.qrc translations.qrc
+.gen
+.e widget.cpp
+static auto w = go();
+w->show();
+w->raise();
+.clean
+Y
+.quit

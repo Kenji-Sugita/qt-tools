@@ -1,0 +1,7 @@
+出力に含まれるべき文字列:
+- Edited: form.ui
+- Warning: Qt generated files may be needed.
+- No C++ files or edit buffer to run.
+
+出力に含まれてはいけない文字列:
+- No files or edit buffer to run.

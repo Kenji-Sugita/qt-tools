@@ -1,0 +1,577 @@
+<meta charset="UTF-8">
+<h2 id="icpp_qtcling" class="ttlCenter">
+icpp + qtcling 活用 - Qt/C++ を対話的に試す開発スタイル
+</h2>
+
+<p style="text-align: right;">（掲載 2026年6月10日）</p>
+
+<div><img src="/Portals/0/images/qt/column/pexels-mikhail-nilov-7988747.png" alt="Qt 暗黙の共有" /></div>
+
+<!--
+図の準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-qtcling-overview.png
+内容: icpp が qtcling を子プロセスとして起動し、編集、再実行、生成、検査を支援する構成図。
+画面キャプチャではなく、矢印付きの簡単な構成図にする。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-qtcling-overview.png" alt="icpp が qtcling を起動し、編集、再実行、生成、検査を支援する構成図" /></div>
+<p class="alignCenter"><small>icpp + qtcling の構成</small></p>
+
+<p>
+icpp と qtcling は、SRA が Qt/C++ の開発や調査を効率化するために開発した対話型ツールです。
+qtcling は C++ インタープリターである Cling から Qt を使うための環境であり、
+icpp は qtcling を扱いやすくする REPL ラッパーです。
+REPL は Read-Eval-Print Loop の略で、入力したコードをその場で評価し、結果を表示し、次の入力へ戻る対話型の実行環境です。
+Qt の型や QWidget をその場で試しながら、
+編集、再実行、生成物の更新、オブジェクトの確認を行えるようにしています。
+これにより、Qt と C++ の挙動を小さく確かめながら学べるため、習得の促進にも役立ちます。
+</p>
+
+<p>
+Qt/C++ の開発では、短い確認でもソースを編集し、ビルドし、実行し直す流れになりがちです。
+icpp + qtcling は、その確認作業を REPL 上で小さく回せるようにすることを目的としています。
+</p>
+
+<p>
+icpp + qtcling は、デモ用に作ったツールではありません。
+製作者自身が Qt/C++ のコードを確認し、QWidget の挙動を調べ、Designer UI やリソースを試すために日常的に使っている作業道具です。
+小さく試してから本体プロジェクトへ戻す、という流れを短くするために機能を整えてきました。
+</p>
+
+<p>
+この記事では、qtcling が Qt/C++ を対話的に動かす基盤として何を担い、
+icpp がその上にどのような作業支援を追加しているのかを整理します。
+</p>
+
+<div class="borderBox green">
+<p class="alignCenter"><strong><span style="font-size: 18px;">目次</span></strong></p>
+<ul>
+  <li><a href="#why_interactive_qt_cpp" target="_blank">なぜ Qt/C++ に対話環境が必要なのか</a></li>
+  <li><a href="#what_is_qtcling" target="_blank">qtcling とは何か</a></li>
+  <li><a href="#what_is_icpp" target="_blank">icpp とは何か</a></li>
+  <li><a href="#requirements" target="_blank">利用前提</a></li>
+  <li><a href="#what_icpp_qtcling_can_do" target="_blank">icpp + qtcling でできること</a></li>
+  <li><a href="#minimal_usage" target="_blank">最小の使い方: Qt 型、値、型名をその場で確認する</a></li>
+  <li><a href="#interactive_widget" target="_blank">QWidget を表示したまま REPL を続ける</a></li>
+  <li><a href="#generated_files" target="_blank">Qt 生成物を扱う: .gen で必要なファイルを更新する</a></li>
+  <li><a href="#tool_workflow" target="_blank">.ui / .qrc / .ts を専用ツールで編集する</a></li>
+  <li><a href="#inspect_widgets" target="_blank">.inspect で QWidget / QObject を調べる</a></li>
+  <li><a href="#qtcreator_workflow" target="_blank">Qt Creator と併用する</a></li>
+  <li><a href="#scope" target="_blank">使いどころと対象外</a></li>
+  <li><a href="#summary" target="_blank">まとめ</a></li>
+</ul>
+</div>
+
+<br />
+
+<h3 id="why_interactive_qt_cpp">なぜ Qt/C++ に対話環境が必要なのか</h3>
+
+<p>
+C++ / Qt の開発では、短い API の確認や小さな GUI 部品の試作でも、編集、ビルド、実行の往復になりがちです。
+特に Qt では QObject、シグナル / スロット、プロパティー、リソース、翻訳、Designer UI など、
+実際に動かして確認したい対象が多くあります。
+</p>
+
+<!--
+図の準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-qtcling-workflow-comparison.png
+内容: 左に通常の「編集 -> ビルド -> 実行 -> 確認」のループ、右に「REPL 入力 -> その場で確認」のループを並べる比較図。
+スクリーンショットではなく図。記事の導入なので、細かいコマンドは入れすぎない。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-qtcling-workflow-comparison.png" alt="通常の編集、ビルド、実行の流れと REPL で小さく確認する流れを比較した図" /></div>
+<p class="alignCenter"><small>確認作業のループを小さくする</small></p>
+
+<p>
+対話環境があると、調べたいことを本体プロジェクトへ入れる前に、小さな単位で確認できます。
+これは、Qt と C++ の習得、API 調査、生成されたコードの確認、GUI 部品の試作で効果があります。
+</p>
+
+<h3 id="what_is_qtcling">qtcling とは何か</h3>
+
+<p>
+qtcling は、Cling の C++ REPL から Qt を対話的に使うための環境です。
+QtCore、QtGui、QtWidgets を読み込み、REPL で Qt オブジェクトやウィジェットを作成して動かせます。
+</p>
+
+<p>
+重要なのは、Qt GUI を表示した後も REPL 入力待ち中に Qt イベントを処理できることです。
+これにより、画面上のウィジェットを操作しながら、REPL 側で状態を確認する流れを作れます。
+必要に応じて <code>setWindowTitle()</code> や <code>setText()</code> などのメソッドを呼び出し、
+表示中のウィジェットをその場で変更することもできます。
+</p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/qtcling-repl-widget-running-console.png
+内容: 端末で qtcling または icpp[qtcling] が入力待ちになっている画面。
+GUI 表示後も REPL がブロックしていないことが分かる入力待ち状態にする。
+alt は下の img のままでよい。
+-->
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/qtcling-repl-widget-running-hello.png
+内容: qtcling または icpp[qtcling] から表示した Hello ウィジェットの画面。
+REPL から作成した QWidget が画面に表示されていることが分かる構図にする。
+alt は下の img のままでよい。
+-->
+<div style="display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+  <div style="flex: 1 1 420px; max-width: 560px;">
+    <img src="/Portals/0/images/qt/column/icpp/icpp-widget-and-repl-console.png" alt="qtcling 上で QWidget を表示したまま REPL 入力を続けている端末画面" style="width: 100%; height: auto;" />
+    <p class="alignCenter"><small>QWidget を表示したまま REPL 入力を続ける</small></p>
+  </div>
+  <div style="flex: 0 1 320px; max-width: 360px;">
+    <img src="/Portals/0/images/qt/column/icpp/qtcling-repl-widget-running-hello.png" alt="qtcling から表示した Hello ウィジェットの画面" style="width: 100%; height: auto;" />
+    <p class="alignCenter"><small>REPL から表示した QWidget</small></p>
+  </div>
+</div>
+
+<p>
+Linux / WSL では、REPL 入力待ち中に Qt イベントを処理するために libedit の行編集対応が重要です。
+Ubuntu / WSL では、qtcling をビルドする前に <code>libedit-dev</code> を入れておくと、
+ボタンクリックなどの GUI イベントを REPL 入力待ち中にも処理しやすくなります。
+</p>
+
+<h3 id="what_is_icpp">icpp とは何か</h3>
+
+<p>
+icpp は、C++ を自分で解釈するツールではありません。
+cling または qtcling を子プロセスとして起動し、その上に編集、再実行、複数ファイル管理、生成物更新、
+表示補助などの REPL 作業支援を追加するラッパーです。
+</p>
+
+<p>
+既定では qtcling を使うため、QString、QVariant、QWidget などの Qt 型をすぐ試せます。
+標準で読み込まれていない Qt モジュールも、必要に応じて追加して試せます。
+たとえばネットワーク処理を確認したい場合は、Qt Network のヘッダーやライブラリーを追加して使います。
+Qt を使わない C++ の確認では、cling を明示して使うこともできます。
+</p>
+
+<h3 id="requirements">利用前提</h3>
+
+<p>
+この記事で扱う対象は、icpp 1.0.1 と qtcling 1.0.1 です。
+icpp は macOS または Linux で使うことを前提にしています。
+Windows では Windows ネイティブ版ではなく、Windows 11 の WSL2 / WSLg 上の Linux 環境で使う方針です。
+Windows ネイティブ版は今後の実装予定です。
+Qt は Qt 6 を前提にし、CMake 3.16 以降、動作する cling または qtcling が必要です。
+</p>
+
+<p>
+qtcling を使う場合は、icpp、qtcling、Qt の開発ツール、.inspect で使う補助ライブラリーなどを、
+同じ Qt 6.x.y の環境で揃える運用を推奨します。
+Qt 6 同士でもマイナーバージョンが違う Qt ライブラリーや生成物を同じ qtcling プロセスに混ぜると、
+不安定になる可能性があります。
+</p>
+
+<p>
+入力編集とコマンド履歴には GNU Readline または libedit を使います。
+Ubuntu 24.04 や WSL2 では、ビルド前に <code>libedit-dev</code> を入れておくと、
+矢印キーによる編集や履歴を使えるようになります。
+見つからない場合は標準入力にフォールバックします。
+</p>
+
+<p>
+<code>.inspect</code> を使う場合は、PropertyEditor の共有ライブラリーと、
+ObjectPicker / ObjectTree / PropertyEditor 関連ヘッダーを icpp 実行ファイルから見える位置に置きます。
+Linux / WSL2 では <code>property_editor.so</code>、macOS では <code>property_editor.dylib</code> を使います。
+必要に応じて <code>ICPP_PROPERTY_EDITOR_LIB</code> と <code>ICPP_PROPERTY_EDITOR_INCLUDE</code> で明示できます。
+</p>
+
+<h3 id="what_icpp_qtcling_can_do">icpp + qtcling でできること</h3>
+
+<p>
+icpp + qtcling は、Qt/C++ の小さな確認を REPL 上で進めるための作業環境です。
+代表的な使い方は次のとおりです。
+</p>
+
+<p>
+典型的には、数行の QWidget をファイルに書き、REPL から呼び出す入口として <code>go()</code> を用意し、
+<code>go()</code> で作成して <code>show()</code> します。
+表示した後も REPL に戻れるため、ウィンドウを見ながら状態を確認できます。
+</p>
+
+<p>
+具体的な <code>go()</code> の定義例と実行手順は、後の「QWidget を表示したまま REPL を続ける」で示します。
+Qt 生成物が必要な場合は、<code>.gen</code> で更新してから再評価します。
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>目的</th>
+      <th>主なコマンド</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>値を表示する</td>
+      <td><code>.p</code></td>
+    </tr>
+    <tr>
+      <td>型を確認する</td>
+      <td><code>.ptype</code></td>
+    </tr>
+    <tr>
+      <td>ファイルを編集して再実行する</td>
+      <td><code>.e</code>, <code>.add</code>, <code>.r</code></td>
+    </tr>
+    <tr>
+      <td>Qt 生成物を更新する</td>
+      <td><code>.gen</code>, <code>.generated</code>, <code>.qt</code></td>
+    </tr>
+    <tr>
+      <td>表示中のウィジェットを調べる</td>
+      <td><code>.widgets</code>, <code>.inspect</code></td>
+    </tr>
+    <tr>
+      <td>環境を確認する</td>
+      <td><code>.doctor</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="minimal_usage">最小の使い方: Qt 型、値、型名をその場で確認する</h3>
+
+<p>
+短い確認では、Qt 型の値を作り、<code>.p</code> で表示し、<code>.ptype</code> で型を確認します。
+たとえば QStringList や QVariant の内容をすぐに確認できます。
+</p>
+
+<div class="sample-code-background">
+<div class="sample-code">
+<pre><code>icpp[qtcling]&gt; using namespace Qt::Literals::StringLiterals;
+icpp[qtcling]&gt; QLatin1StringView key = "Content-Type"_L1;
+icpp[qtcling]&gt; .ptype key
+QLatin1StringView (meta: QLatin1String)
+icpp[qtcling]&gt; QUtf8StringView view = u8"example";
+icpp[qtcling]&gt; .ptype view
+QUtf8StringView
+</code></pre>
+</div>
+</div>
+
+<p>
+型の表示は、Qt の内部実体名ではなく、普段コードで使う公開名を優先します。
+そのため、REPL で確認した結果を実際のソースコードへ戻しやすくなります。
+</p>
+
+<h3 id="interactive_widget">QWidget を表示したまま REPL を続ける</h3>
+
+<p>
+icpp + qtcling では、QWidget を作成して表示した後も REPL で入力を続けられます。
+表示中のウィジェットに対してメソッドを呼んだり、状態を確認したりできます。
+</p>
+
+<p>
+スクリーンショットでは、次のような小さな <code>Widget</code> クラスを用意しています。
+<code>go()</code> は REPL から呼び出すための入口で、作成したウィジェットを返すだけにします。
+</p>
+
+<div class="sample-code-background">
+<div class="sample-code">
+<pre><code>// widget.cpp
+#include &lt;QHBoxLayout&gt;
+#include &lt;QLabel&gt;
+#include &lt;QLineEdit&gt;
+#include &lt;QPushButton&gt;
+#include &lt;QVBoxLayout&gt;
+#include &lt;QWidget&gt;
+
+class Widget : public QWidget {
+    Q_OBJECT
+
+public:
+    explicit Widget(QWidget *parent = nullptr) : QWidget(parent) {
+        titleLabel = new QLabel("Counter", this);
+        titleLabel-&gt;setAlignment(Qt::AlignCenter);
+
+        valueEdit = new QLineEdit(this);
+        valueEdit-&gt;setAlignment(Qt::AlignCenter);
+        valueEdit-&gt;setReadOnly(true);
+
+        auto *downButton = new QPushButton("Down", this);
+        auto *upButton = new QPushButton("Up", this);
+
+        connect(downButton, &amp;QPushButton::clicked, this, [this]() {
+            --count;
+            updateView();
+        });
+        connect(upButton, &amp;QPushButton::clicked, this, [this]() {
+            ++count;
+            updateView();
+        });
+
+        auto *layout = new QVBoxLayout(this);
+        layout-&gt;addWidget(titleLabel);
+        layout-&gt;addWidget(valueEdit);
+
+        auto *buttons = new QHBoxLayout;
+        buttons-&gt;addWidget(downButton);
+        buttons-&gt;addWidget(upButton);
+        layout-&gt;addLayout(buttons);
+
+        resize(360, 360);
+        updateView();
+    }
+
+private:
+    void updateView() {
+        valueEdit-&gt;setText(QString::number(count));
+        setWindowTitle(QString("Counter: %1").arg(count));
+    }
+
+    QLabel *titleLabel = nullptr;
+    QLineEdit *valueEdit = nullptr;
+    int count = 0;
+};
+
+Widget *go() {
+    return new Widget;
+}
+
+#include "widget.moc"
+</code></pre>
+</div>
+</div>
+
+<!--
+<div class="sample-code-background">
+<div class="sample-code">
+<pre><code>icpp[qtcling]&gt; .e widget.cpp
+icpp[qtcling]&gt; .gen
+icpp[qtcling]&gt; .r
+icpp[qtcling]&gt; static auto w = go();
+icpp[qtcling]&gt; w-&gt;show();
+icpp[qtcling]&gt; .widgets
+</code></pre>
+</div>
+</div>
+-->
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-widget-and-repl-console.png
+内容: icpp[qtcling] 端末で .widgets の出力が見えている画面。
+REPL から GUI 状態を扱えることが伝わる端末側のスクリーンショットにする。
+alt は下の img のままでよい。
+-->
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-widget-and-repl-counter.png
+内容: icpp から表示した Counter ウィジェットの画面。
+.widgets で確認している対象の GUI が分かるスクリーンショットにする。
+alt は下の img のままでよい。
+-->
+<div style="display: flex; gap: 16px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+  <div style="flex: 1 1 420px; max-width: 560px;">
+    <img src="/Portals/0/images/qt/column/icpp/qtcling-repl-widget-running-console.png" alt="icpp で QWidget を表示し、端末から .widgets で表示中のウィジェットを確認している端末画面" style="width: 100%; height: auto;" />
+    <p class="alignCenter"><small>.widgets で表示中の QWidget を確認する</small></p>
+  </div>
+  <div style="flex: 0 1 320px; max-width: 360px;">
+    <img src="/Portals/0/images/qt/column/icpp/icpp-widget-and-repl-counter.png" alt="icpp から表示した Counter ウィジェットの画面" style="width: 100%; height: auto;" />
+    <p class="alignCenter"><small>確認対象の Counter ウィジェット</small></p>
+  </div>
+</div>
+
+<h3 id="generated_files">Qt 生成物を扱う: .gen で必要なファイルを更新する</h3>
+
+<p>
+Qt の通常のコードは、C++ ソースだけでは完結しないことがあります。
+Q_OBJECT を含むクラス、Designer UI、リソースを使うコードでは、Qt が作る生成物が必要です。
+icpp では、利用者が個々の生成ツールを直接意識するのではなく、<code>.gen</code> で必要な生成物をまとめて更新します。
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>入力</th>
+      <th>生成物</th>
+      <th>主な用途</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>widget.h</code></td>
+      <td>メタオブジェクト用の C++ ファイル</td>
+      <td>シグナル / スロット、プロパティー、メタオブジェクト情報</td>
+    </tr>
+    <tr>
+      <td><code>form.ui</code></td>
+      <td>UI 用の C++ ヘッダー</td>
+      <td>Qt Designer で作成した UI の C++ ヘッダー</td>
+    </tr>
+    <tr>
+      <td><code>resources.qrc</code></td>
+      <td>リソース用の C++ ファイル</td>
+      <td>画像、テキスト、翻訳ファイルなどのリソース</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-gen-generated-files.png
+内容: .gen、.generated、.qt の実行結果が分かる端末画面。
+Qt の生成物が更新され、icpp から確認できている状態が望ましい。内部ツール名を前面に出しすぎない。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-gen-generated-files.png" alt="icpp の .gen と .generated で Qt 生成物を確認している端末画面" /></div>
+<p class="alignCenter"><small>.gen と .generated で Qt 生成物を扱う</small></p>
+
+<p>
+icpp の <code>.gen</code> は、必要な Qt 生成物を更新し、必要に応じてインタープリターを再起動して登録ファイルを評価し直します。
+クラス定義の再定義に制約がある REPL では、生成後に作り直す運用が安定します。
+</p>
+
+<h3 id="tool_workflow">.ui / .qrc / .ts を専用ツールで編集する</h3>
+
+<p>
+icpp は、Qt Designer、Qt Creator のリソースエディター、Qt Linguist を置き換えません。
+専用ツールで編集し、保存後に icpp 側で生成物を更新する流れを支援します。
+</p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-designer-workflow.png
+内容: Qt Designer で .ui を編集している画面と、icpp 側で .designer / .gen を実行している端末を組み合わせる。
+可能なら 1 枚にまとめる。難しければ Designer 画面だけでもよい。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-designer-workflow.png" alt="Qt Designer で .ui を編集し、icpp に戻って .gen を実行する流れ" /></div>
+<p class="alignCenter"><small>Qt Designer と icpp の往復</small></p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-qrc-creator-workflow.png
+内容: Qt Creator のリソースエディターで .qrc を編集している画面。
+icpp 側の .qrc creator resources.qrc または .qtc resources.qrc のコマンドも見えるとよい。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-qrc-creator-workflow.png" alt="Qt Creator のリソースエディターで .qrc を編集し、icpp で生成物を更新する流れ" /></div>
+<p class="alignCenter"><small>Qt Creator のリソースエディターと .qrc</small></p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-linguist-workflow.png
+内容: Qt Linguist で .ts を編集している画面。
+lupdate、.linguist、lrelease、.gen の流れを端末側に入れられると分かりやすい。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-linguist-workflow.png" alt="Qt Linguist で .ts を編集し、icpp で lrelease と .gen を実行する流れ" /></div>
+<p class="alignCenter"><small>Qt Linguist と翻訳リソース</small></p>
+
+<p>
+翻訳では、Qt 標準の lupdate / lrelease を明示的に実行します。
+icpp はこれらの短縮 alias を用意せず、オプションを隠さない方針です。
+</p>
+
+<h3 id="inspect_widgets">.inspect で QWidget / QObject を調べる</h3>
+
+<p>
+<code>.inspect</code> は、表示中の最上位ウィジェットを選び、PropertyEditor、Object Tree、Object Picker を使って
+QObject / QWidget の状態を確認するための機能です。
+</p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-inspect-property-editor.png
+内容: .inspect で PropertyEditor が開き、選択中ウィジェットの objectName、windowTitle、geometry などが見えている画面。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-inspect-property-editor.png" alt="icpp の .inspect で QWidget のプロパティーを PropertyEditor で確認している画面" /></div>
+<p class="alignCenter"><small>.inspect で QWidget のプロパティーを見る</small></p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-inspect-object-tree.png
+内容: Object Tree で titleLabel、previewLabel、sizeSlider、accentButton など QWidget 内の QObject 階層が表示されている画面。
+lessons/icpp-gui/12-inspect-widget のようなサンプルを使うと分かりやすい。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-inspect-object-tree.png" alt="icpp の .inspect で QWidget 内の QObject 階層を Object Tree で確認している画面" /></div>
+<p class="alignCenter"><small>.inspect の Object Tree</small></p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-inspect-picker.png
+内容: Object Picker で画面上のラベル、スライダー、ボタンなどを直接クリックして選択している画面。
+選択対象がハイライトされている瞬間が望ましい。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-inspect-picker.png" alt="icpp の Object Picker で画面上の部品を選択している画面" /></div>
+<p class="alignCenter"><small>Object Picker で画面上の部品を選ぶ</small></p>
+
+<p>
+GUI の不具合は、コードだけを読んでも分かりにくい場合があります。
+実行中の objectName、プロパティー、親子関係を直接見られると、UI と C++ 側の参照のずれを確認しやすくなります。
+</p>
+
+<h3 id="qtcreator_workflow">Qt Creator と併用する</h3>
+
+<p>
+icpp は Qt Creator の代替 IDE ではありません。
+Qt Creator はプロジェクト、CMake、Kit、補完、デバッグ、テストを担当し、
+icpp は小さな Qt/C++ 実験、確認、生成、検査を担当します。
+</p>
+
+<!--
+スクリーンショット準備メモ:
+ファイル名: /Portals/0/images/qt/column/icpp/icpp-qtcreator-side-by-side.png
+内容: Qt Creator と icpp を横に並べた画面。
+Qt Creator 側では widget.cpp などを編集し、icpp 側では .gen、.r、.inspect などを実行している状態にする。
+alt は下の img のままでよい。
+-->
+<div><img src="/Portals/0/images/qt/column/icpp/icpp-qtcreator-side-by-side.png" alt="Qt Creator と icpp を並べ、Qt Creator で編集し icpp で小さく確認している画面" /></div>
+<p class="alignCenter"><small>Qt Creator と icpp を横に置いて使う</small></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>作業</th>
+      <th>主に使う道具</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>本体プロジェクトの編集、ビルド、デバッグ、テスト</td>
+      <td>Qt Creator</td>
+    </tr>
+    <tr>
+      <td>小さな Qt/C++ API の確認</td>
+      <td>icpp + qtcling</td>
+    </tr>
+    <tr>
+      <td>.ui の編集</td>
+      <td>Qt Designer または Qt Creator</td>
+    </tr>
+    <tr>
+      <td>.qrc の編集</td>
+      <td>Qt Creator のリソースエディターまたはテキストエディタ</td>
+    </tr>
+    <tr>
+      <td>.ts の翻訳編集</td>
+      <td>Qt Linguist</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="scope">使いどころと対象外</h3>
+
+<p>
+icpp + qtcling は、Qt/C++ の小さな実験、API 確認、QWidget 試作、生成されたコードの確認、学習に向いています。
+一方で、本格的なビルドシステム、長期運用アプリの実行基盤、Qt Creator のプロジェクトモデルの代替ではありません。
+</p>
+
+<h3 id="summary">まとめ</h3>
+
+<p>
+qtcling は、Qt/C++ を REPL で動かすための基盤です。
+icpp はその上に、編集、再実行、生成、検査の作業支援を追加します。
+</p>
+
+<p>
+icpp + qtcling は、Qt Creator と競合するものではありません。
+Qt Creator で本体開発を行い、icpp + qtcling で小さな確認を素早く回すことで、
+Qt/C++ の調査、試作、学習を進めやすくします。
+</p>

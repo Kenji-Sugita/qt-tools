@@ -1,0 +1,5 @@
+.i .
+.add widget.cpp
+.gen
+.errors
+.quit

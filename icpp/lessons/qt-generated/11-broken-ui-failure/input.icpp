@@ -1,0 +1,4 @@
+.add widget.cpp
+.gen
+.uiinfo form.ui
+.quit

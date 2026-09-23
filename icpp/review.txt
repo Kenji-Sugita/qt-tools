@@ -1,0 +1,457 @@
+00-introduction:
+
+修正なし。
+
+01-first-window:
+
+修正なし。
+
+02-button-label:
+
+- 日本語にする
+
+    constructor
+
+03-button-counter:
+
+修正なし。
+
+04-slider-state:
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `Widget` class に `QSlider` と `QLabel` を持たせ、private method で表示を更新します。
+
+- 修正後
+
+    `Widget` クラスに `QSlider` と `QLabel` を持たせ、プライベートメソッドで表示を更新します。
+
+05-qobject-slot:
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `Q_OBJECT` を持つ class をヘッダーに分け、slot を使います。`.gen` で `moc_widget.cpp` を生成します。
+
+- 修正後
+
+    `Q_OBJECT` を持つ class をヘッダーに分け、スロットを使います。`.gen` で `moc_widget.cpp` を生成します。
+
+## 操作
+
+- 元の記述
+
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+
+- 修正後
+
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> .generated
+    icpp[qtcling]> .! ls -l moc_widget.cp
+    icpp[qtcling]> .! cat moc_widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+    icpp[qtcling]> .clean
+    icpp[qtcling]> .generated
+
+## 期待される結果
+
+- 元の記述
+
+    ボタンを押すたびに、slot が呼ばれてカウントが増えます。
+
+- 修正後
+
+    ボタンを押すたびに、スロットが呼ばれてカウントが増えます。
+
+## ポイント
+
+- 元の記述
+
+    `moc_widget.cpp` がまだない場合、icpp は空の placeholder で include エラーを避けることがあります。ただし本物ではないので、必ず `.gen` で生成します。
+
+- 修正後
+
+    `moc_widget.cpp` がまだない場合、icpp は空のプレースホルダーでインクルードエラーを避けることがあります。ただし本物ではないので、必ず `.gen` で生成します。
+
+06-designer-ui:
+
+# 06 Designer UI を使う
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `.ui` から `ui_form.h` を生成し、`Widget` class に組み込んで動かします。
+
+- 修正後
+
+    `.ui` から `ui_form.h` を生成し、`Widget` クラスに組み込んで動かします。
+
+## 操作
+
+- 元の記述
+
+    icpp[qtcling]> .designer form.ui
+    # Qt Designer で form.ui を保存する
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .add widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+
+- 修正後
+
+    icpp[qtcling]> .designer form.ui
+    # Qt Designer で form.ui を保存する
+    icpp[qtcling]> .gen
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+    icpp[qtcling]> .clean
+    icpp[qtcling]> .generated
+
+## 期待される結果
+
+- 元の記述
+
+    UI ファイルで配置した button と slider が表示されます。button を押すと label が変わり、slider を動かすと数値が変わります。
+
+- 修正後
+
+    UI ファイルで配置したボタンとスライダーが表示されます。ボタンを押すとラベルの表示が変わり、スライダーを動かすと数値が変わります。
+
+## ポイント
+
+- 元の記述
+
+    `form.ui` は `uic` の入力です。`ui_form.h` がまだない状態で `widget.cpp` を評価しないように、先に `.add widget.cpp` してから `.gen` します。
+
+    `.designer` は Qt Designer を開くとすぐ icpp に戻ります。UI を変更したら、Qt Designer 側で保存してから `.gen` を実行してください。
+
+- 修正後
+
+    `.designer` は Qt Designer を開くとすぐ icpp に戻ります。UI を変更したら、Qt Designer 側で保存してから `.gen` を実行してください。
+
+    `form.ui` は `uic` の入力です。`ui_form.h` がまだない状態で `widget.cpp` を編集するとエラーになります。
+
+07-resource-message:
+
+# 07 resource を使う
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `.qrc` に入れた `message.txt` を、`Widget` class の label に表示します。
+
+- 修正後
+
+    `.qrc` に入れた `message.txt` を、`Widget` クラスのラベルに表示します。
+
+## 操作
+
+- 元の記述
+
+    icpp[qtcling]> .qrc resources.qrc
+    # resources.qrc を確認して保存する
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .add widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+
+- 修正後
+
+    icpp[qtcling]> .qrc resources.qrc
+    # resources.qrc を確認して保存する
+    icpp[qtcling]> .gen
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+    icpp[qtcling]> .clean
+    icpp[qtcling]> .generated
+
+## 期待される結果
+
+- 元の記述
+
+    resource から読んだメッセージがウィンドウに表示されます。
+
+- 修正後
+
+    リソースから読んだメッセージがウィンドウに表示されます。
+
+## ポイント
+
+- 元の記述
+
+    `qrc_resources.cpp` は直接 `.add` せず、`widget.cpp` から include します。
+
+    `resources.qrc` は `rcc` の入力です。`qrc_resources.cpp` がまだない状態で `widget.cpp` を評価しないように、先に `.add widget.cpp` してから `.gen` します。
+
+    `.qrc` はエディタを開く操作です。resource file を確認したら保存して閉じ、icpp に戻って `.gen` を実行してください。
+
+- 修正後
+
+    `qrc_resources.cpp` は直接 `.add` せず、`widget.cpp` からインクルードします。
+
+    `resources.qrc` は `rcc` の入力です。`qrc_resources.cpp` がまだない状態で `widget.cpp` を編集するとエラーになるので、先に `.gen` をします。
+
+    `.qrc` はエディタを開く操作です。リソースファイルを確認したら保存して閉じ、icpp に戻って `.gen` を実行してください。
+
+08-resource-update:
+
+# 08 resource を変更して反映する
+
+## このレッスンで学ぶこと
+
+修正なし。
+
+## 操作
+
+- 元の記述
+
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .add widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto first = go();
+    icpp[qtcling]> first->show();
+    icpp[qtcling]> .e message.txt
+    # message.txt を Second message に変更して保存する
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto second = go();
+    icpp[qtcling]> second->show();
+
+- 修正後
+
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> static auto first = go();
+    icpp[qtcling]> first->show();
+    icpp[qtcling]> .e message.txt
+    # message.txt を Second message に変更して保存する
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto second = go();
+    icpp[qtcling]> second->show();
+    icpp[qtcling]> .clean
+    icpp[qtcling]> .generated
+
+## 期待される結果
+
+修正なし。
+
+## ポイント
+
+修正なし。
+
+09-autogen:
+
+# 09 autogen で楽にする
+
+## このレッスンで学ぶこと
+
+修正なし。
+
+## 操作
+- 元の記述
+- 修正後
+
+- 元の記述
+
+    icpp[qtcling]> .autogen on
+    icpp[qtcling]> .status
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+
+- 修正後
+
+    icpp[qtcling]> .autogen
+    icpp[qtcling]> .autogen on
+    icpp[qtcling]> .status
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+    icpp[qtcling]> .clean
+    icpp[qtcling]> .generated
+
+## 期待される結果
+
+- 元の記述
+
+    `.e widget.cpp` のあとに `Autogen: run_all` が表示され、resource を使う widget が表示されます。
+
+- 修正後
+
+    `.e widget.cpp` のあとに `Autogen: run_all` が表示され、リソースを使うウィジェットが表示されます。
+
+10-translation:
+
+# 10 翻訳を表示する
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `lupdate`、Qt Linguist による `.ts` 編集、`lrelease`、`.qrc` を組み合わせて、翻訳された文字列を label に表示します。
+
+- 修正後
+
+    `lupdate`、Qt Linguist による `.ts` 編集、`lrelease`、`.qrc` を組み合わせて、翻訳された文字列をラベルに表示します。
+
+## 操作
+
+- 元の記述
+
+    icpp[qtcling]> .! lupdate widget.cpp -ts app_ja.ts
+    icpp[qtcling]> .linguist app_ja.ts
+    # Qt Linguist で app_ja.ts を保存する
+    icpp[qtcling]> .! lrelease app_ja.ts
+    icpp[qtcling]> .qrc translations.qrc
+    # resources に app_ja.qm が入っていることを確認して閉じる
+    icpp[qtcling]> .i .
+    icpp[qtcling]> .add widget.cpp
+    icpp[qtcling]> .gen
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+
+- 修正後
+
+    - app_ja.ts
+      存在しない状態とする。
+
+    - widget.cpp 以下のように記述する。
+      // qrc_translations.cpp を生成したら、
+      // 以下の行をコメントアウトしてください。
+      // #include "qrc_translations.cpp"
+
+    icpp[qtcling]> .e widget.h
+    icpp[qtcling]> .e widget.cpp
+    icpp[qtcling]> .! lupdate widget.cpp -ts app_ja.ts
+    icpp[qtcling]> .linguist app_ja.ts
+    # Qt Linguist で 'Hello' を 'こんにちは' に翻訳する。
+    # Qt Linguist で app_ja.ts を保存する
+    icpp[qtcling]> .! lrelease app_ja.ts
+    icpp[qtcling]> .qrc translations.qrc
+    # resources に app_ja.qm が入っていることを確認して閉じる
+    icpp[qtcling]> .gen
+    icpp[qtcling]> .e widget.cpp
+    # 以下のコメントを取る。
+    // #include "qrc_translations.cpp"
+    icpp[qtcling]> static auto w = go();
+    icpp[qtcling]> w->show();
+    icpp[qtcling]> w->raise();
+    icpp[qtcling]> .clean
+
+## 期待される結果
+
+修正なし。
+
+## ポイント
+
+- 元の記述
+
+    `.gen` は `lrelease` を実行しません。翻訳では先に `.! lrelease app_ja.ts` を実行します。
+
+    `.linguist` は Qt Linguist を開くとすぐ icpp に戻ります。翻訳を編集したら、Qt Linguist 側で保存してから `.! lrelease app_ja.ts` を実行してください。
+
+    `.qrc` もエディタを開く操作です。`translations.qrc` に `app_ja.qm` が含まれていることを確認したら保存して閉じ、icpp に戻って `.gen` を実行します。
+
+    `lupdate` と `lrelease` は Qt 標準コマンドをそのまま使います。icpp 専用の短縮形は用意せず、オプションが見えるように `.! lupdate ...`、`.! lrelease ...` と明示します。
+
+- 修正後
+
+    `.gen` は `lrelease` を実行しません。翻訳では先に `.! lrelease app_ja.ts` を実行します。
+
+    `.linguist` は Qt Linguist を開くとすぐ icpp に戻ります。翻訳を編集したら、Qt Linguist 側で保存してから `.! lrelease app_ja.ts` を実行してください。
+
+    `.qrc` もエディタを開く操作です。`translations.qrc` に `app_ja.qm` が含まれていることを確認したら保存して閉じ、icpp に戻って `.gen` を実行します。
+
+    `lupdate` と `lrelease` は Qt 標準コマンドをそのまま使います。icpp 専用の短縮形は用意せず、オプションが見えるように `.! lupdate ...`、`.! lrelease ...` と明示します。
+
+11-fix-errors:
+
+# 11 失敗を直す
+
+## このレッスンで学ぶこと
+
+- 元の記述
+
+    `.ui` の objectName と C++ 側の参照名がずれているとき、interpreter の診断と `.uiinfo` で原因を確認します。
+
+- 修正後
+
+    `.ui` の objectName と C++ 側の参照名がずれているとき、icpp の診断と `.uiinfo` で原因を確認します。
+
+## 操作
+- 元の記述
+
+icpp[qtcling]> .add widget.cpp
+icpp[qtcling]> .gen
+icpp[qtcling]> .uiinfo form.ui
+
+- 修正後
+
+icpp[qtcling]> .designer form.ui
+icpp[qtcling]> .gen
+icpp[qtcling]> .e widget.h
+icpp[qtcling]> .e widget.cpp
+icpp[qtcling]> .uiinfo form.ui
+icpp[qtcling]> .e widget.cpp
+# messageLabel を titleLabel に変更する
+icpp[qtcling]> .gen
+icpp[qtcling]> static auto w = go();
+icpp[qtcling]> w->show();
+icpp[qtcling]> w->raise();
+icpp[qtcling]> .clean
+
+## 期待される結果
+- 元の記述
+
+    `widget.cpp` の評価で、`messageLabel` が `Ui::Form` に存在しないというエラーが表示されます。
+
+    `.uiinfo form.ui` では、実際の label の objectName が `titleLabel` であることを確認できます。
+
+表示された診断で C++ 側の参照名を確認し、`.uiinfo` で `.ui` 側の objectName を確認します。
+
+- 修正後
+
+    `widget.cpp` の評価で、`messageLabel` が `Ui::Form` に存在しないというエラーが表示されます。
+
+    `.uiinfo form.ui` では、実際のラベルの objectName が `titleLabel` であることを確認できます。
+
+## 発展
+- 元の記述
+
+    修正後、もう一度 `.gen` を実行してください。`go()` で widget を作れることを確認できます。
+
+- 修正後
+
+    修正後、もう一度 `.gen` を実行してください。`go()` でウィジェットを作れることを確認できます。
+
+12-inspect-widget:
+
+appendix-a-commands:
+
+appendix-b-generated-files:

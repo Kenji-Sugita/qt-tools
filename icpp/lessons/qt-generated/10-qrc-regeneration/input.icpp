@@ -1,0 +1,12 @@
+.add widget.cpp
+.! printf 'first resource\n' > message.txt
+.gen
+static auto first = go();
+first->show();
+first->raise();
+.! printf 'second resource\n' > message.txt
+.gen
+static auto second = go();
+second->show();
+second->raise();
+.quit

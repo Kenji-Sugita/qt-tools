@@ -1,0 +1,7 @@
+.add widget.cpp
+.gen
+.defs
+static auto w = go();
+w->show();
+w->raise();
+.quit

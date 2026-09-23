@@ -1,0 +1,7 @@
+.i .
+.autogen on
+.add widget.cpp
+.r
+.defs
+.p resourceText()
+.quit

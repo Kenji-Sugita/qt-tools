@@ -1,0 +1,9 @@
+出力に含まれるべき文字列:
+- External command exited
+- run_all
+
+生成されないこと:
+- ui_form.h
+
+手動確認:
+- `.gen` が失敗した場合、登録済み C++ の再評価に進まない

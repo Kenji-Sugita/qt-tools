@@ -1,0 +1,11 @@
+生成されるファイル:
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- Autogen: on
+- Autogen: run_all
+- function QString resourceText()
+- autogen resource
+
+手動確認:
+- `.gen` を明示せず、`.autogen on` と `.r` で rcc が走る

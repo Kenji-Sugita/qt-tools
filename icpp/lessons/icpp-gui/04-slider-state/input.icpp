@@ -1,0 +1,7 @@
+.e widget.h
+.e widget.cpp
+.gen
+static auto w = go();
+w->show();
+w->raise();
+.quit

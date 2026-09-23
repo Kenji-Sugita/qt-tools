@@ -1,0 +1,11 @@
+生成されるファイル:
+- moc_widget.cpp
+- qrc_resources.cpp
+
+出力に含まれるべき文字列:
+- class Widget
+- function Widget *go()
+
+手動確認:
+- `static auto w = go(); w->show();` で resource の文字列が表示される
+- `qrc_resources.cpp` は `widget.cpp` から include する。`.add` で直接登録しない
