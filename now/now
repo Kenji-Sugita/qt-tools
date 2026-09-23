@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+
+import argparse
+import re
+import sys
+from datetime import datetime, timedelta, timezone
+
+try:
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+except ImportError:
+    ZoneInfo = None
+    ZoneInfoNotFoundError = Exception
+
+
+VERSION = "1.2.0"
+FIXED_TIMEZONES = {
+    "Asia/Tokyo": timezone(timedelta(hours=9), "Asia/Tokyo"),
+    "JST": timezone(timedelta(hours=9), "JST"),
+    "UTC": timezone.utc,
+    "GMT": timezone.utc,
+}
+
+
+def main():
+    day_offset, args = extract_day_offset(sys.argv[1:])
+    if "-h" in args or "--help" in args:
+        print(HELP, end="")
+        return 0
+
+    parser = create_parser()
+    options, unknown_args = parser.parse_known_args(args)
+    if unknown_args:
+        usage_error("引数は指定できません")
+
+    if options.version:
+        print(f"now {VERSION}")
+        return 0
+
+    if options.utc and options.timezone:
+        usage_error("--utc と --tz は同時に指定できません")
+
+    display_options = sum(
+        1
+        for value in (
+            options.date,
+            options.time_only,
+            options.iso,
+            options.unix,
+            options.filename,
+            options.format is not None,
+        )
+        if value
+    )
+    if display_options > 1:
+        usage_error("表示形式は一つだけ指定してください")
+
+    tz = current_timezone(options)
+    now = datetime.now(tz) + timedelta(days=day_offset)
+
+    if options.unix:
+        print(int(now.timestamp()))
+    elif options.date:
+        print(now.strftime("%Y-%m-%d"))
+    elif options.iso:
+        print(format_iso(now, options.utc))
+    elif options.filename:
+        print(now.strftime("%Y%m%d-%H%M%S"))
+    elif options.format is not None:
+        print(now.strftime(options.format))
+    elif options.time_only:
+        print(now.strftime("%H:%M:%S"))
+    else:
+        print(now.strftime("%H:%M"))
+
+    return 0
+
+
+def create_parser():
+    parser = NowArgumentParser(
+        prog="now",
+        add_help=False,
+        allow_abbrev=False,
+    )
+    parser.add_argument(
+        "--time",
+        action="store_true",
+        dest="time_only",
+        help="秒を含む時刻を表示（HH:MM:SS）",
+    )
+    parser.add_argument("--date", action="store_true", help="日付のみを表示")
+    parser.add_argument("--iso", action="store_true", help="ISO 8601形式で表示")
+    parser.add_argument("--unix", action="store_true", help="Unix秒を表示")
+    parser.add_argument("--filename", action="store_true", help="ファイル名向けの形式で表示")
+    parser.add_argument("-f", "--format", metavar="FORMAT", help="strftime形式を指定")
+    parser.add_argument("--utc", action="store_true", help="UTCで表示")
+    parser.add_argument(
+        "--tz",
+        metavar="ZONE",
+        dest="timezone",
+        help="指定したタイムゾーンで表示（例: Asia/Tokyo）",
+    )
+    parser.add_argument("--version", action="store_true", help="バージョンを表示")
+    return parser
+
+
+class NowArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        usage_error(message)
+
+
+def extract_day_offset(args):
+    remaining = []
+    day_offset = 0
+    seen_offset = False
+
+    for arg in args:
+        if re.fullmatch(r"[+-]\d+", arg):
+            if seen_offset:
+                usage_error("日付の前後指定は一つだけ指定してください")
+            day_offset = int(arg)
+            seen_offset = True
+        else:
+            remaining.append(arg)
+
+    return day_offset, remaining
+
+
+def current_timezone(options):
+    if options.utc:
+        return timezone.utc
+    if options.timezone:
+        if not valid_timezone_name(options.timezone):
+            usage_error(f"不正なタイムゾーンです: {options.timezone}")
+        if options.timezone in FIXED_TIMEZONES:
+            return FIXED_TIMEZONES[options.timezone]
+        if ZoneInfo is None:
+            usage_error(f"不正なタイムゾーンです: {options.timezone}")
+        try:
+            return ZoneInfo(options.timezone)
+        except ZoneInfoNotFoundError:
+            usage_error(f"不正なタイムゾーンです: {options.timezone}")
+    return datetime.now().astimezone().tzinfo
+
+
+def valid_timezone_name(name):
+    if not name or name.startswith("/") or ".." in name.split("/"):
+        return False
+    return True
+
+
+def format_iso(value, utc):
+    if utc:
+        return value.strftime("%Y-%m-%dT%H:%M:%SZ")
+    return value.isoformat(timespec="seconds")
+
+
+def usage_error(message):
+    print(f"now: {message}", file=sys.stderr)
+    print("詳しくは 'now --help' を実行してください。", file=sys.stderr)
+    raise SystemExit(2)
+
+
+HELP = """使用法: now [+N|-N] [オプション]
+
+現在時刻を表示します。表示形式を省略した場合は HH:MM です。
+
+日付調整:
+      +N             N日後を表示
+      -N             N日前を表示
+
+表示形式:
+      --time          秒を含む時刻を表示（HH:MM:SS）
+      --date          日付のみを表示
+      --iso           ISO 8601形式で表示
+      --unix          Unix秒を表示
+      --filename      ファイル名向けの形式で表示
+  -f, --format FORMAT strftime形式を指定
+
+タイムゾーン:
+      --utc           UTCで表示
+      --tz ZONE       指定したタイムゾーンで表示（例: Asia/Tokyo）
+
+その他:
+  -h, --help          このヘルプを表示
+      --version       バージョンを表示
+"""
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
