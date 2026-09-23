@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1240" viewBox="0 0 1920 1240">
+  <defs>
+    <linearGradient id="sheet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ecfeff"/>
+      <stop offset="0.46" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#bae6fd" stop-opacity="0.55"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.22"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#0f766e" stroke-opacity="0.08" stroke-width="1"/>
+    </pattern>
+    <style>
+      .base { font-family: "Hiragino Sans", "Noto Sans CJK JP", "Yu Gothic", "Meiryo", sans-serif; fill: #1f2937; }
+      .title { font-size: 52px; font-weight: 800; fill: #0f172a; }
+      .subtitle { font-size: 24px; fill: #475569; }
+      .section { font-size: 30px; font-weight: 800; fill: #0f766e; }
+      .label { font-size: 22px; font-weight: 700; fill: #334155; }
+      .text { font-size: 21px; fill: #334155; }
+      .small { font-size: 17px; fill: #64748b; }
+      .key { font-size: 20px; font-weight: 800; fill: #0f172a; }
+      .keySmall { font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .mono { font-family: "SF Mono", "Menlo", "Consolas", monospace; }
+      .card { fill: #ffffff; fill-opacity: 0.72; stroke: #94a3b8; stroke-opacity: 0.35; stroke-width: 1.5; }
+      .pill { fill: #e0f2fe; stroke: #0ea5e9; stroke-opacity: 0.45; stroke-width: 1; }
+      .accent { fill: #0f766e; }
+      .mutedLine { stroke: #cbd5e1; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1240" fill="#e2e8f0"/>
+  <rect x="72" y="54" width="1776" height="1132" rx="46" fill="url(#sheet)" filter="url(#shadow)"/>
+  <rect x="72" y="54" width="1776" height="1132" rx="46" fill="url(#grid)"/>
+  <rect x="92" y="74" width="1736" height="1092" rx="34" fill="none" stroke="url(#edge)" stroke-width="8"/>
+  <rect x="122" y="106" width="1676" height="1028" rx="24" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-opacity="0.55"/>
+
+  <circle cx="152" cy="620" r="15" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <circle cx="1768" cy="620" r="15" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <path d="M134 168H360" stroke="#0f766e" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1560 168H1786" stroke="#0f766e" stroke-width="10" stroke-linecap="round"/>
+
+  <text class="base title" x="150" y="166">WhiteboardApp 操作チートシート</text>
+  <text class="base subtitle" x="152" y="204">説明図作成向け / 下敷き風クイックリファレンス</text>
+  <text class="base small" x="1420" y="206">バージョン 1.2.0 / キャンバス 1920 x 1080 / 1-20 ページ</text>
+
+  <g transform="translate(150 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#ccfbf1" fill-opacity="0.75"/>
+    <text class="base section" x="28" y="41">ツール選択</text>
+    <g transform="translate(28 88)">
+      <text class="base label" x="0" y="0">選択</text><text class="base keySmall mono" x="168" y="0">Ctrl+1</text>
+      <text class="base label" x="0" y="40">ペン</text><text class="base keySmall mono" x="168" y="40">Ctrl+2</text>
+      <text class="base label" x="0" y="80">消しゴム</text><text class="base keySmall mono" x="168" y="80">Ctrl+3</text>
+      <text class="base label" x="0" y="120">直線</text><text class="base keySmall mono" x="168" y="120">Ctrl+4</text>
+      <text class="base label" x="0" y="160">矩形</text><text class="base keySmall mono" x="168" y="160">Ctrl+5</text>
+      <text class="base label" x="0" y="200">円</text><text class="base keySmall mono" x="168" y="200">Ctrl+6</text>
+    </g>
+    <g transform="translate(292 88)">
+      <text class="base label" x="0" y="0">テキスト</text><text class="base keySmall mono" x="120" y="0">Ctrl+7</text>
+      <text class="base label" x="0" y="40">折れ線</text><text class="base keySmall mono" x="120" y="40">Ctrl+8</text>
+      <text class="base label" x="0" y="80">ベジェ</text><text class="base keySmall mono" x="120" y="80">Ctrl+9</text>
+      <text class="base label" x="0" y="120">円弧</text><text class="base keySmall mono" x="120" y="120">Ctrl+0</text>
+    </g>
+  </g>
+
+  <g transform="translate(710 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#dbeafe" fill-opacity="0.75"/>
+    <text class="base section" x="28" y="41">選択と編集</text>
+    <text class="base text" x="28" y="86">クリック: オブジェクト選択</text>
+    <text class="base text" x="28" y="120">空白ドラッグ: ラバーバンド選択</text>
+    <text class="base text" x="28" y="154">Ctrl+クリック: 選択へ追加</text>
+    <text class="base text" x="28" y="188">ドラッグ: 移動 / ハンドル: サイズ変更</text>
+    <text class="base text" x="28" y="222">外側の丸ハンドル: 回転</text>
+    <text class="base text" x="28" y="256">Shift+回転: 15° / ダブルクリック: 0°</text>
+    <text class="base text" x="28" y="290">線端点ドラッグ: 接続変更 / 接続解除</text>
+  </g>
+
+  <g transform="translate(1270 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#fef3c7" fill-opacity="0.8"/>
+    <text class="base section" x="28" y="41">画像の取り込み・保存</text>
+    <text class="base label" x="28" y="94">画像を取り込む</text>
+    <text class="base text" x="236" y="94">PNG / JPEG / BMP / SVG</text>
+    <text class="base text" x="28" y="136">貼り付け: OS クリップボード画像を配置</text>
+    <text class="base text" x="28" y="178">画像ファイルをキャンバスへドロップ</text>
+    <line class="mutedLine" x1="28" y1="204" x2="472" y2="204"/>
+    <text class="base label" x="28" y="246">画像として保存</text>
+    <text class="base text" x="236" y="246">PNG / SVG</text>
+    <text class="base text" x="28" y="288">選択範囲または全要素 / 透明・白背景</text>
+  </g>
+
+  <g transform="translate(150 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#ede9fe" fill-opacity="0.75"/>
+    <text class="base section" x="28" y="41">コピー・グループ・拡縮</text>
+    <text class="base label" x="28" y="92">コピー / 貼り付け</text><text class="base keySmall mono" x="270" y="92">Cmd+C / Cmd+V</text>
+    <text class="base label" x="28" y="130">選択を削除</text><text class="base keySmall mono" x="300" y="130">Delete</text>
+    <text class="base label" x="28" y="168">グループ化</text><text class="base keySmall mono" x="300" y="168">Ctrl+G</text>
+    <text class="base label" x="28" y="206">グループ解除</text><text class="base keySmall mono" x="300" y="206">Ctrl+Shift+G</text>
+    <text class="base label" x="28" y="244">元に戻す / やり直す</text><text class="base keySmall mono" x="270" y="244">Cmd+Z / Cmd+Shift+Z</text>
+    <text class="base small" x="28" y="284">選択図形の拡大縮小:</text>
+    <text class="base small" x="28" y="312">単一/複数/グループを倍率指定で拡大縮小</text>
+  </g>
+
+  <g transform="translate(710 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#dcfce7" fill-opacity="0.75"/>
+    <text class="base section" x="28" y="41">重なり順・ページ</text>
+    <text class="base label" x="28" y="96">前面へ</text><text class="base key mono" x="300" y="96">Ctrl+]</text>
+    <text class="base label" x="28" y="136">背面へ</text><text class="base key mono" x="300" y="136">Ctrl+[</text>
+    <text class="base label" x="28" y="176">最前面へ</text><text class="base key mono" x="300" y="176">Ctrl+Shift+]</text>
+    <text class="base label" x="28" y="216">最背面へ</text><text class="base key mono" x="300" y="216">Ctrl+Shift+[</text>
+    <line class="mutedLine" x1="28" y1="240" x2="472" y2="240"/>
+    <text class="base label" x="28" y="278">前ページ / 次ページ</text><text class="base keySmall mono" x="290" y="278">Alt+Left / Right</text>
+    <text class="base label" x="28" y="318">ページ追加 / 削除</text><text class="base keySmall mono" x="290" y="318">Ctrl+Shift+N / BS</text>
+  </g>
+
+  <g transform="translate(1270 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#fee2e2" fill-opacity="0.72"/>
+    <text class="base section" x="28" y="41">スタイルとコネクター</text>
+    <text class="base text" x="28" y="94">色: 線色 / テキスト色</text>
+    <text class="base text" x="28" y="132">塗り潰し: 図形の内部色</text>
+    <text class="base text" x="28" y="170">線: 線幅、実線/点線</text>
+    <text class="base text" x="28" y="208">開始/終了矢印: なし・三角・開き・ひし形</text>
+    <text class="base text" x="28" y="246">フォント: テキスト選択時のみ変更</text>
+    <text class="base small" x="28" y="280">スタイルをリセット: 標準スタイルへ戻す</text>
+    <text class="base small" x="28" y="312">直線を図形上で開始/終了: 図形へ接続</text>
+  </g>
+
+  <g transform="translate(150 1000)">
+    <rect class="pill" width="1620" height="122" rx="22"/>
+    <text class="base label" x="30" y="38">保存ファイル</text>
+    <text class="base small mono" x="260" y="36">macOS: ~/Library/Application Support/WhiteboardApp/whiteboard.json</text>
+    <text class="base small mono" x="260" y="68">Linux: ~/.local/share/WhiteboardApp/whiteboard.json</text>
+    <text class="base small mono" x="260" y="100">Windows: AppData\Roaming\WhiteboardApp\whiteboard.json</text>
+  </g>
+
+  <g transform="translate(150 1152)">
+    <text class="base small" x="0" y="0">ヒント: macOS のコピー / 貼り付けは Command キー。その他の Ctrl 系ショートカットも Command で操作できます。</text>
+    <text class="base small" x="1370" y="0">WhiteboardApp 操作早見表</text>
+  </g>
+</svg>
