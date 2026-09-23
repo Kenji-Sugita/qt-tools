@@ -1,0 +1,264 @@
+#!/bin/bash
+
+progname=$(basename "$0")
+unset CLICOLOR
+
+line_style="unicode"
+include_hidden=0
+show_full_root=0
+show_summary=0
+directory_count=0
+file_count=0
+
+usage() {
+  cat <<USAGE
+Usage: $progname [options] [rootdir]
+
+Options:
+  --lines unicode   Use Unicode tree lines (default)
+  --lines ascii     Use ASCII tree lines using |, +, -
+  --unicode         Same as --lines unicode
+  --ascii           Same as --lines ascii
+  -a, --all         Include hidden files and directories
+  -f, --full-root   Show the root directory as a full path
+  -s, --summary        Show directory and file counts
+  -h, --help        Show this help
+USAGE
+}
+
+set_line_characters() {
+  case "$line_style" in
+    unicode)
+      branch_mark="├─ "
+      last_mark="└─ "
+      vertical_mark="│  "
+      blank_mark="   "
+      ;;
+    ascii)
+      branch_mark="+- "
+      last_mark="+- "
+      vertical_mark="|  "
+      blank_mark="   "
+      ;;
+    *)
+      echo "$progname: invalid line style: $line_style" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+}
+
+# Print one entry (file/dir) with proper tree lines.
+# args: path, display_name, prefix, is_last(0/1)
+print_item() {
+  local path="$1"
+  local display_name="$2"
+  local prefix="$3"
+  local is_last="$4"
+
+  local mark="$branch_mark"
+  if [ "$is_last" -eq 1 ]; then
+    mark="$last_mark"
+  fi
+
+  if [ -d "$path" ]; then
+    directory_count=$((directory_count + 1))
+    printf "%s%s%s/\n" "$prefix" "$mark" "$display_name"
+  else
+    file_count=$((file_count + 1))
+    printf "%s%s%s\n" "$prefix" "$mark" "$display_name"
+  fi
+}
+
+format_root_name() {
+  local path="$1"
+
+  if [ "$show_full_root" -eq 1 ]; then
+    if [ "$path" = "/" ]; then
+      printf "/"
+    else
+      (
+        cd "$path" 2>/dev/null &&
+        pwd
+      )
+    fi
+  elif [ "$path" = "/" ]; then
+    printf "/"
+  else
+    (
+      cd "$path" 2>/dev/null &&
+      basename "$(pwd)"
+    )
+  fi
+}
+
+append_matches() {
+  local array_name="$1"
+  shift
+
+  local path
+  for path in "$@"; do
+    [ -e "$path" ] || continue
+    eval "$array_name+=(\"\$path\")"
+  done
+}
+
+# Traverse directory recursively.
+# args: dir, prefix
+traverse_dir() {
+  local dir="$1"
+  local prefix="$2"
+
+  local children=()
+  append_matches children "$dir"/*
+
+  if [ "$include_hidden" -eq 1 ]; then
+    append_matches children "$dir"/.[!.]* "$dir"/..?*
+  fi
+
+  local child_count=${#children[@]}
+  local child_index=0
+  while [ $child_index -lt $child_count ]; do
+    local child_path="${children[$child_index]}"
+    local child_name
+    child_name=$(basename "$child_path")
+
+    local is_last=0
+    if [ $child_index -eq $((child_count - 1)) ]; then
+      is_last=1
+    fi
+
+    print_item "$child_path" "$child_name" "$prefix" "$is_last"
+
+    if [ -d "$child_path" ] && [ ! -L "$child_path" ]; then
+      local next_prefix="$prefix"
+      if [ "$is_last" -eq 1 ]; then
+        next_prefix="${next_prefix}${blank_mark}"
+      else
+        next_prefix="${next_prefix}${vertical_mark}"
+      fi
+      traverse_dir "$child_path" "$next_prefix"
+    fi
+
+    child_index=$((child_index + 1))
+  done
+}
+
+parse_arguments() {
+  rootdir="."
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --lines)
+        if [ $# -lt 2 ]; then
+          echo "$progname: missing value for --lines" >&2
+          usage >&2
+          exit 1
+        fi
+        line_style="$2"
+        shift 2
+        ;;
+      --unicode)
+        line_style="unicode"
+        shift
+        ;;
+      --ascii)
+        line_style="ascii"
+        shift
+        ;;
+      -a|--all)
+        include_hidden=1
+        shift
+        ;;
+      -f|--full-root)
+        show_full_root=1
+        shift
+        ;;
+      -s|--summary)
+        show_summary=1
+        shift
+        ;;
+      -h|--help)
+        usage
+        exit 0
+        ;;
+      -[!-]?*)
+        local short_options="${1#-}"
+        local short_index=1
+        local short_length=${#short_options}
+
+        while [ $short_index -le $short_length ]; do
+          local short_option="${short_options:$((short_index - 1)):1}"
+
+          case "$short_option" in
+            a)
+              include_hidden=1
+              ;;
+            f)
+              show_full_root=1
+              ;;
+            s)
+              show_summary=1
+              ;;
+            h)
+              usage
+              exit 0
+              ;;
+            *)
+              echo "$progname: unknown option: -$short_option" >&2
+              usage >&2
+              exit 1
+              ;;
+          esac
+
+          short_index=$((short_index + 1))
+        done
+
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        echo "$progname: unknown option: $1" >&2
+        usage >&2
+        exit 1
+        ;;
+      *)
+        rootdir="$1"
+        shift
+        if [ $# -gt 0 ]; then
+          echo "$progname: too many arguments" >&2
+          usage >&2
+          exit 1
+        fi
+        ;;
+    esac
+  done
+
+  if [ $# -gt 0 ]; then
+    if [ $# -ne 1 ]; then
+      echo "$progname: too many arguments" >&2
+      usage >&2
+      exit 1
+    fi
+    rootdir="$1"
+  fi
+
+  if [ ! -d "$rootdir" ]; then
+    usage >&2
+    exit 1
+  fi
+}
+
+parse_arguments "$@"
+set_line_characters
+
+printf "%s/\n" "$(format_root_name "$rootdir")"
+
+traverse_dir "$rootdir" ""
+
+if [ "$show_summary" -eq 1 ]; then
+  printf "\n%d directories, %d files\n" "$directory_count" "$file_count"
+fi
