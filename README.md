@@ -1,7 +1,7 @@
 # Qt Tools
 
 Qt/C++ の開発支援ツール、対話的プログラミング環境、資料作成ツール、
-作業コンテキストを管理する文書テンプレート、
+アプリ開発の手順と文書テンプレート、作業コンテキストを管理するテンプレート、
 日常的に使用するユーティリティーなどをまとめたリポジトリーです。
 
 Qt を使ったアプリケーションやライブラリーを中心に、
@@ -137,13 +137,18 @@ ObjectSelector と組み合わせるほか、
 | `propertyeditor` | PropertyEditor | `QObject` のプロパティーを表示・編集します |
 
 
-### Development Instructions and Work Templates
+### Development Workflows, Instructions and Templates
 
 | Directory | Tool | Description |
 |---|---|---|
+| [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.md) | App generation workflow | 要求整理から仕様化、AI による実装、テスト、レビュー、設計文書化までを進める手順とテンプレートです |
 | `ai-cmake` | AI CMake instructions | 生成 AI が Qt 6 の `CMakeLists.txt` を生成・修正するための指示と検証環境です |
 | `work-templates` | Work context templates | 作業状態・長期課題・設計判断を Markdown で分離して管理し、人、ホスト、AIセッションが変わっても作業を再開できるようにします |
 
+
+これらは、開発の進め方（app-generation-workflow）、ビルド定義の作り方（ai-cmake）、
+作業の継続方法（work-templates）をそれぞれ支援します。
+app-generation-workflow と work-templates は、Qt 以外のプロジェクトにも利用できます。
 
 ### Documents, Images and Diagrams
 
@@ -178,6 +183,9 @@ ObjectSelector と組み合わせるほか、
 各ツールの詳しい使い方、ビルド方法、動作環境については、
 それぞれのディレクトリーにある `README.md`、`README.txt`、
 `USER_GUIDE.md` などを参照してください。
+
+アプリ開発ワークフローの入口は、[README](app-generation-workflow/app-generation-workflow/README.md) と
+[利用ガイド](app-generation-workflow/app-generation-workflow/USER_GUIDE.md) です。
 
 ツールごとに対象 OS、Qt のバージョン、外部ライブラリーやサービスへの依存が異なります。
 
