@@ -141,7 +141,7 @@ ObjectSelector と組み合わせるほか、
 
 | Directory | Tool | Description |
 |---|---|---|
-| [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.md) | App generation workflow | 要求整理から仕様化、AI による実装、テスト、レビュー、設計文書化までを進める手順とテンプレートです |
+| [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.md) | App generation workflow | GUI アプリ開発を主眼とした、ドキュメント駆動の AI 開発ハーネスです。要求整理、仕様化、実装、テスト、レビューを文書でつなぎます |
 | `ai-cmake` | AI CMake instructions | 生成 AI が Qt 6 の `CMakeLists.txt` を生成・修正するための指示と検証環境です |
 | `work-templates` | Work context templates | 作業状態・長期課題・設計判断を Markdown で分離して管理し、人、ホスト、AIセッションが変わっても作業を再開できるようにします |
 
