@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace version="1.02" traceStart="0" traceEnd="40">
+  <eventData totalTime="40">
+    <event index="0">
+      <displayname>valid note event</displayname>
+      <type>Binding</type>
+    </event>
+  </eventData>
+  <profilerDataModel>
+    <range startTime="100" duration="10" eventIndex="0"/>
+  </profilerDataModel>
+  <noteData>
+    <note duration="10" eventIndex="0">missing startTime</note>
+    <note startTime="110" eventIndex="0">missing duration</note>
+    <note startTime="120" duration="5">missing eventIndex</note>
+    <note startTime="100" duration="10" eventIndex="0">valid note</note>
+  </noteData>
+</trace>

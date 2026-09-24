@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace version="1.02" traceStart="933498542" traceEnd="2661200084">
+    <eventData totalTime="518638710">
+        <event index="0">
+            <displayname>MemoryAllocation:0</displayname>
+            <type>MemoryAllocation</type>
+            <memoryEventType>0</memoryEventType>
+        </event>
+        <event index="1">
+            <displayname>MemoryAllocation:2</displayname>
+            <type>MemoryAllocation</type>
+            <memoryEventType>2</memoryEventType>
+        </event>
+        <event index="2">
+            <displayname>MemoryAllocation:1</displayname>
+            <type>MemoryAllocation</type>
+            <memoryEventType>1</memoryEventType>
+        </event>
+        <event index="3">
+            <displayname>default.qml:0</displayname>
+            <type>Compiling</type>
+            <filename>qrc:/qt-project.org/imports/QmlRuntime/Config/default.qml</filename>
+            <line>0</line>
+            <column>0</column>
+            <details>qrc:/qt-project.org/imports/QmlRuntime/Config/default.qml</details>
+        </event>
+        <event index="4">
+            <displayname>default.qml:5</displayname>
+            <type>Creating</type>
+            <filename>qrc:/qt-project.org/imports/QmlRuntime/Config/default.qml</filename>
+            <line>5</line>
+            <column>1</column>
+            <details>QmlRuntime.Config/Configuration</details>
+        </event>
+        <event index="5">
+            <displayname>default.qml:6</displayname>
+            <type>Creating</type>
+            <filename>qrc:/qt-project.org/imports/QmlRuntime/Config/default.qml</filename>
+            <line>6</line>
+            <column>5</column>
+            <details>QmlRuntime.Config/PartialScene</details>
+        </event>
+        <event index="6">
+            <displayname>DebugMessage:1</displayname>
+            <type>DebugMessage</type>
+            <line>0</line>
+            <column>1</column>
+        </event>
+        <event index="7">
+            <displayname>AutoTrace.qml:0</displayname>
+            <type>Compiling</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>0</line>
+            <column>0</column>
+            <details>AutoTrace.qml</details>
+        </event>
+        <event index="8">
+            <displayname>AutoTrace.qml:4</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>4</line>
+            <column>1</column>
+            <details>QtQuick/Window</details>
+        </event>
+        <event index="9">
+            <displayname>AutoTrace.qml:11</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>11</line>
+            <column>5</column>
+            <details>QtQuick/Rectangle</details>
+        </event>
+        <event index="10">
+            <displayname>AutoTrace.qml:17</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>17</line>
+            <column>5</column>
+            <details>QtQuick/Rectangle</details>
+        </event>
+        <event index="11">
+            <displayname>AutoTrace.qml:26</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>26</line>
+            <column>9</column>
+            <details>QtQuick/NumberAnimation</details>
+        </event>
+        <event index="12">
+            <displayname>AutoTrace.qml:35</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>35</line>
+            <column>5</column>
+            <details>QtQuick/Text</details>
+        </event>
+        <event index="13">
+            <displayname>AutoTrace.qml:43</displayname>
+            <type>Creating</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>43</line>
+            <column>5</column>
+            <details>QtQml/Timer</details>
+        </event>
+        <event index="14">
+            <displayname>AutoTrace.qml:36</displayname>
+            <type>Binding</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>36</line>
+            <column>9</column>
+            <bindingType>-1</bindingType>
+        </event>
+        <event index="15">
+            <displayname>AutoTrace.qml:36</displayname>
+            <type>Javascript</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>36</line>
+            <column>9</column>
+            <details>expression for horizontalCenter</details>
+        </event>
+        <event index="16">
+            <displayname>AutoTrace.qml:37</displayname>
+            <type>Binding</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>37</line>
+            <column>9</column>
+            <bindingType>-1</bindingType>
+        </event>
+        <event index="17">
+            <displayname>AutoTrace.qml:37</displayname>
+            <type>Javascript</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>37</line>
+            <column>9</column>
+            <details>expression for bottom</details>
+        </event>
+        <event index="18">
+            <displayname>AutoTrace.qml:13</displayname>
+            <type>Binding</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>13</line>
+            <column>9</column>
+            <bindingType>-1</bindingType>
+        </event>
+        <event index="19">
+            <displayname>AutoTrace.qml:13</displayname>
+            <type>Javascript</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>13</line>
+            <column>9</column>
+            <details>expression for fill</details>
+        </event>
+        <event index="20">
+            <displayname>SceneGraph:9</displayname>
+            <type>SceneGraph</type>
+            <sgEventType>9</sgEventType>
+        </event>
+        <event index="21">
+            <displayname>SceneGraph:0</displayname>
+            <type>SceneGraph</type>
+            <sgEventType>0</sgEventType>
+        </event>
+        <event index="22">
+            <displayname>SceneGraph:3</displayname>
+            <type>SceneGraph</type>
+            <sgEventType>3</sgEventType>
+        </event>
+        <event index="23">
+            <displayname>AnimationFrame</displayname>
+            <type>Event</type>
+            <animationFrame>3</animationFrame>
+        </event>
+        <event index="24">
+            <displayname>AutoTrace.qml:47</displayname>
+            <type>HandlingSignal</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>47</line>
+            <column>9</column>
+        </event>
+        <event index="25">
+            <displayname>AutoTrace.qml:47</displayname>
+            <type>Javascript</type>
+            <filename>file:///Users/sugita/src/qt/tools/qmlprofileranalyzer/samples/qml/AutoTrace.qml</filename>
+            <line>47</line>
+            <column>9</column>
+            <details>expression for onTriggered</details>
+        </event>
+    </eventData>
+    <profilerDataModel>
+        <range startTime="933501625" eventIndex="0" amount="647680"/>
+        <range startTime="933501625" eventIndex="1" amount="589696"/>
+        <range startTime="933501625" eventIndex="2" amount="0"/>
+        <range startTime="935359667" eventIndex="0" amount="647680"/>
+        <range startTime="935359667" eventIndex="1" amount="589696"/>
+        <range startTime="935359667" eventIndex="2" amount="0"/>
+        <range startTime="935721459" duration="495333" eventIndex="3"/>
+        <range startTime="936247125" eventIndex="1" amount="64"/>
+        <range startTime="936247292" eventIndex="1" amount="64"/>
+        <range startTime="936247667" eventIndex="1" amount="64"/>
+        <range startTime="936247750" eventIndex="1" amount="64"/>
+        <range startTime="936247834" eventIndex="1" amount="64"/>
+        <range startTime="936247959" eventIndex="1" amount="64"/>
+        <range startTime="936248000" eventIndex="1" amount="64"/>
+        <range startTime="936248084" eventIndex="1" amount="64"/>
+        <range startTime="936248334" eventIndex="1" amount="64"/>
+        <range startTime="936253459" duration="37250" eventIndex="4"/>
+        <range startTime="936266250" eventIndex="1" amount="64"/>
+        <range startTime="936271834" duration="17708" eventIndex="5"/>
+        <range startTime="936273125" eventIndex="1" amount="64"/>
+        <range startTime="937778875" duration="8228792" eventIndex="7"/>
+        <range startTime="946043792" eventIndex="1" amount="64"/>
+        <range startTime="946044000" eventIndex="1" amount="64"/>
+        <range startTime="946044125" eventIndex="1" amount="64"/>
+        <range startTime="946044209" eventIndex="1" amount="64"/>
+        <range startTime="946044292" eventIndex="1" amount="64"/>
+        <range startTime="946044500" eventIndex="1" amount="64"/>
+        <range startTime="946044625" eventIndex="1" amount="64"/>
+        <range startTime="946044667" eventIndex="1" amount="64"/>
+        <range startTime="946044709" eventIndex="1" amount="64"/>
+        <range startTime="946044792" eventIndex="1" amount="64"/>
+        <range startTime="946044834" eventIndex="1" amount="64"/>
+        <range startTime="946045000" eventIndex="1" amount="64"/>
+        <range startTime="946045084" eventIndex="1" amount="64"/>
+        <range startTime="946045125" eventIndex="1" amount="64"/>
+        <range startTime="946045209" eventIndex="1" amount="64"/>
+        <range startTime="946045250" eventIndex="1" amount="64"/>
+        <range startTime="946045292" eventIndex="1" amount="64"/>
+        <range startTime="946045334" eventIndex="1" amount="64"/>
+        <range startTime="946045417" eventIndex="1" amount="64"/>
+        <range startTime="946045459" eventIndex="1" amount="64"/>
+        <range startTime="946045542" eventIndex="1" amount="64"/>
+        <range startTime="946045959" eventIndex="1" amount="64"/>
+        <range startTime="946046000" eventIndex="1" amount="64"/>
+        <range startTime="946046042" eventIndex="1" amount="64"/>
+        <range startTime="946046125" eventIndex="1" amount="64"/>
+        <range startTime="946046167" eventIndex="1" amount="64"/>
+        <range startTime="946046209" eventIndex="1" amount="64"/>
+        <range startTime="946046292" eventIndex="1" amount="64"/>
+        <range startTime="946046334" eventIndex="1" amount="64"/>
+        <range startTime="946046417" eventIndex="1" amount="64"/>
+        <range startTime="946046459" eventIndex="1" amount="64"/>
+        <range startTime="946046500" eventIndex="1" amount="64"/>
+        <range startTime="946046584" eventIndex="1" amount="64"/>
+        <range startTime="946046667" eventIndex="1" amount="64"/>
+        <range startTime="946046709" eventIndex="1" amount="64"/>
+        <range startTime="946046750" eventIndex="1" amount="64"/>
+        <range startTime="946046834" eventIndex="1" amount="64"/>
+        <range startTime="946046875" eventIndex="1" amount="64"/>
+        <range startTime="946046917" eventIndex="1" amount="64"/>
+        <range startTime="946046959" eventIndex="1" amount="64"/>
+        <range startTime="946047042" eventIndex="1" amount="64"/>
+        <range startTime="946047084" eventIndex="1" amount="64"/>
+        <range startTime="946047125" eventIndex="1" amount="64"/>
+        <range startTime="946047375" eventIndex="1" amount="64"/>
+        <range startTime="946047459" eventIndex="1" amount="64"/>
+        <range startTime="946047500" eventIndex="1" amount="64"/>
+        <range startTime="946047584" eventIndex="1" amount="64"/>
+        <range startTime="946047625" eventIndex="1" amount="64"/>
+        <range startTime="946047667" eventIndex="1" amount="64"/>
+        <range startTime="946047750" eventIndex="1" amount="64"/>
+        <range startTime="946047834" eventIndex="1" amount="64"/>
+        <range startTime="946047875" eventIndex="1" amount="64"/>
+        <range startTime="946051250" eventIndex="1" amount="64"/>
+        <range startTime="946051292" eventIndex="1" amount="64"/>
+        <range startTime="946051375" eventIndex="1" amount="64"/>
+        <range startTime="946053250" duration="500667" eventIndex="8"/>
+        <range startTime="946306459" eventIndex="1" amount="128"/>
+        <range startTime="946307042" eventIndex="1" amount="64"/>
+        <range startTime="946308584" eventIndex="1" amount="64"/>
+        <range startTime="946332209" duration="33916" eventIndex="9"/>
+        <range startTime="946346500" eventIndex="1" amount="64"/>
+        <range startTime="946353584" eventIndex="1" amount="96"/>
+        <range startTime="946353667" eventIndex="1" amount="32"/>
+        <range startTime="946372542" duration="33542" eventIndex="10"/>
+        <range startTime="946373917" eventIndex="1" amount="64"/>
+        <range startTime="946374875" duration="24709" eventIndex="11"/>
+        <range startTime="946385125" eventIndex="1" amount="64"/>
+        <range startTime="946406917" duration="117292" eventIndex="12"/>
+        <range startTime="946487084" eventIndex="1" amount="64"/>
+        <range startTime="946522209" eventIndex="1" amount="96"/>
+        <range startTime="946522375" eventIndex="1" amount="32"/>
+        <range startTime="946530709" duration="18875" eventIndex="13"/>
+        <range startTime="946540000" eventIndex="1" amount="64"/>
+        <range startTime="946541000" eventIndex="1" amount="96"/>
+        <range startTime="946541042" eventIndex="1" amount="32"/>
+        <range startTime="946559875" duration="38584" eventIndex="14"/>
+        <range startTime="946567959" duration="27458" eventIndex="15"/>
+        <range startTime="946587667" eventIndex="1" amount="64"/>
+        <range startTime="946588375" eventIndex="1" amount="64"/>
+        <range startTime="946589917" eventIndex="1" amount="128"/>
+        <range startTime="946590209" eventIndex="1" amount="64"/>
+        <range startTime="946590584" eventIndex="1" amount="128"/>
+        <range startTime="946590750" eventIndex="1" amount="128"/>
+        <range startTime="946590792" eventIndex="1" amount="128"/>
+        <range startTime="946590834" eventIndex="1" amount="128"/>
+        <range startTime="946598709" duration="7125" eventIndex="16"/>
+        <range startTime="946599000" duration="6000" eventIndex="17"/>
+        <range startTime="946604917" eventIndex="1" amount="128"/>
+        <range startTime="946606167" duration="1792" eventIndex="18"/>
+        <range startTime="946606292" duration="708" eventIndex="19"/>
+        <range startTime="946608084" duration="14416" eventIndex="13"/>
+        <range startTime="946622584" duration="508066625" eventIndex="12"/>
+        <range startTime="1437318417" eventIndex="6"/>
+        <range startTime="1454689875" duration="49125" eventIndex="11"/>
+        <range startTime="1454739125" duration="1625" eventIndex="10"/>
+        <range startTime="1454740750" duration="1334" eventIndex="9"/>
+        <range startTime="1454742125" duration="70792" eventIndex="8"/>
+        <range startTime="1455021042" eventIndex="20" timing1="2542"/>
+        <range startTime="1458304459" eventIndex="21" timing1="125" timing2="583" timing3="-667" timing4="2816209"/>
+        <range startTime="1458309042" eventIndex="22" timing1="461375" timing2="2823708" timing3="2917"/>
+        <range startTime="1460602875" eventIndex="20" timing1="791"/>
+        <range startTime="1460619375" eventIndex="21" timing1="125" timing2="83" timing3="-166" timing4="13041"/>
+        <range startTime="1460619750" eventIndex="22" timing1="2542" timing2="14333"/>
+        <range startTime="1475654500" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1481264167" eventIndex="20" timing1="375"/>
+        <range startTime="1481310542" eventIndex="21" timing1="42" timing2="42" timing3="-84" timing4="31417"/>
+        <range startTime="1481312000" eventIndex="22" timing1="10042" timing2="36541" timing3="1250"/>
+        <range startTime="1492332042" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1497962334" eventIndex="20" timing1="625"/>
+        <range startTime="1498001917" eventIndex="21" timing1="42" timing2="292" timing3="-334" timing4="29417"/>
+        <range startTime="1498007209" eventIndex="22" timing1="9333" timing2="30500" timing3="5042"/>
+        <range startTime="1508049959" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="1513705125" eventIndex="20" timing1="4500"/>
+        <range startTime="1513736750" eventIndex="21" timing1="42" timing2="83" timing3="-125" timing4="27000"/>
+        <range startTime="1513737917" eventIndex="22" timing1="4209" timing2="27708" timing3="875"/>
+        <range startTime="1523752417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1529410750" eventIndex="20" timing1="833"/>
+        <range startTime="1529449417" eventIndex="21" timing1="125" timing2="208" timing3="-292" timing4="28417"/>
+        <range startTime="1529451584" eventIndex="22" timing1="9334" timing2="29500" timing3="2000"/>
+        <range startTime="1539438167" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1545101959" eventIndex="20" timing1="792"/>
+        <range startTime="1545148292" eventIndex="21" timing1="41" timing2="209" timing3="-250" timing4="34333"/>
+        <range startTime="1545150292" eventIndex="22" timing1="10583" timing2="35917" timing3="1833"/>
+        <range startTime="1556179334" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1561657500" eventIndex="20" timing1="750"/>
+        <range startTime="1561700625" eventIndex="21" timing1="167" timing2="375" timing3="-500" timing4="30541"/>
+        <range startTime="1561702709" eventIndex="22" timing1="11334" timing2="32041" timing3="1834"/>
+        <range startTime="1571729375" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1577386750" eventIndex="20" timing1="625"/>
+        <range startTime="1577427917" eventIndex="21" timing1="41" timing2="167" timing3="-208" timing4="29458"/>
+        <range startTime="1577433125" eventIndex="22" timing1="10959" timing2="34125" timing3="1291"/>
+        <range startTime="1587443417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1593069250" eventIndex="20" timing1="291"/>
+        <range startTime="1593098250" eventIndex="21" timing1="83" timing2="42" timing3="-83" timing4="20291"/>
+        <range startTime="1593099000" eventIndex="22" timing1="8167" timing2="20958" timing3="625"/>
+        <range startTime="1604124459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1609790917" eventIndex="20" timing1="1125"/>
+        <range startTime="1609854667" eventIndex="21" timing1="83" timing2="375" timing3="-417" timing4="46917"/>
+        <range startTime="1609856875" eventIndex="22" timing1="15833" timing2="48167" timing3="1958"/>
+        <range startTime="1619114250" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="1624741959" eventIndex="20" timing1="667"/>
+        <range startTime="1624777625" eventIndex="21" timing1="125" timing2="83" timing3="-125" timing4="26958"/>
+        <range startTime="1624778750" eventIndex="22" timing1="7875" timing2="27916" timing3="1000"/>
+        <range startTime="1635812125" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1641476750" eventIndex="20" timing1="1041"/>
+        <range startTime="1641527709" eventIndex="21" timing1="250" timing2="416" timing3="-625" timing4="35709"/>
+        <range startTime="1641530334" eventIndex="22" timing1="13500" timing2="37875" timing3="2209"/>
+        <range startTime="1651547042" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1657219584" eventIndex="20" timing1="4584"/>
+        <range startTime="1657289625" eventIndex="21" timing1="83" timing2="250" timing3="-291" timing4="55791"/>
+        <range startTime="1657292084" eventIndex="22" timing1="12958" timing2="57417" timing3="2125"/>
+        <range startTime="1668310625" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1673937167" eventIndex="20" timing1="917"/>
+        <range startTime="1674002375" eventIndex="21" timing1="208" timing2="333" timing3="-500" timing4="44000"/>
+        <range startTime="1674008542" eventIndex="22" timing1="19667" timing2="50000" timing3="1708"/>
+        <range startTime="1684022542" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1689674250" eventIndex="20" timing1="541"/>
+        <range startTime="1689707417" eventIndex="21" timing1="41" timing2="125" timing3="-125" timing4="23917"/>
+        <range startTime="1689708792" eventIndex="22" timing1="8584" timing2="24791" timing3="1167"/>
+        <range startTime="1699727834" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1705373042" eventIndex="20" timing1="1417"/>
+        <range startTime="1705455500" eventIndex="21" timing1="42" timing2="292" timing3="-292" timing4="71458"/>
+        <range startTime="1705460209" eventIndex="22" timing1="10167" timing2="73875" timing3="3125"/>
+        <range startTime="1715127125" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="1720205459" eventIndex="20" timing1="1042"/>
+        <range startTime="1720244375" eventIndex="21" timing1="125" timing2="333" timing3="-417" timing4="27875"/>
+        <range startTime="1720246042" eventIndex="22" timing1="9875" timing2="29333" timing3="1375"/>
+        <range startTime="1732278500" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1737958167" eventIndex="20" timing1="1792"/>
+        <range startTime="1738040417" eventIndex="21" timing1="333" timing2="583" timing3="-833" timing4="57875"/>
+        <range startTime="1738043250" eventIndex="22" timing1="21333" timing2="61292" timing3="2458"/>
+        <range startTime="1748089459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1753752709" eventIndex="20" timing1="1125"/>
+        <range startTime="1753871125" eventIndex="21" timing1="167" timing2="416" timing3="-541" timing4="104541"/>
+        <range startTime="1753874417" eventIndex="22" timing1="12083" timing2="106792" timing3="2833"/>
+        <range startTime="1763896459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1769578584" eventIndex="20" timing1="667"/>
+        <range startTime="1769626542" eventIndex="21" timing1="41" timing2="292" timing3="-292" timing4="31917"/>
+        <range startTime="1769632292" eventIndex="22" timing1="15291" timing2="32834" timing3="5583"/>
+        <range startTime="1779207375" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="1784854250" eventIndex="20" timing1="791"/>
+        <range startTime="1784904292" eventIndex="21" timing1="4250" timing2="208" timing3="-250" timing4="35042"/>
+        <range startTime="1784909750" eventIndex="22" timing1="9709" timing2="40583" timing3="5208"/>
+        <range startTime="1795922500" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1801604084" eventIndex="20" timing1="334"/>
+        <range startTime="1801623750" eventIndex="21" timing1="125" timing2="41" timing3="-166" timing4="13041"/>
+        <range startTime="1801624750" eventIndex="22" timing1="6041" timing2="13834" timing3="791"/>
+        <range startTime="1811642084" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1817294917" eventIndex="20" timing1="375"/>
+        <range startTime="1817349959" eventIndex="21" timing1="41" timing2="84" timing3="-125" timing4="23375"/>
+        <range startTime="1817354542" eventIndex="22" timing1="31125" timing2="24083" timing3="4417"/>
+        <range startTime="1827194375" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="1832899584" eventIndex="20" timing1="917"/>
+        <range startTime="1832943625" eventIndex="21" timing1="42" timing2="208" timing3="-208" timing4="33041"/>
+        <range startTime="1832945084" eventIndex="22" timing1="10125" timing2="34250" timing3="1125"/>
+        <range startTime="1843973917" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="1849641209" eventIndex="20" timing1="667"/>
+        <range startTime="1849699459" eventIndex="21" timing1="125" timing2="292" timing3="-375" timing4="41667"/>
+        <range startTime="1849701125" eventIndex="22" timing1="11541" timing2="46875" timing3="1500"/>
+        <range startTime="1859718209" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1865405209" eventIndex="20" timing1="750"/>
+        <range startTime="1865446000" eventIndex="21" timing1="166" timing2="250" timing3="-291" timing4="30541"/>
+        <range startTime="1865447250" eventIndex="22" timing1="9375" timing2="31583" timing3="1083"/>
+        <range startTime="1875466459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1881134125" eventIndex="20" timing1="416"/>
+        <range startTime="1881172792" eventIndex="21" timing1="83" timing2="167" timing3="-209" timing4="29167"/>
+        <range startTime="1881174000" eventIndex="22" timing1="8834" timing2="30125" timing3="916"/>
+        <range startTime="1892192417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1897852709" eventIndex="20" timing1="417"/>
+        <range startTime="1897879084" eventIndex="21" timing1="42" timing3="-42" timing4="23542"/>
+        <range startTime="1897879667" eventIndex="22" timing1="2375" timing2="24041" timing3="542"/>
+        <range startTime="1907897375" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1913547875" eventIndex="20" timing1="333"/>
+        <range startTime="1913584834" eventIndex="21" timing1="84" timing2="125" timing3="-167" timing4="27917"/>
+        <range startTime="1913586084" eventIndex="22" timing1="8709" timing2="28458" timing3="1042"/>
+        <range startTime="1923606125" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1929273709" eventIndex="20" timing1="875"/>
+        <range startTime="1929324250" eventIndex="21" timing1="125" timing2="292" timing3="-375" timing4="38083"/>
+        <range startTime="1929329834" eventIndex="22" timing1="11625" timing2="39166" timing3="5334"/>
+        <range startTime="1939340667" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1944998834" eventIndex="20" timing1="1125"/>
+        <range startTime="1945036334" eventIndex="21" timing1="125" timing2="208" timing3="-292" timing4="27209"/>
+        <range startTime="1945037875" eventIndex="22" timing1="9166" timing2="28542" timing3="1333"/>
+        <range startTime="1956059000" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1961715375" eventIndex="20" timing1="625"/>
+        <range startTime="1961780625" eventIndex="21" timing1="41" timing2="250" timing3="-291" timing4="54041"/>
+        <range startTime="1961782042" eventIndex="22" timing1="10584" timing2="54916" timing3="1167"/>
+        <range startTime="1971791417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1977443959" eventIndex="20" timing1="584"/>
+        <range startTime="1977483042" eventIndex="21" timing1="167" timing2="83" timing3="-166" timing4="29708"/>
+        <range startTime="1977488375" eventIndex="22" timing1="8625" timing2="30666" timing3="5125"/>
+        <range startTime="1987496167" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="1993146209" eventIndex="20" timing1="209"/>
+        <range startTime="1993175167" eventIndex="21" timing1="42" timing2="83" timing3="-83" timing4="25583"/>
+        <range startTime="1993176417" eventIndex="22" timing1="3083" timing2="26167" timing3="958"/>
+        <range startTime="2003529709" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2008923375" eventIndex="20" timing1="208"/>
+        <range startTime="2008952792" eventIndex="21" timing1="83" timing2="42" timing3="-84" timing4="22167"/>
+        <range startTime="2008953667" eventIndex="22" timing1="6917" timing2="22667" timing3="708"/>
+        <range startTime="2019965459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2025597792" eventIndex="20" timing1="875"/>
+        <range startTime="2025639459" eventIndex="21" timing1="42" timing2="292" timing3="-292" timing4="30167"/>
+        <range startTime="2025640875" eventIndex="22" timing1="10583" timing2="31250" timing3="1250"/>
+        <range startTime="2035661000" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2041316959" eventIndex="20" timing1="750"/>
+        <range startTime="2041349042" eventIndex="21" timing1="42" timing2="208" timing3="-208" timing4="22375"/>
+        <range startTime="2041354084" eventIndex="22" timing1="9125" timing2="23250" timing3="4750"/>
+        <range startTime="2051371042" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2056982917" eventIndex="20" timing1="792"/>
+        <range startTime="2057028250" eventIndex="21" timing1="84" timing2="291" timing3="-375" timing4="33875"/>
+        <range startTime="2057029584" eventIndex="22" timing1="10458" timing2="35167" timing3="1042"/>
+        <range startTime="2068049167" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2073669667" eventIndex="20" timing1="292"/>
+        <range startTime="2073693542" eventIndex="21" timing1="41" timing2="42" timing3="-42" timing4="20292"/>
+        <range startTime="2073694459" eventIndex="22" timing1="2917" timing2="21125" timing3="750"/>
+        <range startTime="2083714834" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2089377667" eventIndex="20" timing1="667"/>
+        <range startTime="2089407667" eventIndex="21" timing1="42" timing2="166" timing3="-208" timing4="21875"/>
+        <range startTime="2089408792" eventIndex="22" timing1="7667" timing2="22541" timing3="917"/>
+        <range startTime="2099482750" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2105147042" eventIndex="20" timing1="4125"/>
+        <range startTime="2105163417" eventIndex="21" timing1="42" timing2="42" timing3="-84" timing4="13792"/>
+        <range startTime="2105169042" eventIndex="22" timing1="2250" timing2="14292" timing3="5458"/>
+        <range startTime="2116211125" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2121870209" eventIndex="20" timing1="959"/>
+        <range startTime="2121946750" eventIndex="21" timing1="208" timing2="167" timing3="-333" timing4="64541"/>
+        <range startTime="2121948834" eventIndex="22" timing1="10791" timing2="66500" timing3="1334"/>
+        <range startTime="2132016042" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2137673875" eventIndex="20" timing1="750"/>
+        <range startTime="2137737459" eventIndex="21" timing1="375" timing2="208" timing3="-500" timing4="42209"/>
+        <range startTime="2137740750" eventIndex="22" timing1="10500" timing2="53959" timing3="2416"/>
+        <range startTime="2147759042" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2153024959" eventIndex="20" timing1="1792"/>
+        <range startTime="2153068042" eventIndex="21" timing1="83" timing2="250" timing3="-292" timing4="19417"/>
+        <range startTime="2153069084" eventIndex="22" timing1="22541" timing2="20792" timing3="792"/>
+        <range startTime="2164080459" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2169759000" eventIndex="20" timing1="4458"/>
+        <range startTime="2169790209" eventIndex="21" timing1="42" timing2="166" timing3="-208" timing4="22042"/>
+        <range startTime="2169794959" eventIndex="22" timing1="4750" timing2="26625" timing3="4584"/>
+        <range startTime="2179804417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2185460250" eventIndex="20" timing1="1041"/>
+        <range startTime="2185509375" eventIndex="21" timing1="209" timing2="208" timing3="-375" timing4="36208"/>
+        <range startTime="2185511834" eventIndex="22" timing1="11625" timing2="37750" timing3="2209"/>
+        <range startTime="2194834917" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="2200513417" eventIndex="20" timing1="667"/>
+        <range startTime="2200545584" eventIndex="21" timing1="42" timing2="125" timing3="-125" timing4="22417"/>
+        <range startTime="2200546667" eventIndex="22" timing1="9125" timing2="23292" timing3="833"/>
+        <range startTime="2211590292" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="2217238459" eventIndex="20" timing1="417"/>
+        <range startTime="2217262042" eventIndex="21" timing1="42" timing2="125" timing3="-125" timing4="20375"/>
+        <range startTime="2217268125" eventIndex="22" timing1="2791" timing2="26042" timing3="833"/>
+        <range startTime="2228284875" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2233651500" eventIndex="20" timing1="625"/>
+        <range startTime="2233682209" eventIndex="21" timing1="42" timing2="83" timing3="-83" timing4="22750"/>
+        <range startTime="2233687334" eventIndex="22" timing1="7417" timing2="23500" timing3="4917"/>
+        <range startTime="2243708500" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2249397042" eventIndex="20" timing1="750"/>
+        <range startTime="2249429500" eventIndex="21" timing1="83" timing2="292" timing3="-334" timing4="22625"/>
+        <range startTime="2249430584" eventIndex="22" timing1="8958" timing2="23625" timing3="959"/>
+        <range startTime="2259453000" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2265125459" eventIndex="20" timing1="542"/>
+        <range startTime="2265164542" eventIndex="21" timing1="83" timing2="250" timing3="-291" timing4="28583"/>
+        <range startTime="2265165834" eventIndex="22" timing1="9750" timing2="29625" timing3="1000"/>
+        <range startTime="2276186084" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2281849375" eventIndex="20" timing1="416"/>
+        <range startTime="2281889334" eventIndex="21" timing1="83" timing2="167" timing3="-209" timing4="29834"/>
+        <range startTime="2281890375" eventIndex="22" timing1="9375" timing2="30750" timing3="875"/>
+        <range startTime="2291912292" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2297565042" eventIndex="20" timing1="500"/>
+        <range startTime="2297596959" eventIndex="21" timing1="42" timing2="166" timing3="-166" timing4="23375"/>
+        <range startTime="2297598084" eventIndex="22" timing1="8125" timing2="24000" timing3="917"/>
+        <range startTime="2307610042" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2313238542" eventIndex="20" timing1="208"/>
+        <range startTime="2313263834" eventIndex="21" timing1="125" timing2="84" timing3="-167" timing4="18667"/>
+        <range startTime="2313264667" eventIndex="22" timing1="6292" timing2="19083" timing3="750"/>
+        <range startTime="2323778750" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2329429250" eventIndex="20" timing1="375"/>
+        <range startTime="2329466292" eventIndex="21" timing1="83" timing2="167" timing3="-209" timing4="28417"/>
+        <range startTime="2329467375" eventIndex="22" timing1="8084" timing2="29208" timing3="833"/>
+        <range startTime="2339486667" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2345156125" eventIndex="20" timing1="708"/>
+        <range startTime="2345197334" eventIndex="21" timing1="42" timing2="250" timing3="-250" timing4="29417"/>
+        <range startTime="2345199042" eventIndex="22" timing1="10792" timing2="30625" timing3="1500"/>
+        <range startTime="2356212959" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2361874459" eventIndex="20" timing1="1084"/>
+        <range startTime="2361915209" eventIndex="21" timing1="125" timing2="250" timing3="-333" timing4="29292"/>
+        <range startTime="2361917292" eventIndex="22" timing1="10208" timing2="30792" timing3="1833"/>
+        <range startTime="2371940417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2377622834" eventIndex="20" timing1="709"/>
+        <range startTime="2377663042" eventIndex="21" timing1="250" timing2="292" timing3="-333" timing4="29583"/>
+        <range startTime="2377668209" eventIndex="22" timing1="9541" timing2="30750" timing3="5084"/>
+        <range startTime="2387675584" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2393302625" eventIndex="20" timing1="541"/>
+        <range startTime="2393327417" eventIndex="21" timing1="42" timing2="125" timing3="-167" timing4="21167"/>
+        <range startTime="2393328459" eventIndex="22" timing1="3125" timing2="21875" timing3="834"/>
+        <range startTime="2403004959" eventIndex="23" framerate="66" animationcount="2" thread="0"/>
+        <range startTime="2408108709" eventIndex="20" timing1="1000"/>
+        <range startTime="2408149084" eventIndex="21" timing1="83" timing2="209" timing3="-250" timing4="25750"/>
+        <range startTime="2408150667" eventIndex="22" timing1="10458" timing2="30000" timing3="1500"/>
+        <range startTime="2420182167" eventIndex="23" framerate="58" animationcount="2" thread="0"/>
+        <range startTime="2425852042" eventIndex="20" timing1="833"/>
+        <range startTime="2425904875" eventIndex="21" timing1="167" timing2="333" timing3="-375" timing4="39250"/>
+        <range startTime="2425906417" eventIndex="22" timing1="12375" timing2="40625" timing3="1375"/>
+        <range startTime="2435927417" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2441586500" eventIndex="20" timing1="916"/>
+        <range startTime="2441633709" eventIndex="21" timing1="167" timing2="333" timing3="-458" timing4="32042"/>
+        <range startTime="2441635542" eventIndex="22" timing1="14209" timing2="33333" timing3="1500"/>
+        <range startTime="2451652292" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2457308959" eventIndex="20" timing1="542"/>
+        <range startTime="2457348000" eventIndex="21" timing1="125" timing2="250" timing3="-333" timing4="27041"/>
+        <range startTime="2457349084" eventIndex="22" timing1="10875" timing2="28333" timing3="917"/>
+        <range startTime="2467363750" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2472990209" eventIndex="20" timing1="792"/>
+        <range startTime="2473039417" eventIndex="21" timing1="83" timing2="167" timing3="-209" timing4="37042"/>
+        <range startTime="2473040917" eventIndex="22" timing1="10916" timing2="38542" timing3="1250"/>
+        <range startTime="2484052959" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2489723709" eventIndex="20" timing1="334"/>
+        <range startTime="2489744042" eventIndex="21" timing1="42" timing2="42" timing3="-84" timing4="17167"/>
+        <range startTime="2489744792" eventIndex="22" timing1="2625" timing2="17833" timing3="625"/>
+        <range startTime="2499763334" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2505427167" eventIndex="20" timing1="8083"/>
+        <range startTime="2505511292" eventIndex="21" timing1="458" timing3="-292" timing4="37042"/>
+        <range startTime="2505513667" eventIndex="22" timing1="21833" timing2="63042" timing3="1625"/>
+        <range startTime="2515534209" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2521164792" eventIndex="20" timing1="458"/>
+        <range startTime="2521251709" eventIndex="21" timing1="208" timing2="208" timing3="-375" timing4="73709"/>
+        <range startTime="2521253667" eventIndex="22" timing1="12667" timing2="74791" timing3="1417"/>
+        <range startTime="2532274000" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2537924167" eventIndex="20" timing1="792"/>
+        <range startTime="2537957000" eventIndex="21" timing1="84" timing2="166" timing3="-208" timing4="22958"/>
+        <range startTime="2537961542" eventIndex="22" timing1="9292" timing2="23583" timing3="4500"/>
+        <range startTime="2547979084" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2553649750" eventIndex="20" timing1="666"/>
+        <range startTime="2553687250" eventIndex="21" timing1="42" timing2="250" timing3="-250" timing4="28666"/>
+        <range startTime="2553688167" eventIndex="22" timing1="8250" timing2="29417" timing3="750"/>
+        <range startTime="2563703292" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2569351375" eventIndex="20" timing1="375"/>
+        <range startTime="2569380084" eventIndex="21" timing1="41" timing2="375" timing3="-375" timing4="21084"/>
+        <range startTime="2569381042" eventIndex="22" timing1="7084" timing2="21791" timing3="792"/>
+        <range startTime="2579399750" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2585073334" eventIndex="20" timing1="875"/>
+        <range startTime="2585114667" eventIndex="21" timing1="83" timing2="375" timing3="-416" timing4="30083"/>
+        <range startTime="2585116417" eventIndex="22" timing1="9916" timing2="31625" timing3="1542"/>
+        <range startTime="2596140709" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2601795417" eventIndex="20" timing1="792"/>
+        <range startTime="2601845042" eventIndex="21" timing1="42" timing2="208" timing3="-250" timing4="37792"/>
+        <range startTime="2601846250" eventIndex="22" timing1="11083" timing2="38584" timing3="1166"/>
+        <range startTime="2611860334" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2617509500" eventIndex="20" timing1="541"/>
+        <range startTime="2617549000" eventIndex="21" timing1="42" timing2="125" timing3="-167" timing4="29750"/>
+        <range startTime="2617550417" eventIndex="22" timing1="9000" timing2="30709" timing3="1208"/>
+        <range startTime="2627589000" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2633225667" eventIndex="20" timing1="667"/>
+        <range startTime="2633259625" eventIndex="21" timing1="42" timing2="250" timing3="-292" timing4="24458"/>
+        <range startTime="2633260875" eventIndex="22" timing1="8833" timing2="25375" timing3="1000"/>
+        <range startTime="2644279834" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2649902042" eventIndex="20" timing1="708"/>
+        <range startTime="2649947375" eventIndex="21" timing1="42" timing2="166" timing3="-166" timing4="35791"/>
+        <range startTime="2649948709" eventIndex="22" timing1="8792" timing2="36750" timing3="1125"/>
+        <range startTime="2659965250" eventIndex="23" framerate="62" animationcount="2" thread="0"/>
+        <range startTime="2659987459" duration="1125250" eventIndex="24"/>
+        <range startTime="2659994917" duration="1117167" eventIndex="25"/>
+    </profilerDataModel>
+</trace>

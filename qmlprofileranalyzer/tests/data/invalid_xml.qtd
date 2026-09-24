@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace version="1.02" traceStart="0" traceEnd="10">
+  <eventData totalTime="10">
+    <event index="0">
+      <displayname>broken xml</displayname>
+      <type>Binding</type>
+  </eventData>
+</trace>
