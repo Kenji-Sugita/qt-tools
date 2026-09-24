@@ -126,7 +126,6 @@ ObjectSelector と組み合わせるほか、
 |---|---|---|
 | [cling](cling/README.txt) | Qt Cling / qtcling | Cling 上で Qt/C++ を対話的に実行します |
 | [icpp](icpp/README.md) | icpp | Cling / Qt Cling を実用的に扱う REPL ラッパーです |
-| [qmlprop](qmlprop/README.md) | qmlprop | QML 型のプロパティー、メソッド、列挙子、継承関係などを調査します |
 
 
 ### Qt Object Inspection
@@ -135,6 +134,14 @@ ObjectSelector と組み合わせるほか、
 |---|---|---|
 | [objectselector](objectselector/USER_GUIDE.md) | ObjectSelector | `QObject` / `QWidget` を画面またはオブジェクトツリーから選択します |
 | [propertyeditor](propertyeditor/README.md) | PropertyEditor | `QObject` のプロパティーを表示・編集します |
+
+
+### QML Tools
+
+| Directory | Tool | Description |
+|---|---|---|
+| [qmlprop](qmlprop/README.md) | qmlprop | QML 型のプロパティー、メソッド、列挙子、継承関係などを調査します |
+| [qmlprofileranalyzer](qmlprofileranalyzer/USER_GUIDE.md) | qmlprofileranalyzer | QML Profiler の `.qtd` / `.qzt` トレースを解析するコマンドラインツールです。概要・ホットスポット・イベントの親子関係の確認、2 つのトレースの比較、形式の相互変換に対応します |
 
 
 ### Development Workflows, Instructions and Templates
@@ -198,7 +205,10 @@ app-generation-workflow と work-templates は、Qt 以外のプロジェクト�
 
 - macOS
 - Linux
+- Windows
 - Qt 6
+
+コマンド系は、genpdf など一部を除き、macOS と Linux を対象としています。
 
 一部のツールには個別の制約があります。
 
