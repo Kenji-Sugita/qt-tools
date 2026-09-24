@@ -118,30 +118,30 @@ You can combine it with ObjectSelector or use it independently by passing any
 
 | Directory | Tool | Description |
 |---|---|---|
-| [cling](cling/README.txt) | Qt Cling / qtcling | Run Qt/C++ interactively through Cling. |
+| [cling](cling/README.en.txt) | Qt Cling / qtcling | Run Qt/C++ interactively through Cling. |
 | [icpp](icpp/README.md) | icpp | A REPL wrapper for practical use of Cling and Qt Cling. |
 
 ### Qt Object Inspection
 
 | Directory | Tool | Description |
 |---|---|---|
-| [objectselector](objectselector/USER_GUIDE.md) | ObjectSelector | Select `QObject` and `QWidget` instances on screen or from an object tree. |
-| [propertyeditor](propertyeditor/README.md) | PropertyEditor | View and edit `QObject` properties. |
+| [objectselector](objectselector/USER_GUIDE.en.md) | ObjectSelector | Select `QObject` and `QWidget` instances on screen or from an object tree. |
+| [propertyeditor](propertyeditor/README.en.md) | PropertyEditor | View and edit `QObject` properties. |
 
 ### QML Tools
 
 | Directory | Tool | Description |
 |---|---|---|
-| [qmlprop](qmlprop/README.md) | qmlprop | Inspect the properties, methods, enumerators, inheritance relationships, and other details of QML types. |
-| [qmlprofileranalyzer](qmlprofileranalyzer/USER_GUIDE.md) | qmlprofileranalyzer | A command-line tool for analyzing QML Profiler `.qtd` and `.qzt` traces. Inspect summaries, hotspots, and event hierarchies, compare two traces, and convert between the two formats. |
+| [qmlprop](qmlprop/README.en.md) | qmlprop | Inspect the properties, methods, enumerators, inheritance relationships, and other details of QML types. |
+| [qmlprofileranalyzer](qmlprofileranalyzer/USER_GUIDE.en.md) | qmlprofileranalyzer | A command-line tool for analyzing QML Profiler `.qtd` and `.qzt` traces. Inspect summaries, hotspots, and event hierarchies, compare two traces, and convert between the two formats. |
 
 ### Development Workflows, Instructions and Templates
 
 | Directory | Tool | Description |
 |---|---|---|
-| [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.md) | App generation workflow | A document-driven AI development harness focused on GUI applications. It uses documents to connect requirements gathering, specification, implementation, testing, and review. |
-| [ai-cmake](ai-cmake/USER_GUIDE.md) | AI CMake instructions | Instructions and a validation environment for generative AI to create and modify Qt 6 `CMakeLists.txt` files. |
-| [work-templates](work-templates/README.md) | Work context templates | Manage work status, long-term tasks, and design decisions separately in Markdown so work can resume when the person, host, or AI session changes. |
+| [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.en.md) | App generation workflow | A document-driven AI development harness focused on GUI applications. It uses documents to connect requirements gathering, specification, implementation, testing, and review. |
+| [ai-cmake](ai-cmake/USER_GUIDE.en.md) | AI CMake instructions | Instructions and a validation environment for generative AI to create and modify Qt 6 `CMakeLists.txt` files. |
+| [work-templates](work-templates/README.en.md) | Work context templates | Manage work status, long-term tasks, and design decisions separately in Markdown so work can resume when the person, host, or AI session changes. |
 
 These resources support the development process (`app-generation-workflow`),
 the creation of build definitions (`ai-cmake`), and continuity of work
@@ -152,25 +152,25 @@ can also be used in projects that do not use Qt.
 
 | Directory | Tool | Description |
 |---|---|---|
-| [markdown](markdown/USER_GUIDE.md) | genpdf | Generate PDF documents and slides from Markdown. |
-| [cutter](cutter/USER_GUIDE.md) | cutter | Crop images using numeric parameters, with support for making backgrounds transparent. |
-| [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.md) | WhiteboardApp | A whiteboard for creating and editing explanatory diagrams, with support for multiple pages, PNG/SVG export, and MCP. |
+| [markdown](markdown/USER_GUIDE.en.md) | genpdf | Generate PDF documents and slides from Markdown. |
+| [cutter](cutter/USER_GUIDE.en.md) | cutter | Crop images using numeric parameters, with support for making backgrounds transparent. |
+| [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.en.md) | WhiteboardApp | A whiteboard for creating and editing explanatory diagrams, with support for multiple pages, PNG/SVG export, and MCP. |
 
 ### Command-line Utilities
 
 | Directory | Tool | Description |
 |---|---|---|
-| [dateorder](dateorder/USER_GUIDE.md) | younger / older | Check whether files are ordered by modification time. |
-| [dtree](dtree/USER_GUIDE.md) | dtree | Display a directory structure as a tree with branch lines. |
-| [now](now/USER_GUIDE.md) | now | Display the current date and time in various formats. |
-| [tl](tl/USER_GUIDE.md) | tl | Automatically detect Japanese or English and translate into the other language. |
+| [dateorder](dateorder/USER_GUIDE.en.md) | younger / older | Check whether files are ordered by modification time. |
+| [dtree](dtree/USER_GUIDE.en.md) | dtree | Display a directory structure as a tree with branch lines. |
+| [now](now/USER_GUIDE.en.md) | now | Display the current date and time in various formats. |
+| [tl](tl/USER_GUIDE.en.md) | tl | Automatically detect Japanese or English and translate into the other language. |
 
 ### Desktop Tools and Experiments
 
 | Directory | Tool | Description |
 |---|---|---|
-| [seminartimer](seminartimer/USER_GUIDE.md) | SeminarTimer | A timer that displays the time remaining for seminars, exercises, breaks, and similar activities. |
-| [qeyes](qeyes/README.md) | Qeyes | A desktop accessory that reimplements the classic Xeyes using Qt Widgets. |
+| [seminartimer](seminartimer/USER_GUIDE.en.md) | SeminarTimer | A timer that displays the time remaining for seminars, exercises, breaks, and similar activities. |
+| [qeyes](qeyes/README.en.md) | Qeyes | A desktop accessory that reimplements the classic Xeyes using Qt Widgets. |
 | [vu-stereo](vu-stereo/README.md) | VuStereo | Display macOS system audio playback levels on analog-style VU meters. |
 
 ## Documentation
@@ -180,8 +180,8 @@ For detailed usage instructions, build steps, and system requirements, see the
 directory.
 
 For the application development workflow, start with the
-[README](app-generation-workflow/app-generation-workflow/README.md) and
-[User Guide](app-generation-workflow/app-generation-workflow/USER_GUIDE.md).
+[README](app-generation-workflow/app-generation-workflow/README.en.md) and
+[User Guide](app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md).
 
 Supported operating systems, Qt versions, and dependencies on external libraries
 and services vary by tool.

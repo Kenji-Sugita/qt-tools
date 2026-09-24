@@ -10,7 +10,9 @@
 - README.en.md を最新の README.md に沿って再翻訳し、Windows とコマンド系ツールの対象環境を反映済み。
 - 日英 README に qmlprofileranalyzer の概要と利用ガイドへのリンクを追加済み。
 - qmlprop と qmlprofileranalyzer を両 README の「QML Tools」にまとめた。
-- 今回依頼された README 更新は完了。実装の変更はない。
+- README.en.md から直接リンクする日本語文書18件の英語版を作成し、リンク先を切り替え済み。icpp と VuStereo は既存の英語文書を利用する。
+- 英語版の見出し構成、コードブロック、リンク先の存在、書式を確認済み。`tl` の日本語入力例は英語の説明を添えて保持した。
+- 今回依頼された文書の英語化は完了。実装の変更はない。
 
 ## 次にやること
 
@@ -26,11 +28,13 @@
 
 ## 注意
 
-- README 更新時の継続方針は `DECISIONS.md` を参照する。
+- README 更新時と翻訳文書の継続方針は `DECISIONS.md` を参照する。
+- 今回の翻訳対象は README.en.md の直接のリンク先。各ガイド内で参照する補助文書まで再帰的には翻訳していない。
 
 ## 関連ファイル
 
 - `README.md` / `README.en.md`: リポジトリー全体の案内とツール一覧。
-- `qmlprofileranalyzer/USER_GUIDE.md`: QML Profiler トレース解析・比較・形式変換の利用方法。
+- 各ツールの `README.en.md` / `USER_GUIDE.en.md`、`cling/README.en.txt`: 日本語文書に対応する英語版。
+- `qmlprofileranalyzer/USER_GUIDE.md` / `qmlprofileranalyzer/USER_GUIDE.en.md`: QML Profiler トレース解析・比較・形式変換の利用方法。
 - `DECISIONS.md`: 継続する判断、仕様、運用制約。
 - `backlog.md`: 長期の残作業、問題点、保留事項。
