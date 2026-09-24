@@ -124,17 +124,17 @@ ObjectSelector と組み合わせるほか、
 
 | Directory | Tool | Description |
 |---|---|---|
-| `cling` | Qt Cling / qtcling | Cling 上で Qt/C++ を対話的に実行します |
-| `icpp` | icpp | Cling / Qt Cling を実用的に扱う REPL ラッパーです |
-| `qmlprop` | qmlprop | QML 型のプロパティー、メソッド、列挙子、継承関係などを調査します |
+| [cling](cling/README.txt) | Qt Cling / qtcling | Cling 上で Qt/C++ を対話的に実行します |
+| [icpp](icpp/README.md) | icpp | Cling / Qt Cling を実用的に扱う REPL ラッパーです |
+| [qmlprop](qmlprop/README.md) | qmlprop | QML 型のプロパティー、メソッド、列挙子、継承関係などを調査します |
 
 
 ### Qt Object Inspection
 
 | Directory | Tool | Description |
 |---|---|---|
-| `objectselector` | ObjectSelector | `QObject` / `QWidget` を画面またはオブジェクトツリーから選択します |
-| `propertyeditor` | PropertyEditor | `QObject` のプロパティーを表示・編集します |
+| [objectselector](objectselector/USER_GUIDE.md) | ObjectSelector | `QObject` / `QWidget` を画面またはオブジェクトツリーから選択します |
+| [propertyeditor](propertyeditor/README.md) | PropertyEditor | `QObject` のプロパティーを表示・編集します |
 
 
 ### Development Workflows, Instructions and Templates
@@ -142,8 +142,8 @@ ObjectSelector と組み合わせるほか、
 | Directory | Tool | Description |
 |---|---|---|
 | [app-generation-workflow](app-generation-workflow/app-generation-workflow/README.md) | App generation workflow | GUI アプリ開発を主眼とした、ドキュメント駆動の AI 開発ハーネスです。要求整理、仕様化、実装、テスト、レビューを文書でつなぎます |
-| `ai-cmake` | AI CMake instructions | 生成 AI が Qt 6 の `CMakeLists.txt` を生成・修正するための指示と検証環境です |
-| `work-templates` | Work context templates | 作業状態・長期課題・設計判断を Markdown で分離して管理し、人、ホスト、AIセッションが変わっても作業を再開できるようにします |
+| [ai-cmake](ai-cmake/USER_GUIDE.md) | AI CMake instructions | 生成 AI が Qt 6 の `CMakeLists.txt` を生成・修正するための指示と検証環境です |
+| [work-templates](work-templates/README.md) | Work context templates | 作業状態・長期課題・設計判断を Markdown で分離して管理し、人、ホスト、AIセッションが変わっても作業を再開できるようにします |
 
 
 これらは、開発の進め方（app-generation-workflow）、ビルド定義の作り方（ai-cmake）、
@@ -154,28 +154,28 @@ app-generation-workflow と work-templates は、Qt 以外のプロジェクト�
 
 | Directory | Tool | Description |
 |---|---|---|
-| `markdown` | genpdf | Markdown から文書やスライドの PDF を生成します |
-| `cutter` | cutter | 数値指定で画像を切り抜きます。背景の透明化にも対応します |
-| `whiteboard` | WhiteboardApp | 説明図を作成・編集する Whiteboard。複数ページ、PNG/SVG 出力、MCP に対応します |
+| [markdown](markdown/USER_GUIDE.md) | genpdf | Markdown から文書やスライドの PDF を生成します |
+| [cutter](cutter/USER_GUIDE.md) | cutter | 数値指定で画像を切り抜きます。背景の透明化にも対応します |
+| [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.md) | WhiteboardApp | 説明図を作成・編集する Whiteboard。複数ページ、PNG/SVG 出力、MCP に対応します |
 
 
 ### Command-line Utilities
 
 | Directory | Tool | Description |
 |---|---|---|
-| `dateorder` | younger / older | ファイルが更新日時順に並んでいるかを判定します |
-| `dtree` | dtree | ディレクトリー構造を枝線付きのツリーとして表示します |
-| `now` | now | 現在日時をさまざまな形式で表示します |
-| `tl` | tl | 日本語と英語を自動判定して相互翻訳します |
+| [dateorder](dateorder/USER_GUIDE.md) | younger / older | ファイルが更新日時順に並んでいるかを判定します |
+| [dtree](dtree/USER_GUIDE.md) | dtree | ディレクトリー構造を枝線付きのツリーとして表示します |
+| [now](now/USER_GUIDE.md) | now | 現在日時をさまざまな形式で表示します |
+| [tl](tl/USER_GUIDE.md) | tl | 日本語と英語を自動判定して相互翻訳します |
 
 
 ### Desktop Tools and Experiments
 
 | Directory | Tool | Description |
 |---|---|---|
-| `seminartimer` | SeminarTimer | セミナー、演習、休憩などの残り時間を表示するタイマーです |
-| `qeyes` | Qeyes | classic Xeyes を Qt Widgets で再実装したデスクトップアクセサリーです |
-| `vu-stereo` | VuStereo | macOS のシステム再生音をアナログ風 VU メーターで表示します |
+| [seminartimer](seminartimer/USER_GUIDE.md) | SeminarTimer | セミナー、演習、休憩などの残り時間を表示するタイマーです |
+| [qeyes](qeyes/README.md) | Qeyes | classic Xeyes を Qt Widgets で再実装したデスクトップアクセサリーです |
+| [vu-stereo](vu-stereo/README.md) | VuStereo | macOS のシステム再生音をアナログ風 VU メーターで表示します |
 
 
 ## Documentation
