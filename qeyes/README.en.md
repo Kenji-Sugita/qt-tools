@@ -33,6 +33,7 @@ $ ./build/qeyes
 
 ## Related Documents
 
+- [English User Guide](USER_GUIDE.en.md)
 - Documentation index: `docs/README.md`
 - User Guide 1.0: `docs/guides/USER_GUIDE-1.0.md`
 - User Guide 1.1: `docs/guides/USER_GUIDE-1.1.md`
