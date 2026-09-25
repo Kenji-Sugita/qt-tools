@@ -186,6 +186,13 @@ For the application development workflow, start with the
 Supported operating systems, Qt versions, and dependencies on external libraries
 and services vary by tool.
 
+The root-level `NEXT.md`, `DECISIONS.md`, and `backlog.md` contain the maintainer's
+active work context for developing `qt-tools`. They are tracked in Git to share
+the current work state, design decisions, and outstanding issues across hosts
+and AI sessions. They are not templates for users to adopt as their own work
+context after cloning the repository. For reusable templates, see
+[work-templates/](work-templates/README.en.md).
+
 ## Platforms
 
 Supported environments vary by tool.

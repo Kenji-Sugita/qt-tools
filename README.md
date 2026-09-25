@@ -196,6 +196,12 @@ app-generation-workflow と work-templates は、Qt 以外のプロジェクト�
 
 ツールごとに対象 OS、Qt のバージョン、外部ライブラリーやサービスへの依存が異なります。
 
+リポジトリー直下の `NEXT.md`、`DECISIONS.md`、`backlog.md` は、maintainer が
+`qt-tools` の開発で実際に使用している作業コンテキストです。現在の作業状態、設計判断、
+残課題を複数ホストや AI セッション間で共有するために Git 管理しています。
+clone した利用者がそのまま自分の作業コンテキストとして使うためのテンプレートではありません。
+再利用可能なテンプレートは [work-templates/](work-templates/README.md) を参照してください。
+
 
 ## Platforms
 
