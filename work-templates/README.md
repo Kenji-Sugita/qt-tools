@@ -34,18 +34,24 @@ AIはこの仕組みを更新・利用する主体の一つです。人による
 
 ## 新しい作業で使い始める
 
-最初に、共通運用ルールをホームディレクトリーへ配置します。
+最初に、このリポジトリーの配置先を指定します。`/path/to/work-templates` は実際のパスへ置き換えてください。
 
 ```sh
-cp /Users/sugita/Sites/work-templates/AGENTS.next.md ~/AGENTS.next.md
+WORK_TEMPLATES_DIR="/path/to/work-templates"
 ```
 
-次に、対象ディレクトリーへ次の3ファイルをコピーします。
+共通運用ルールをホームディレクトリーへ配置します。
 
 ```sh
-cp /Users/sugita/Sites/work-templates/NEXT.md .
-cp /Users/sugita/Sites/work-templates/DECISIONS.md .
-cp /Users/sugita/Sites/work-templates/backlog.md .
+cp "$WORK_TEMPLATES_DIR/AGENTS.next.md" ~/AGENTS.next.md
+```
+
+次に、作業対象のディレクトリーで次の3ファイルをコピーします。
+
+```sh
+cp "$WORK_TEMPLATES_DIR/NEXT.md" .
+cp "$WORK_TEMPLATES_DIR/DECISIONS.md" .
+cp "$WORK_TEMPLATES_DIR/backlog.md" .
 ```
 
 コピー後は、`NEXT.md`、`DECISIONS.md`、`backlog.md` の説明用項目を実際の内容へ置き換えます。該当する情報がない項目は、説明用項目を残さず `- なし` と書きます。`NEXT.md` を読む、または更新するときは、冒頭の指示に従って `~/AGENTS.next.md` を先に参照します。
