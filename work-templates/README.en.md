@@ -32,27 +32,34 @@ documents also support human handoffs, PC migration, remote environments, and sw
 
 ## File Roles
 
-| File | Role |
-|---|---|
-| `AGENTS.next.md` | Shared operating rules for `NEXT.md` across projects; place in the home directory |
-| `NEXT.md` | Current state, next steps, and notes needed to resume work |
-| `DECISIONS.md` | Accepted and rejected design decisions and reasons, open questions, decision criteria, and lasting specifications and constraints |
-| `backlog.md` | Long-term outstanding tasks, problems, and deferred items not to be addressed immediately |
+| English template | Installed filename | Role |
+|---|---|---|
+| [AGENTS.next.en.md](AGENTS.next.en.md) | `~/AGENTS.next.md` | Shared operating rules for `NEXT.md` across projects; place in the home directory |
+| [NEXT.en.md](NEXT.en.md) | `NEXT.md` | Current state, next steps, and notes needed to resume work |
+| [DECISIONS.en.md](DECISIONS.en.md) | `DECISIONS.md` | Accepted and rejected design decisions and reasons, open questions, decision criteria, and lasting specifications and constraints |
+| [backlog.en.md](backlog.en.md) | `backlog.md` | Long-term outstanding tasks, problems, and deferred items not to be addressed immediately |
+
+English templates live alongside the unchanged Japanese templates in this directory.
+Copy them to the standard filenames shown above so existing references continue to work.
+The rest of this README uses those installed filenames.
 
 ## Starting New Work
 
-First, place the shared rules in your home directory:
+Run these commands from the root of your cloned repository (the directory containing
+`work-templates/`). First, place the English shared rules in your home directory:
 
 ```sh
-cp /Users/sugita/Sites/work-templates/AGENTS.next.md ~/AGENTS.next.md
+cp work-templates/AGENTS.next.en.md ~/AGENTS.next.md
 ```
 
-Then copy these three files into the target directory:
+Then copy the three English templates into an existing target project directory.
+Replace `/path/to/your/project` with its actual path. For a project that already has
+work-management files, keep those files rather than overwriting them with templates.
 
 ```sh
-cp /Users/sugita/Sites/work-templates/NEXT.md .
-cp /Users/sugita/Sites/work-templates/DECISIONS.md .
-cp /Users/sugita/Sites/work-templates/backlog.md .
+cp work-templates/NEXT.en.md /path/to/your/project/NEXT.md
+cp work-templates/DECISIONS.en.md /path/to/your/project/DECISIONS.md
+cp work-templates/backlog.en.md /path/to/your/project/backlog.md
 ```
 
 Replace the instructional placeholders in `NEXT.md`, `DECISIONS.md`, and

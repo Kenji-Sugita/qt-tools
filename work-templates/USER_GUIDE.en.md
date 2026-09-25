@@ -49,7 +49,10 @@ Its main purposes are to:
 
 ### 2.1 Initial Setup
 
-Extract `work-templates.zip` and place the shared operating rules and work management files in their locations.
+For English templates from a repository checkout, follow [Starting New Work](README.en.md#starting-new-work).
+Copy the `.en.md` templates to the standard filenames used throughout this guide.
+
+If using the ZIP distribution instead, extract `work-templates.zip` and place the shared operating rules and work management files in their locations.
 
 - Install `AGENTS.next.md` as `~/AGENTS.next.md` on each host.
 - Place these three files in the target project:

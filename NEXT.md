@@ -15,6 +15,9 @@
 - 追加依頼により、英語版がなかった `USER_GUIDE.md` 8件に対応する `USER_GUIDE.en.md` を作成済み。対象は `cling`、`icpp`、`propertyeditor`、`qeyes`、`qmlprop`、`vu-stereo`、`whiteboard/app-generation-workflow`、`work-templates`。
 - 追加8件も原文との見出し構成、コードブロック、画像・文書リンク、空白エラーを確認済み。`icpp` の日本語表示例・翻訳教材は英語の説明を添えて保持した。
 - `qeyes/README.en.md` に英語利用ガイドへのリンクを追加済み。
+- `work-templates` に `AGENTS.next.en.md`、`NEXT.en.md`、`DECISIONS.en.md`、`backlog.en.md` を追加済み。既存の日本語版とディレクトリー構成は保持した。
+- `work-templates/README.en.md` の個人環境依存パスを除去し、リポジトリールートから英語版を標準ファイル名へコピーする手順に修正済み。英語利用ガイドにも案内を追加した。
+- 英語テンプレート4件の見出し対応、README のリンク・コピー先、日本語版が未変更であること、空白エラーを確認済み。
 - 今回依頼された文書の英語化は完了。実装の変更はない。
 
 ## 次にやること
@@ -32,8 +35,9 @@
 ## 注意
 
 - README 更新時と翻訳文書の継続方針は `DECISIONS.md` を参照する。
-- 翻訳対象は README.en.md の直接のリンク先と、追加依頼の `USER_GUIDE.md` 8件。各ガイド内で参照する補助文書や版別の `USER_GUIDE-<version>.md` までは再帰的に翻訳していない。
+- 翻訳対象は README.en.md の直接のリンク先、追加依頼の `USER_GUIDE.md` 8件、および `work-templates` の英語版テンプレート4件。各ガイド内で参照する補助文書や版別の `USER_GUIDE-<version>.md` までは再帰的に翻訳していない。
 - `whiteboard/app-generation-workflow/USER_GUIDE.en.md` は同じ場所の日本語原文（0.1.0）に対応する。別ディレクトリーの `app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md`（0.2.2）とは版が異なる。
+- `work-templates` の軽量な構成と英語版の配置・コピー時の命名方針は `DECISIONS.md` を参照する。日本語 README の個人パスは、日本語版を変更しない指定に従って保持した。
 
 ## 関連ファイル
 
