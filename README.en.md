@@ -171,7 +171,7 @@ can also be used in projects that do not use Qt.
 |---|---|---|
 | [seminartimer](seminartimer/USER_GUIDE.en.md) | SeminarTimer | A timer that displays the time remaining for seminars, exercises, breaks, and similar activities. |
 | [qeyes](qeyes/README.en.md) | Qeyes | A desktop accessory that reimplements the classic Xeyes using Qt Widgets. |
-| [vu-stereo](vu-stereo/README.md) | VuStereo | Display macOS system audio playback levels on analog-style VU meters. |
+| [vu-stereo](vu-stereo/README.en.md) | VuStereo | Display macOS system audio playback levels on analog-style VU meters. |
 
 ## Documentation
 
