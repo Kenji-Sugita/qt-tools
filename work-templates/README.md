@@ -34,7 +34,7 @@ AIはこの仕組みを更新・利用する主体の一つです。人による
 
 ## 新しい作業で使い始める
 
-最初に、このリポジトリーの配置先を指定します。`/path/to/work-templates` は実際のパスへ置き換えてください。
+最初に、`work-templates` ディレクトリーの配置先を指定します。`/path/to/work-templates` は実際のパスへ置き換えてください。
 
 ```sh
 WORK_TEMPLATES_DIR="/path/to/work-templates"
