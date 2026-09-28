@@ -45,21 +45,27 @@ The rest of this README uses those installed filenames.
 
 ## Starting New Work
 
-Run these commands from the root of your cloned repository (the directory containing
-`work-templates/`). First, place the English shared rules in your home directory:
+First, specify the location of the `work-templates` directory.
+Replace `/path/to/work-templates` with its actual path.
 
 ```sh
-cp work-templates/AGENTS.next.en.md ~/AGENTS.next.md
+WORK_TEMPLATES_DIR="/path/to/work-templates"
 ```
 
-Then copy the three English templates into an existing target project directory.
-Replace `/path/to/your/project` with its actual path. For a project that already has
+Place the English shared rules in your home directory:
+
+```sh
+cp "$WORK_TEMPLATES_DIR/AGENTS.next.en.md" ~/AGENTS.next.md
+```
+
+Then, from your target project directory, copy the three English templates.
+For a project that already has
 work-management files, keep those files rather than overwriting them with templates.
 
 ```sh
-cp work-templates/NEXT.en.md /path/to/your/project/NEXT.md
-cp work-templates/DECISIONS.en.md /path/to/your/project/DECISIONS.md
-cp work-templates/backlog.en.md /path/to/your/project/backlog.md
+cp "$WORK_TEMPLATES_DIR/NEXT.en.md" NEXT.md
+cp "$WORK_TEMPLATES_DIR/DECISIONS.en.md" DECISIONS.md
+cp "$WORK_TEMPLATES_DIR/backlog.en.md" backlog.md
 ```
 
 Replace the instructional placeholders in `NEXT.md`, `DECISIONS.md`, and
