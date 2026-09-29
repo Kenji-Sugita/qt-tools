@@ -166,7 +166,7 @@ app-generation-workflow と work-templates は、Qt 以外のプロジェクト�
 | [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.md) | WhiteboardApp | 説明図を作成・編集する Whiteboard。複数ページ、PNG/SVG 出力、MCP に対応します |
 
 
-### Command-line Utilities
+### General-purpose Command-line Utilities
 
 | Directory | Tool | Description |
 |---|---|---|
@@ -176,11 +176,20 @@ app-generation-workflow と work-templates は、Qt 以外のプロジェクト�
 | [tl](tl/USER_GUIDE.md) | tl | 日本語と英語を自動判定して相互翻訳します |
 
 
-### Desktop Tools and Experiments
+### Presentation and Seminar Tools
 
 | Directory | Tool | Description |
 |---|---|---|
+| [LaserPointer](LaserPointer/README.md) | LaserPointer | 画面上にレーザー光点を表示する説明用ツールです。ドラッグ移動、マウスポインター追従、点滅、軌跡に対応します |
 | [seminartimer](seminartimer/USER_GUIDE.md) | SeminarTimer | セミナー、演習、休憩などの残り時間を表示するタイマーです |
+
+説明図の作成や画面共有には、[Documents, Images and Diagrams](#documents-images-and-diagrams) の WhiteboardApp も利用できます。
+
+
+### Desktop Accessories
+
+| Directory | Tool | Description |
+|---|---|---|
 | [qeyes](qeyes/README.md) | Qeyes | classic Xeyes を Qt Widgets で再実装したデスクトップアクセサリーです |
 | [vu-stereo](vu-stereo/README.md) | VuStereo | macOS のシステム再生音をアナログ風 VU メーターで表示します |
 

@@ -33,6 +33,14 @@
 - clone した利用者がそのまま自分の作業コンテキストとして使うためのテンプレートではない。再利用用は `work-templates/` に置く。
 - この区別はトップの日英 README の「Documentation」で簡潔に案内し、`work-templates` の README などへ同じ説明を重複追加しない。
 
+### 6. README の用途別分類と参照
+
+- WhiteboardApp の主分類は「Documents, Images and Diagrams」とする。説明図作成が主用途であり、見出しの Diagrams と掲載内容を一致させるため。「Presentation and Seminar Tools」からも参照し、説明・画面共有の用途から探せるようにする。
+- 汎用コマンドの分類名は「General-purpose Command-line Utilities」とする。他分類の QML ツールや genpdf もコマンドラインで使うため、ここが全 CLI ツールの一覧ではないことを明確にする。
+- プレゼンテーションや画面共有の用途も含め、「Seminar Tools」は「Presentation and Seminar Tools」とする。
+- qeyes と VuStereo は「Desktop Accessories」にまとめる。両ツールの利用者向け説明に合わせ、「Experiments」という位置付けは分類名から外す。
+- 上記の分類と参照は日英 README で揃える。
+
 ## 不採用
 
 - `work-templates` を `ja/`、`en/` に分割する案は採用しない。利用者が重視する軽量でシンプルな構成を保つため、英語版を同じディレクトリーへ配置する。

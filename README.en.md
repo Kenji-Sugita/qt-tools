@@ -156,7 +156,7 @@ can also be used in projects that do not use Qt.
 | [cutter](cutter/USER_GUIDE.en.md) | cutter | Crop images using numeric parameters, with support for making backgrounds transparent. |
 | [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.en.md) | WhiteboardApp | A whiteboard for creating and editing explanatory diagrams, with support for multiple pages, PNG/SVG export, and MCP. |
 
-### Command-line Utilities
+### General-purpose Command-line Utilities
 
 | Directory | Tool | Description |
 |---|---|---|
@@ -165,11 +165,19 @@ can also be used in projects that do not use Qt.
 | [now](now/USER_GUIDE.en.md) | now | Display the current date and time in various formats. |
 | [tl](tl/USER_GUIDE.en.md) | tl | Automatically detect Japanese or English and translate into the other language. |
 
-### Desktop Tools and Experiments
+### Presentation and Seminar Tools
 
 | Directory | Tool | Description |
 |---|---|---|
+| [LaserPointer](LaserPointer/README.en.md) | LaserPointer | Highlight areas on screen with a laser spot, with dragging, cursor tracking, blinking, and trails. |
 | [seminartimer](seminartimer/USER_GUIDE.en.md) | SeminarTimer | A timer that displays the time remaining for seminars, exercises, breaks, and similar activities. |
+
+For creating explanatory diagrams and sharing them on screen, see WhiteboardApp under [Documents, Images and Diagrams](#documents-images-and-diagrams).
+
+### Desktop Accessories
+
+| Directory | Tool | Description |
+|---|---|---|
 | [qeyes](qeyes/README.en.md) | Qeyes | A desktop accessory that reimplements the classic Xeyes using Qt Widgets. |
 | [vu-stereo](vu-stereo/README.en.md) | VuStereo | Display macOS system audio playback levels on analog-style VU meters. |
 
