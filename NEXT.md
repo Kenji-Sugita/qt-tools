@@ -7,6 +7,11 @@
 
 ## 現在の状態
 
+- 2026-09-29: 日英 README の分類を各ツールの説明と照合し、全20ディレクトリーの掲載と日英の分類一致を確認した。
+- 日英 README の分類整理を完了。WhiteboardApp を「Documents, Images and Diagrams」に配置し、「Presentation and Seminar Tools」から参照を追加した。汎用コマンドは「General-purpose Command-line Utilities」、デスクトップアクセサリーは「Desktop Accessories」に整理した。分類の判断理由は `DECISIONS.md` を参照する。
+- 全20項目の重複・欠落がないこと、各項目のリンク先の存在、追加した分類内リンクの見出し、`git diff --check` を確認済み。今回の分類整理に未完了の作業はない。
+- README の変更は未コミット。着手前からあった README の変更と未追跡の `LaserPointer/`、`release-order.txt` は保持している。コミットする場合は、既存変更も含めて対象を確認する。
+
 - README.en.md を最新の README.md に沿って再翻訳し、Windows とコマンド系ツールの対象環境を反映済み。
 - 日英 README に qmlprofileranalyzer の概要と利用ガイドへのリンクを追加済み。
 - qmlprop と qmlprofileranalyzer を両 README の「QML Tools」にまとめた。
