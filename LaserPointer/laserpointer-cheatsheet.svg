@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1240" viewBox="0 0 1920 1240">
+  <defs>
+    <linearGradient id="sheet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7ed"/>
+      <stop offset="0.45" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#fb7185" stop-opacity="0.45"/>
+    </linearGradient>
+    <radialGradient id="laserGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="0.15" stop-color="#fecaca" stop-opacity="0.98"/>
+      <stop offset="0.42" stop-color="#ef4444" stop-opacity="0.78"/>
+      <stop offset="0.72" stop-color="#fb7185" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#fb7185" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0f172a" flood-opacity="0.22"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#be123c" stroke-opacity="0.065" stroke-width="1"/>
+    </pattern>
+    <style>
+      .base { font-family: "Hiragino Sans", "Noto Sans CJK JP", "Yu Gothic", "Meiryo", sans-serif; fill: #1f2937; }
+      .title { font-size: 52px; font-weight: 800; fill: #0f172a; }
+      .subtitle { font-size: 24px; fill: #475569; }
+      .section { font-size: 30px; font-weight: 800; fill: #be123c; }
+      .label { font-size: 22px; font-weight: 700; fill: #334155; }
+      .text { font-size: 21px; fill: #334155; }
+      .small { font-size: 17px; fill: #64748b; }
+      .key { font-size: 20px; font-weight: 800; fill: #0f172a; }
+      .keySmall { font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .mono { font-family: "SF Mono", "Menlo", "Consolas", monospace; }
+      .card { fill: #ffffff; fill-opacity: 0.74; stroke: #94a3b8; stroke-opacity: 0.35; stroke-width: 1.5; }
+      .pill { fill: #ffe4e6; stroke: #fb7185; stroke-opacity: 0.50; stroke-width: 1; }
+      .accent { fill: #be123c; }
+      .mutedLine { stroke: #cbd5e1; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1240" fill="#e2e8f0"/>
+  <rect x="72" y="54" width="1776" height="1132" rx="46" fill="url(#sheet)" filter="url(#shadow)"/>
+  <rect x="72" y="54" width="1776" height="1132" rx="46" fill="url(#grid)"/>
+  <rect x="92" y="74" width="1736" height="1092" rx="34" fill="none" stroke="url(#edge)" stroke-width="8"/>
+  <rect x="122" y="106" width="1676" height="1028" rx="24" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-opacity="0.55"/>
+
+  <circle cx="152" cy="620" r="15" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <circle cx="1768" cy="620" r="15" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+  <path d="M134 168H360" stroke="#be123c" stroke-width="10" stroke-linecap="round"/>
+  <path d="M1560 168H1786" stroke="#be123c" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="1694" cy="148" r="44" fill="url(#laserGlow)"/>
+  <circle cx="1694" cy="148" r="12" fill="#ffffff" stroke="#ef4444" stroke-width="4"/>
+
+  <text class="base title" x="150" y="166">LaserPointer 操作チートシート</text>
+  <text class="base subtitle" x="152" y="204">プレゼン・セミナー向け / レーザー光点クイックリファレンス</text>
+  <text class="base small" x="1438" y="206">macOS / Windows は常駐メニュー、Linux は右クリック</text>
+
+  <g transform="translate(150 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#fee2e2" fill-opacity="0.78"/>
+    <text class="base section" x="28" y="41">基本操作</text>
+    <text class="base label" x="28" y="96">左ドラッグ</text><text class="base text" x="190" y="96">ポインターを移動</text>
+    <text class="base label" x="28" y="136">左クリック</text><text class="base text" x="190" y="136">波紋を表示</text>
+    <text class="base label" x="28" y="176">ホイール</text><text class="base text" x="190" y="176">サイズ変更</text>
+    <text class="base label" x="28" y="216">右クリック</text><text class="base text" x="190" y="216">設定メニュー</text>
+    <text class="base label" x="28" y="256">メニューバー</text><text class="base text" x="190" y="256">表示/非表示、終了</text>
+    <text class="base small" x="28" y="300">macOS は Dock 非表示。終了はメニューバーの「終了」から。</text>
+  </g>
+
+  <g transform="translate(710 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#dbeafe" fill-opacity="0.78"/>
+    <text class="base section" x="28" y="41">表示ショートカット</text>
+    <text class="base label" x="28" y="96">大きく / 小さく</text><text class="base key mono" x="330" y="96">+ / -</text>
+    <text class="base label" x="28" y="136">濃く / 薄く</text><text class="base key mono" x="330" y="136">O / P</text>
+    <text class="base label" x="28" y="176">形状切り替え</text><text class="base key mono" x="330" y="176">S</text>
+    <text class="base label" x="28" y="216">一時拡大</text><text class="base key mono" x="330" y="216">Space</text>
+    <text class="base label" x="28" y="256">色選択 / 虹色</text><text class="base key mono" x="330" y="256">C / V</text>
+    <text class="base small" x="28" y="300">虹色オンの間は「色...」と C の色変更は無効。</text>
+  </g>
+
+  <g transform="translate(1270 250)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#fef3c7" fill-opacity="0.82"/>
+    <text class="base section" x="28" y="41">移動・表示制御</text>
+    <text class="base label" x="28" y="96">追従</text><text class="base key mono" x="330" y="96">F</text>
+    <text class="base label" x="28" y="136">滑らか追従</text><text class="base key mono" x="330" y="136">G</text>
+    <text class="base label" x="28" y="176">画面内に収める</text><text class="base key mono" x="330" y="176">E</text>
+    <text class="base label" x="28" y="216">自動フェード</text><text class="base key mono" x="330" y="216">A</text>
+    <text class="base label" x="28" y="256">H 押下中のみ表示</text><text class="base key mono" x="330" y="256">M / H</text>
+    <text class="base small" x="28" y="300">M で有効化。H を押している間だけ表示。</text>
+  </g>
+
+  <g transform="translate(150 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#ede9fe" fill-opacity="0.76"/>
+    <text class="base section" x="28" y="41">点滅・軌跡・効果</text>
+    <text class="base label" x="28" y="96">点滅</text><text class="base key mono" x="330" y="96">B</text>
+    <text class="base label" x="28" y="136">点滅を遅く / 速く</text><text class="base key mono" x="330" y="136">, / .</text>
+    <text class="base label" x="28" y="176">軌跡</text><text class="base key mono" x="330" y="176">T</text>
+    <text class="base label" x="28" y="216">軌跡スタイル</text><text class="base key mono" x="330" y="216">Y</text>
+    <text class="base label" x="28" y="256">軌跡を短く / 長く</text><text class="base key mono" x="330" y="256">[ / ]</text>
+    <text class="base small" x="28" y="300">左クリックの波紋は常に白いリングで表示。</text>
+  </g>
+
+  <g transform="translate(710 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#dcfce7" fill-opacity="0.76"/>
+    <text class="base section" x="28" y="41">メニュー構成</text>
+    <text class="base text" x="28" y="94">状態: 現在の設定を要約</text>
+    <text class="base text" x="28" y="132">表示: 点滅、色、形状、透明度</text>
+    <text class="base text" x="28" y="170">移動: 追従、滑らか追従、画面内制限</text>
+    <text class="base text" x="28" y="208">軌跡: オン/オフ、スタイル、時間</text>
+    <text class="base text" x="28" y="246">プリセット: 標準 / 目立つ / 追従</text>
+    <text class="base text" x="28" y="284">リセット: 表示・移動・軌跡・全体</text>
+  </g>
+
+  <g transform="translate(1270 630)">
+    <rect class="card" width="500" height="330" rx="18"/>
+    <rect x="0" y="0" width="500" height="62" rx="18" fill="#cffafe" fill-opacity="0.76"/>
+    <text class="base section" x="28" y="41">プリセット・終了</text>
+    <text class="base label" x="28" y="96">標準</text><text class="base text" x="248" y="96">標準の赤レーザー</text>
+    <text class="base label" x="28" y="136">目立つ</text><text class="base text" x="248" y="136">目立つ青グロー</text>
+    <text class="base label" x="28" y="176">追従</text><text class="base text" x="248" y="176">虹色 + 追従</text>
+    <text class="base label" x="28" y="216">控えめ</text><text class="base text" x="248" y="216">控えめな表示</text>
+    <text class="base label" x="28" y="256">大画面</text><text class="base text" x="248" y="256">セミナー大画面向け</text>
+    <text class="base label" x="28" y="300">終了</text><text class="base keySmall mono" x="248" y="300">Esc / Q / 終了</text>
+  </g>
+
+  <g transform="translate(150 1000)">
+    <rect class="pill" width="1620" height="122" rx="22"/>
+    <text class="base label" x="30" y="38">保存される設定</text>
+    <text class="base small" x="260" y="36">色、サイズ、透明度、形状、虹色、点滅、点滅間隔、追従、滑らか追従、画面内制限</text>
+    <text class="base small" x="260" y="68">自動フェード、Hold H to Show、軌跡オン/オフ、軌跡スタイル、軌跡表示時間</text>
+    <text class="base small" x="260" y="100">位置とポインター表示/非表示状態は保存しません。起動時は画面中央に表示されます。</text>
+  </g>
+
+  <g transform="translate(150 1152)">
+    <text class="base small" x="0" y="0">ヒント: macOS / Windows はメニューバー・タスクトレイから「ポインターを表示 / 非表示」を使えます。Linux は右クリックメニューが基本です。</text>
+    <text class="base small" x="1330" y="0">LaserPointer クイックリファレンス</text>
+  </g>
+</svg>
