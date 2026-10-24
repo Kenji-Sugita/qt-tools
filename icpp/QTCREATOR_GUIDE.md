@@ -4,7 +4,7 @@ genpdf:
   Title: Qt Creator と icpp を併用するガイド
   Subtitle: 本格開発の横で C++ / Qt の小片をすぐ試す
   Author: (株) SRA
-  version: 0.3.0
+  version: 0.3.1
   page_numbers: true
 ---
 
@@ -28,7 +28,7 @@ genpdf:
 | Designer で UI 設計 | 主担当 | 呼び出しや軽い確認 |
 | 小さな Qt API 確認 | 小プロジェクトが必要 | 主担当 |
 | QWidget 部品の試作 | 可能 | `go()` + `.x w->show()` |
-| `.ui` / `.qrc` / `moc` の軽い確認 | 可能 | `.workflow` / `.gen` |
+| `.ui` / `.qrc` / `moc` の軽い確認 | 可能 | `.qt` / `.gen` |
 | 表示中 widget の property 確認 | debugger 中心 | `.inspect` |
 
 ```mermaid
@@ -42,6 +42,8 @@ flowchart LR
   Decide -->|いいえ| Scratch
 ```
 
+<div class="page-break"></div>
+
 # 2. 基本の役割分担
 
 Qt Creator は「本番開発の中心」、`icpp` は「試作確認の横道」として使います。
@@ -54,7 +56,7 @@ Qt Creator は「本番開発の中心」、`icpp` は「試作確認の横道�
 | debugging | Qt Creator | breakpoint、watch、call stack |
 | 小さな挙動確認 | icpp | `QString`、`QVariant`、helper 関数 |
 | GUI 部品の試作 | icpp | `.x static auto w = go();` |
-| 生成物確認 | icpp | `.workflow`、`.generated`、`.clean` |
+| 生成物確認 | icpp | `.qt`、`.generated` |
 | property / object tree 確認 | icpp `.inspect` | 表示中 widget を調べる |
 
 Qt Creator で作ったものを全部 `icpp` に持ち込む必要はありません。`icpp` に向いているのは、切り出せる小さな部品です。
@@ -96,6 +98,8 @@ my-project/
 |---|---|
 | project 内 `scratch/` | 既存 header や resource を参照したい |
 | project 外 scratch | 完全に独立した試作をしたい |
+
+<div class="page-break"></div>
 
 # 4. icpp から Qt Creator をエディタとして使う
 
@@ -167,36 +171,64 @@ Qt Creator で十分な作業は Qt Creator に残します。
 | resource の確認 | `.qrc` + `.gen` |
 | 表示中 widget の確認 | `.widgets` / `.inspect` |
 
-典型的には、Qt Creator で書いた `scratch/widget.cpp` を `icpp` で登録して動かします。
+典型的には、Qt Creator で書いた `scratch/widget.cpp` を、`scratch/` で起動した `icpp` で登録して動かします。
 
 ```text
-icpp[qtcling]> .add scratch/widget.cpp
-icpp[qtcling]> .workflow
+icpp[qtcling]> .add widget.cpp
+icpp[qtcling]> .qt
 icpp[qtcling]> .gen
+icpp[qtcling]> .generated
 icpp[qtcling]> .x static auto w = go();
 icpp[qtcling]> .x w->show();
 ```
+
+<div class="page-break"></div>
 
 # 7. 基本ワークフロー
 
 ## 7.1 実ファイルを作って試す
 
+状態確認は、目的に応じて次のコマンドを使い分けます。
+
+| コマンド | 確認する内容 |
+|---|---|
+| `.where` | 現在ディレクトリ、保存先、編集バッファ、登録ファイル数、生成物数、autogen |
+| `.qt` | Qt の版とツール、`.ui` / `.qrc` / `.ts`、`Q_OBJECT` を含むソース、生成物の概況 |
+| `.generated` | 現在ディレクトリの `moc_*.cpp` / `ui_*.h` / `qrc_*.cpp` / `*.qm` と鮮度の目安 |
+| `.doctor` | interpreter、Qt の版・ツール、パスなどの環境診断。Qt 関連操作が動かないときに使う |
+
+これらは状態を表示するコマンドで、ソースの再評価や生成は行いません。短い操作例は `.examples`、詳しい手順は `USER_GUIDE.md` を参照してください。
+
+`.r` は interpreter を再起動し、登録順にファイルを評価してから編集バッファを評価します。`.gen` は現在ディレクトリで `run_all` を実行し、成功後に同じ再評価を行います。対話入力だけで作った変数は再起動後に残らないため、widget も再評価後に作り直します。
+
+以下は `.autogen off`（既定）での操作です。`.autogen on` の場合は、`.r` でも Qt 生成物が必要と判断されると `run_all` を実行します。
+
 ```text
 icpp[qtcling]> .e scratch/widget.h
 icpp[qtcling]> .e scratch/widget.cpp
 icpp[qtcling]> .files
-icpp[qtcling]> .workflow
+icpp[qtcling]> .where
 icpp[qtcling]> .r
 icpp[qtcling]> .x static auto w = go();
 icpp[qtcling]> .x w->show();
 ```
 
-`Q_OBJECT`、`.ui`、`.qrc` がある場合は `.r` ではなく `.gen` を使います。
+`Q_OBJECT`、`.ui`、`.qrc` の生成が必要な場合は `.gen` を使います。`run_all` は現在ディレクトリを対象にするため、`scratch/` のファイルを生成する場合は、そこで `icpp` を起動し、`.add widget.cpp` のように登録します。`.where` で現在位置を確認してください。
+
+```sh
+cd scratch
+icpp --engine qtcling
+```
 
 ```text
-icpp[qtcling]> .workflow
+icpp[qtcling]> .add widget.cpp
+icpp[qtcling]> .where
+icpp[qtcling]> .qt
 icpp[qtcling]> .gen
+icpp[qtcling]> .generated
 ```
+
+<div class="page-break"></div>
 
 ## 7.2 go() を入口にする
 
@@ -228,7 +260,7 @@ sequenceDiagram
   participant C as Qt Creator
   participant I as icpp
   C->>C: scratch/widget.cpp を編集
-  I->>I: .workflow
+  I->>I: .where / .qt で状態確認
   I->>I: .r または .gen
   I->>I: .x static auto w = go()
   I->>I: .x w->show()
@@ -290,14 +322,17 @@ icpp[qtcling]> .x w->show();
 icpp[qtcling]> .preview form.ui
 ```
 
+<div class="page-break"></div>
+
 # 9. .qrc と translation を扱う
 
 Qt Creator で resource を管理している場合でも、`icpp` では小さな `.qrc` を試せます。
 
 ```text
 icpp[qtcling]> .qrc resources.qrc
-icpp[qtcling]> .workflow
+icpp[qtcling]> .qt
 icpp[qtcling]> .gen
+icpp[qtcling]> .generated
 ```
 
 `qrc_resources.cpp` は生成物です。通常は直接 `.add` せず、利用側の `widget.cpp` から include します。
@@ -313,8 +348,9 @@ icpp[qtcling]> .! lupdate widget.cpp -ts app_ja.ts
 icpp[qtcling]> .linguist app_ja.ts
 icpp[qtcling]> .! lrelease app_ja.ts
 icpp[qtcling]> .qrc translations.qrc
-icpp[qtcling]> .workflow
+icpp[qtcling]> .qt
 icpp[qtcling]> .gen
+icpp[qtcling]> .generated
 ```
 
 生成物の一覧は `.generated` で確認します。
@@ -369,6 +405,8 @@ icpp[qtcling]> .defs
 | `.r edit` | 登録順を編集して再評価 |
 | `.drop <file|number>` | 登録から外す |
 | `.defs` | 定義一覧を表示 |
+
+<div class="page-break"></div>
 
 # 11. .inspect を使った GUI 確認
 
@@ -437,6 +475,8 @@ icpp[qtcling]> .inspect
 export ICPP_EDITOR="qtcreator -client -block"
 ```
 
+<div class="page-break"></div>
+
 ## 14.2 基本操作
 
 | コマンド | 用途 |
@@ -446,8 +486,10 @@ export ICPP_EDITOR="qtcreator -client -block"
 | `.files` | 登録順を確認 |
 | `.r` | 登録ファイルと編集バッファを再評価 |
 | `.r edit` | 登録順をエディタで変更して再評価 |
-| `.gen` | `run_all` 後に再評価 |
-| `.workflow` | 次の操作候補を見る |
+| `.gen` | 現在ディレクトリで `run_all` を実行し、成功後に再評価 |
+| `.where` | 現在位置・保存先・編集バッファの状態を見る |
+| `.qt` | Qt の版・ツール・生成関連の状態を見る |
+| `.doctor` | interpreter と Qt ツールなどの環境を診断 |
 | `.generated` | 生成物一覧を見る |
 | `.clean` | 生成物を確認して削除 |
 | `.template <kind> [base]` | ひな形ファイルを作成 |
@@ -458,11 +500,14 @@ export ICPP_EDITOR="qtcreator -client -block"
 
 ## 14.3 最短手順
 
+生成対象がある `scratch/` で `icpp --engine qtcling` を起動した場合の手順です。
+
 ```text
-icpp[qtcling]> .e scratch/widget.h
-icpp[qtcling]> .e scratch/widget.cpp
-icpp[qtcling]> .workflow
+icpp[qtcling]> .e widget.h
+icpp[qtcling]> .e widget.cpp
+icpp[qtcling]> .qt
 icpp[qtcling]> .gen
+icpp[qtcling]> .generated
 icpp[qtcling]> .x static auto w = go();
 icpp[qtcling]> .x w->show();
 icpp[qtcling]> .inspect

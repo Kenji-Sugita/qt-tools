@@ -20,14 +20,17 @@
 
 ## ドキュメントと記事
 
-- `QTCREATOR_GUIDE.md` / PDF から廃止済みの `.workflow` を除く。
-  - 状態確認は `.where` / `.qt` / `.generated` / `.doctor` に分ける。
-  - 手順例は `.examples` と `USER_GUIDE.md` に寄せる。
+- `QTCREATOR_GUIDE.md` のGUI実画面での掲載手順を確認する。文書修正と検証済み範囲は `NEXT.md` の2026-10-24記録を参照。
+  - Qt Creator の `.e` 待機・保存、Designer / Linguist / `.inspect` / `.preview`、本番 project への取り込み・build/debug。
+  - 管理環境の通常GUIで `no screens available` が発生したため未確認。offscreen の widget 生成・再評価は確認済み。エディタ呼び出しの代替確認は実アプリ連携の確認とは扱わない。
 - `icpp-qtcling-technical-article.html` の図とスクリーンショットを最終素材へ差し替える。
   - HTML コメントに必要な画像のファイル名と準備内容が残っている。
 - 複数ファイル機能やクリップボード機能を変更する場合は、`USER_GUIDE.md` と個別ヘルプが実装と一致しているか併せて確認する。
 
 ## 対応環境
+
+- macOS の `/usr/local/bin/qtpaths --qt-version` が `could not find a Qt installation of '-version'` を返す原因を確認する。
+  - 2026-10-24 の `.qt` / `.doctor` で観測。icpp Qt と moc/uic/rcc は 6.11.2。文書修正の範囲ではツール設定・実装を変更しない。
 
 - Windows ネイティブ VC++ 環境の line editing は保留。
   - 現行方針は GNU Readline または libedit を優先し、利用できない環境では標準入力へフォールバックする。
