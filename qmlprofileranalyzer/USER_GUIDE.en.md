@@ -509,6 +509,44 @@ Suggested order:
 4. `events-aggregated`
 5. `events`, if needed
 
+## 11.1 Matching the Statistics View to CLI Output
+
+Load the same trace in Qt Creator's QML Profiler and open the Statistics view.
+The example below shows a trace captured from the clock demo with Qt 6.12.0.
+These measurements illustrate how to read the results; they are not performance benchmarks.
+
+![Qt Creator statistics for the clock demo](images/qtcreator-clock-statistics.png)
+
+Figure: Compare Total Time, Self Time, and the call count with the CLI values.
+The screenshot uses a Japanese UI: 合計時間 means Total Time and 呼び出し回数 means Calls.
+The path and type columns are truncated because of their display widths.
+
+- Compiling / Main.qml:0: total 635 ms, self 635 ms, 1 call.
+- Creating / Main.qml:43: total 193 ms, self 193 ms, 2 calls.
+- JavaScript / Main.qml:56: total 66.4 ms, self 4.47 ms, 15 calls.
+
+The following excerpt shows the corresponding JavaScript entry in the CLI output.
+Times are in nanoseconds.
+
+```text
+idx=32
+type=Main.qml:56
+calls=15
+selfTotal=4469876
+inclusiveTotal=66412293
+```
+
+`inclusiveTotal` is approximately 66.4 ms, and `selfTotal` is approximately 4.47 ms.
+Total time includes child processing, so distinguish it from self time.
+Main.qml:56 also has a separate signal-handling entry. Match the event type as well
+as the line number when comparing results.
+
+Use the same aggregation scope, units, and rounding when comparing values; do not
+confuse statistics for the entire trace with those for a selected interval.
+In the CLI, use `hotspots` to narrow down candidates and `ranges` to inspect their
+parent-child relationships. Do not assume that every statistic in Qt Creator and
+the CLI uses the same definition.
+
 # 12. Demos
 
 ## 12.1 Minimal Demo
