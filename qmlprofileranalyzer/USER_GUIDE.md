@@ -519,6 +519,32 @@ Qt Creator と比較したい場合は、まず次の順で見るのが分かり
 4. `events-aggregated`
 5. 必要なら `events`
 
+## 11.1 統計画面とCLI出力を照合する
+
+同じトレースをQt CreatorのQMLプロファイラで読み込み、「統計」を開きます。以下はQt 6.12.0の時計デモで取得したトレースの表示例です。性能の基準値ではなく、表示の読み方を確認するための実測例です。
+
+![時計デモのQt Creator統計画面](images/qtcreator-clock-statistics.png)
+
+図：合計時間、Self Time（自己時間）、呼び出し回数をCLIの値と照合します。画像のパス・型の列は表示幅のため省略されています。
+
+- Compiling / Main.qml:0：合計635 ms、自己635 ms、1回。
+- Creating / Main.qml:43：合計193 ms、自己193 ms、2回。
+- JavaScript / Main.qml:56：合計66.4 ms、自己4.47 ms、15回。
+
+JavaScriptの該当項目のCLI出力を抜粋すると、次のようになります。時間の単位はnsです。
+
+```text
+idx=32
+type=Main.qml:56
+calls=15
+selfTotal=4469876
+inclusiveTotal=66412293
+```
+
+`inclusiveTotal` は約66.4 ms、`selfTotal` は約4.47 msです。合計時間には子の処理が含まれるため、自己時間と区別します。同じMain.qml:56にはシグナル処理の行もあります。行番号だけでなく、イベントの種類も合わせて比較してください。
+
+トレース全体と選択区間を混同せず、集計範囲・表示単位・丸めをそろえて照合します。CLIでは `hotspots` で候補を絞り、`ranges` で親子関係を確認します。Qt CreatorとCLIのすべての統計が同じ定義とは限りません。
+
 # 12. デモ
 
 ## 12.1 最小デモ
