@@ -42,6 +42,13 @@
 - qeyes と VuStereo は「Desktop Accessories」にまとめる。両ツールの利用者向け説明に合わせ、「Experiments」という位置付けは分類名から外す。
 - 上記の分類と参照は日英 README で揃える。
 
+### 7. work-templates の正本との同期
+
+- 正本は `/Users/sugita/Sites/work-templates`。このリポジトリーの `work-templates/` へ更新を取り込む。
+- 公開用の `WORK_TEMPLATES_DIR` によるコピー手順、英語版、利用ガイドなど、このリポジトリー固有の文書は維持する。
+- `NEXT_HISTORY.md` は正本の改善履歴のコピーとして保持し、更新は正本で行ってから反映する。新規プロジェクトへのコピー対象には含めない。
+- 改善履歴のコミット番号と Git コマンドは、正本を管理するリポジトリーを対象とすることを README で案内する。
+
 ## 不採用
 
 - `work-templates` を `ja/`、`en/` に分割する案は採用しない。利用者が重視する軽量でシンプルな構成を保つため、英語版を同じディレクトリーへ配置する。

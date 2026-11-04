@@ -7,10 +7,15 @@
 
 ## 現在の状態
 
+- 2026-11-05: 正本 `/Users/sugita/Sites/work-templates` の更新を反映済み。`NEXT_HISTORY.md` と日英 README の案内は `192e712` に収録済み。
+- 共通ルールの「作業の区切りでの案内」は、日本語版を `073c5ba`、英語版と日英利用ガイドを `192e712` で同期済み。
+- 公開用の汎用コピー手順と既存の英語版・利用ガイドを維持した。改善履歴は新規プロジェクトへコピーするテンプレートには含めない。
+- 今回の同期作業に未完了はない。未追跡の `release-order.txt` は今回の対象外として保持する。
+
 - 2026-09-29: 日英 README の分類を各ツールの説明と照合し、全20ディレクトリーの掲載と日英の分類一致を確認した。
 - 日英 README の分類整理を完了。WhiteboardApp を「Documents, Images and Diagrams」に配置し、「Presentation and Seminar Tools」から参照を追加した。汎用コマンドは「General-purpose Command-line Utilities」、デスクトップアクセサリーは「Desktop Accessories」に整理した。分類の判断理由は `DECISIONS.md` を参照する。
 - 全20項目の重複・欠落がないこと、各項目のリンク先の存在、追加した分類内リンクの見出し、`git diff --check` を確認済み。今回の分類整理に未完了の作業はない。
-- README の変更は未コミット。着手前からあった README の変更と未追跡の `LaserPointer/`、`release-order.txt` は保持している。コミットする場合は、既存変更も含めて対象を確認する。
+- 以前未コミットだった README と `LaserPointer/` は追跡・コミット済み。今回の確認では、既存の未追跡ファイルは `release-order.txt` のみ。
 
 - README.en.md を最新の README.md に沿って再翻訳し、Windows とコマンド系ツールの対象環境を反映済み。
 - 日英 README に qmlprofileranalyzer の概要と利用ガイドへのリンクを追加済み。
@@ -47,6 +52,9 @@
 - `work-templates` の軽量な構成と英語版の配置・コピー時の命名方針は `DECISIONS.md` を参照する。日英 README のコピー例では、`WORK_TEMPLATES_DIR` を実際の `work-templates` ディレクトリーのパスへ置き換える。
 
 ## 関連ファイル
+
+- `work-templates/NEXT_HISTORY.md`: 正本から取り込んだテンプレートの改善履歴。文中の Git コミット番号は正本側のリポジトリーを指す。
+- `work-templates/README.md` / `work-templates/README.en.md`: 正本・コピーの位置付けと汎用コピー手順。
 
 - `README.md` / `README.en.md`: リポジトリー全体の案内とツール一覧。
 - 各ツールの `README.en.md` / `USER_GUIDE.en.md`、`cling/README.en.txt`: 日本語文書に対応する英語版。
