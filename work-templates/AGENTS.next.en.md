@@ -3,6 +3,7 @@
 ## Scope
 
 Apply these rules when reading or updating `NEXT.md`, `DECISIONS.md`, or `backlog.md`.
+However, "Reminders at Work Milestones" also applies when the user has not requested reading or updating the work management files.
 
 - When asked to read `NEXT.md`, also read `DECISIONS.md` and `backlog.md` to understand the work state from all three files. Do not change files when the request is only to read them.
 - When asked to update `NEXT.md`, also read `DECISIONS.md` and `backlog.md`, and update all three as needed to reflect the current work state. Complete the checks, classification, updates, validation, and reporting below.
@@ -39,5 +40,11 @@ Otherwise, additions, item moves, and corrections to reflect the current state a
 
 Review the diff after updating and run `git diff --check` if possible.
 Finally, report the changes and validation results separately for `NEXT.md`, `DECISIONS.md`, and `backlog.md`.
+
+## Reminders at Work Milestones
+
+When a phase of work is complete, if the current state, next actions, or important decisions have changed and those changes have not yet been reflected in the handoff files, include a brief reminder in the final report: "Recording this work in NEXT.md and related files will make it easier to resume next time."
+Do not include the reminder if the files are already up to date or there are no changes to carry forward.
+This rule itself does not instruct you to update files automatically.
 
 Do not change these rules unless the user explicitly instructs you to do so.

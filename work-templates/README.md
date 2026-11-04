@@ -31,6 +31,12 @@ AIはこの仕組みを更新・利用する主体の一つです。人による
 | `NEXT.md` | 現在の状態、次にやること、次回再開に必要な注意を書く |
 | `DECISIONS.md` | 採用・不採用の設計判断と理由、未決論点、判断基準、継続する仕様・運用制約を書く |
 | `backlog.md` | 次回すぐには着手しない長期の残作業、問題点、保留事項を書く |
+| [NEXT_HISTORY.md](NEXT_HISTORY.md) | `NEXT.md` テンプレートの改善履歴。新規プロジェクトへのコピー対象には含めない |
+
+改善履歴の正本は `/Users/sugita/Sites/work-templates/NEXT_HISTORY.md` です。
+このディレクトリーの `NEXT_HISTORY.md` はそのコピーです。履歴の更新は正本で行い、こちらへ反映します。
+`/Users/sugita/prj/ai/next.md-seminar/NEXT_HISTORY.md` はセミナー資料用のコピーです。
+履歴内のコミット番号と Git コマンドは、正本を管理するリポジトリーを対象としています。
 
 ## 新しい作業で使い始める
 

@@ -43,6 +43,14 @@ English templates live alongside the unchanged Japanese templates in this direct
 Copy them to the standard filenames shown above so existing references continue to work.
 The rest of this README uses those installed filenames.
 
+The [NEXT.md improvement history (Japanese)](NEXT_HISTORY.md) records how the
+template evolved. It is reference material and is not copied into new projects.
+The authoritative file is `/Users/sugita/Sites/work-templates/NEXT_HISTORY.md`;
+the file in this directory is a copy. Update the authoritative file first, then
+synchronize this copy. `/Users/sugita/prj/ai/next.md-seminar/NEXT_HISTORY.md` is
+another copy for seminar materials. Commit identifiers and Git commands in the
+history refer to the repository containing the authoritative source.
+
 ## Starting New Work
 
 First, specify the location of the `work-templates` directory.

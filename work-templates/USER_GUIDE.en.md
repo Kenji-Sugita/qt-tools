@@ -343,6 +343,10 @@ Make the work and the work management files traceable together. If resuming on a
 - When completing work
 - When organizing the three files to reflect the current state
 
+When a phase of work is complete, if the current state, next actions, or important decisions have changed and those changes have not yet been reflected in the handoff files, the AI includes a reminder in its final report: "Recording this work in NEXT.md and related files will make it easier to resume next time." This reminder also applies when you have not requested reading or updating the work management files.
+
+The AI does not include the reminder if the files are already up to date or there are no changes to carry forward. This rule itself does not instruct the AI to update files automatically. To update them, use the request described below.
+
 ### 10.3 How to Ask the AI
 
 In the target project's working environment, ask: "Update `NEXT.md` to reflect the current state of the work." The AI reads `~/AGENTS.next.md` as instructed at the beginning of `NEXT.md`, then checks Git diffs, recent commits, all three management files, and related documents. You do not need to list `backlog.md` and `DECISIONS.md` in the request.
