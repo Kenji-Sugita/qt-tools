@@ -4,6 +4,27 @@
 `~/AGENTS.next.md` が存在しない場合は、このファイルを整理・削除せず、利用者に確認すること。
 このルールは、ユーザーから明示的な指示がない限り変更しない。
 
+## 現在の状態（2026-11-09）
+
+- GitHub公開用の正本 `~/Sites/tools/whiteboard/` で配布中の1.3.0を反映した。
+  `whiteboard-app-1.3.0-source.zip` の全122ファイルを既存の `whiteboard-app/` へ対応させ、
+  変更18ファイル・追加14ファイルを同期した。配布ZIPは
+  `whiteboard-app/release/whiteboard-app-1.3.0-source.zip` に置き、旧版ZIPは保持した。
+- ZIPのSHA-256は `bdc09f2dff353bc99fd4188cc43e34b6e13fc3be655be7f0c3d31fa1ac739a54`。
+  同期した122ファイルとZIPのバイト一致を確認済み。日本語ガイドとPDFもSitesの配布物を使用し、
+  英語ガイドへ保存停止・再試行・復元保護・MCP保存状態の説明を反映した。
+- 公開用ツリーからリポジトリ外の一時ディレクトリへ構成・ビルドし、macOS arm64 / Qt 6.12.0で
+  アプリと全テストがビルド成功。`QT_QPA_PLATFORM=offscreen` のCTestは19/19成功し、
+  生成した日本語qmを指定したUIテストを含め、Qt Testのskipは0件だった。
+  今回はWindows・x86_64実行、実ディスク障害・電源断、手動GUI操作の再検証は行っていない。
+  日本語PDFはSitesで生成・表示確認済みの23ページ版をそのまま同期し、今回は再生成していない。
+- 下記の2026-09-18時点の「未リリース」「保存保護は未実装」は当時の履歴。
+  現在は1.3.0に描画データ交換と保存保護を含む。最大20ページの変更は行っていない。
+  配布ZIPに含まれない過去の検討資料・正式仕様・プロンプトは保持しており、
+  開発を再開する場合は現行実装との対応を改めて確認する。
+- 今回は公開用コピーの同期であり、Sites正本の改変、DMG・Windowsバイナリの更新、
+  別環境の `whiteboard-app-qtmcpserver/` の同期は行わない。
+
 ## 次にやること
 
 - 2026-09-18 にページ上限変更の検討用プロンプト草案を作成し、コミット `1e68fb169` に保存した。
@@ -70,7 +91,7 @@
   ドラッグ＆ドロップできる。SVG は PNG 化、保存 JSON は PNG Base64 埋め込み、画像要素は
   通常オブジェクトとして選択、移動、サイズ変更、回転、コピー、ペースト、グループ化、
   削除に対応する。
-- WhiteboardApp のバージョンは `whiteboard-app/VERSION` の `1.2.0` を正本とし、CMake project version、
+- WhiteboardApp のバージョンは `whiteboard-app/VERSION` の `1.3.0` を正本とし、CMake project version、
   アプリケーションバージョン、MCP `serverInfo.version`、利用ガイドをこの値に合わせる。
   リリース内容は `whiteboard-app/CHANGELOG.md` に記録する。
 - 2026-08-30 の直近会話では、Apple Store 向け需要、価格、販売見込みを検討した。Whiteboard 単体は

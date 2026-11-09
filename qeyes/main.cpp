@@ -50,9 +50,19 @@ public:
                     if (state != Qt::ApplicationActive || m_appearance.alwaysOnTop)
                         return;
 
-                    show();
-                    raise();
-                    activateWindow();
+                    // Restore focus after macOS finishes activating the application.
+                    QTimer::singleShot(0, this, [this]() {
+                        if (qApp->applicationState() != Qt::ApplicationActive
+                            || m_appearance.alwaysOnTop || !isVisible())
+                            return;
+
+                        // A modal dialog blocks the eyes; it must receive focus first.
+                        QWidget *target = QApplication::activeModalWidget();
+                        if (!target)
+                            target = this;
+                        target->raise();
+                        target->activateWindow();
+                    });
                 });
     }
 

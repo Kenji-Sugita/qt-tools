@@ -21,6 +21,14 @@ $ cmake --build build
 
 ## Running
 
+On macOS:
+
+```text
+$ open build/qeyes.app
+```
+
+On other platforms:
+
 ```text
 $ ./build/qeyes
 ```
@@ -30,6 +38,7 @@ $ ./build/qeyes
 - Left drag: Move the window
 - Left double-click: Exit
 - Right-click: Open the appearance settings dialog
+- On macOS with always-on-top disabled: Use Command-Tab to bring the app forward. If an appearance or color dialog is open, focus returns to that dialog.
 
 ## Related Documents
 

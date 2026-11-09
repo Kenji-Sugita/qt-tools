@@ -22,6 +22,10 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui HttpServer Network Svg Widgets Tes
 qt_standard_project_setup()
 
 qt_add_library(WhiteboardCore
+    src/BoardFileResult.cpp
+    src/BoardDocumentStorage.cpp
+    src/BoardDocumentValidator.cpp
+    src/BoardPersistence.cpp
     src/BoardDocument.cpp
     src/BoardDocumentExchange.cpp
     src/BoardEnums.cpp
@@ -34,6 +38,10 @@ qt_add_library(WhiteboardCore
     src/JsonUtil.cpp
     src/Page.cpp
     include/BoardDocument.h
+    include/BoardFileResult.h
+    include/BoardDocumentStorage.h
+    include/BoardDocumentValidator.h
+    include/BoardPersistence.h
     include/BoardDocumentExchange.h
     include/BoardEnums.h
     include/BoardModel.h
@@ -295,6 +303,8 @@ add_whiteboard_core_test(WhiteboardCoreCurveTest tests/tst_boardmodel_curve.cpp)
 add_whiteboard_core_test(WhiteboardCoreSelectionTest tests/tst_boardmodel_selection.cpp)
 add_whiteboard_core_test(WhiteboardCoreDocumentTest tests/tst_boardmodel_document.cpp)
 add_whiteboard_core_test(WhiteboardDocumentExchangeTest tests/tst_boarddocumentexchange.cpp)
+add_whiteboard_core_test(WhiteboardDocumentStorageTest tests/tst_boarddocumentstorage.cpp)
+add_whiteboard_core_test(WhiteboardPersistenceTest tests/tst_boardpersistence.cpp)
 add_whiteboard_core_test(WhiteboardImageExporterTest tests/tst_imageexporter.cpp)
 add_whiteboard_core_test(WhiteboardImageImporterTest tests/tst_imageimporter.cpp)
 
@@ -322,3 +332,14 @@ add_whiteboard_canvas_test(WhiteboardCanvasShapeTextTest tests/tst_canvaswidget_
 add_whiteboard_canvas_test(WhiteboardCanvasSelectionTest tests/tst_canvaswidget_selection.cpp)
 add_whiteboard_mcp_test(WhiteboardMcpTest tests/tst_whiteboard_mcp.cpp)
 add_whiteboard_mcp_http_test(WhiteboardMcpHttpTest tests/tst_whiteboard_mcp_http.cpp)
+
+qt_add_executable(WhiteboardPersistenceUiTest tests/tst_persistence_ui.cpp)
+foreach(component IN ITEMS CanvasWidget CenteredComboBox FloatingActionBubbleLabel
+        FloatingActionChildButton FloatingActionButton ImageExportDialog MainWindow
+        PersistentToolBar WhiteboardMcpController WhiteboardMcpHttpServer)
+    target_sources(WhiteboardPersistenceUiTest PRIVATE src/${component}.cpp include/${component}.h)
+endforeach()
+target_link_libraries(WhiteboardPersistenceUiTest PRIVATE
+    WhiteboardCore WhiteboardPlatform Qt6::Widgets Qt6::HttpServer Qt6::Network Qt6::Test)
+target_compile_definitions(WhiteboardPersistenceUiTest PRIVATE WHITEBOARD_APP_VERSION="${PROJECT_VERSION}")
+add_test(NAME WhiteboardPersistenceUiTest COMMAND WhiteboardPersistenceUiTest)

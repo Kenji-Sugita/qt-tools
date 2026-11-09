@@ -4,8 +4,8 @@ genpdf:
   title: WhiteboardApp User Guide
   subtitle: A whiteboard for explanatory diagrams
   author: SRA, Inc.
-  version: 1.2.0
-  date: 2026-09-02
+  version: 1.3.0
+  date: 2026-11-09
   font_size: 12pt
   page_numbers: true
   copyright: 2026 SRA, Inc. All rights reserved.
@@ -59,11 +59,11 @@ whiteboards such as Zoom's, while saving them page by page.
 
 | Item | Details |
 | --- | --- |
-| Application | WhiteboardApp 1.2.0 |
+| Application | WhiteboardApp 1.3.0 |
 | UI framework | Qt 6 Widgets |
 | Build system | CMake 3.16 or later |
 | C++ | C++17 |
-| Qt components | Core, Gui, HttpServer, Network, Widgets, Test |
+| Qt components | Core, Gui, HttpServer, Network, Svg, Widgets, Test, LinguistTools |
 | MCP implementation | Minimal JSON-RPC / Streamable HTTP implementation specific to WhiteboardApp |
 | macOS build | arm64 / x86_64 universal binary |
 | Canvas size | 1920 x 1080 |
@@ -112,6 +112,10 @@ The implementation includes Qt Test unit tests:
 | `WhiteboardCoreCurveTest` | Polylines, Bezier curves, opening/closing |
 | `WhiteboardCoreSelectionTest` | Selection, movement, copy, groups, connector tracking |
 | `WhiteboardCoreDocumentTest` | Saved data, pages, settings, element IDs, connector ID remapping |
+| `WhiteboardDocumentExchangeTest` | Drawing-data exchange, legacy formats, IDs and connections, Undo/Redo, invalid input |
+| `WhiteboardDocumentStorageTest` | Read/write failures, original-file protection, restored-data validation |
+| `WhiteboardPersistenceTest` | Save state, suspended saving, retry, restoration protection |
+| `WhiteboardPersistenceUiTest` | Save/restore failure interaction, closing confirmation, uncommitted input, reentrancy prevention |
 | `WhiteboardImageExporterTest` | PNG/SVG bounds, backgrounds, selected elements, SVG IDs, embedded images, extensions, saving |
 | `WhiteboardImageImporterTest` | PNG/JPEG/BMP/SVG import, SVG-to-PNG conversion, image-element persistence |
 | `WhiteboardImageExportDialogTest` | Export dialog defaults and controls |
@@ -161,7 +165,7 @@ The following 16 tools are exposed:
 
 | MCP tool | Purpose | Confirmation required |
 | --- | --- | --- |
-| `whiteboard/state` | Get current page, navigation availability, lock, selection, Undo/Redo, and elements | No |
+| `whiteboard/state` | Get current page, navigation availability, lock, selection, Undo/Redo, elements, and persistence state | No |
 | `whiteboard/elements/list` | Get elements and persistent IDs on the current or specified page | No |
 | `whiteboard/elements/update` | Batch-update current-page elements by persistent ID | Yes |
 | `whiteboard/elements/delete` | Batch-delete current-page elements by persistent ID | Yes |
@@ -171,7 +175,7 @@ The following 16 tools are exposed:
 | `whiteboard/page/add` | Add a blank page after the current page | Yes |
 | `whiteboard/page/delete` | Delete the current page | Yes |
 | `whiteboard/page/lock` | Set the current page's lock state | Yes |
-| `whiteboard/diagram/apply` | Apply a diagram in one batch | Yes |
+| `whiteboard/diagram/apply` | Apply a diagram in one batch | No (automatically approved) |
 | `whiteboard/page/render` | Get the current page as a 1920x1080 PNG | No |
 | `whiteboard/image/export` | Get the current page or selected elements as PNG/SVG data | No |
 | `whiteboard/image/save` | Save the current page or selected elements to a PNG/SVG file | Yes |
@@ -181,8 +185,9 @@ The following 16 tools are exposed:
 `whiteboard/diagram/apply` supports modes `new_page`, `append_current`, and
 `replace_current`. `whiteboard/image/save` requires an absolute path and a matching
 `.png` / `.svg` extension. It overwrites an existing file only with explicit
-`overwrite: true`. Each batch is one Undo operation. Write requests display a
-confirmation dialog; rejecting it leaves the document unchanged. See
+`overwrite: true`. Each batch is one Undo operation. Diagram application is
+automatically approved in all modes. Other changes and image-file saves display
+a confirmation dialog; rejecting it leaves the document unchanged. See
 `docs/mcp_diagram_capabilities.md` for supported diagrams.
 
 When asking Codex to draw in WhiteboardApp, explicitly request WhiteboardApp's
@@ -205,6 +210,20 @@ If a GUI or other MCP operation has changed the document since reading it, the
 stale request is rejected. `whiteboard/elements/apply` accepts up to 500 additions,
 updates, and deletions combined and returns mappings from added elements'
 `clientId` values to their new persistent IDs.
+
+State queries and document-change results include `persistence`.
+`persisted:false` indicates unsaved changes. If an edit succeeds but saving
+fails, the edit and its assigned IDs remain valid. Do not resend the same
+addition request; check the cause in the GUI and retry saving.
+
+Document operations return `restore_blocked` while restoration protection is
+active. State queries report `documentAvailable:false` and the protection state
+instead of presenting an empty page as a valid document. Editing requests
+received while a notification or closing confirmation is being handled are
+rejected with `persistence_busy`.
+
+AI editing and page navigation are temporarily rejected while text, dragging,
+polyline, or Bezier input is in progress. Complete the input before retrying.
 
 ## Minimal Code Example
 
@@ -583,7 +602,12 @@ Main settings saved in `BoardSettings` and page data:
 ## Saving and Loading
 
 On exit, the application saves settings, pages, and drawings to `whiteboard.json`.
-They are restored on the next launch.
+It also performs a normal save after a successful MCP document change,
+drawing-data import, or image-file import. It does not save after every ordinary
+drawing or settings change.
+
+Saved data is restored on the next launch. A save failure and a failure to load
+saved data affect available operations differently, as described below.
 
 Saved:
 
@@ -612,6 +636,57 @@ Storage locations:
 | macOS | `~/Library/Application Support/WhiteboardApp/whiteboard.json` |
 | Linux | `~/.local/share/WhiteboardApp/whiteboard.json` |
 | Windows | `C:\Users\<username>\AppData\Roaming\WhiteboardApp\whiteboard.json` |
+
+### When Saving Fails
+
+The application shows the destination and the reason for failure, then suspends
+automatic saving. Drawings, settings, and Undo/Redo history remain in memory.
+You can continue editing subject to normal restrictions such as page locks, but
+changes remain unsaved until a save retry succeeds.
+
+1. Choose `Show Details` in the persistence status to inspect the cause and destination.
+2. Resolve the reported cause, such as insufficient space or access permissions.
+3. Choose `Retry Saving` in the persistence status or File menu.
+4. A successful save clears the suspended state. The retry saves the latest drawings and settings.
+
+The same failure does not produce another notification for every edit. Choosing
+`Continue Editing` before retrying leaves the suspended-saving status visible.
+
+To preserve drawings in a different file, choose Export Drawing Data… → All
+Pages. A `.whiteboard` file does not include operating settings such as the
+selected tool or window size. Successful export does not resume normal saving.
+Drawing-data and image exports cannot target the normal `whiteboard.json` save
+file or a link that points to the same file.
+
+### When Saved Data Cannot Be Loaded
+
+Editing and saving are disabled to protect the original file. An empty document
+never overwrites it. Empty files, damaged JSON, invalid page structures, and
+documents containing more than 20 pages also enter this protected state.
+
+After resolving the cause, choose `Reload Saved Data` in the GUI or File menu.
+Editing resumes only when all data from the same save path loads successfully.
+Closing the application while restoration still fails does not save to the
+original file.
+
+`Close Details` dismisses the notification but leaves editing and saving
+disabled. Use `Show Details` in the persistence status to review the cause and
+destination again.
+
+Deleting the file does not switch to an empty document during that run. If you
+cannot repair it and want to start over, preserve the original under another
+filename, then restart. Keep that original for later investigation or recovery.
+
+### Closing with Unsaved Changes
+
+| Choice | Result |
+| --- | --- |
+| Retry Saving | Closes only after saving the latest content successfully; a failed retry leaves the application open |
+| Cancel Closing | Returns to the application, preserving edits and history; this is the default |
+| Exit Without Saving | Discards the current unsaved changes and settings, then closes |
+
+Text being edited is committed before saving on exit. Confirm that normal
+saving succeeds before closing. This protection does not create backup history.
 
 ### Exchanging Editable Drawing Data
 
@@ -748,13 +823,14 @@ curves, arcs, or text.
 
 ### Some State Is Not Saved
 
-Selection, input in progress, and Undo/Redo history are not saved. Commit
-polylines, Bezier curves, and text before exiting.
+Selection, shape input in progress, and Undo/Redo history are not saved. Commit
+polylines and Bezier curves before exiting. Text being edited is committed
+before normal saving.
 
 ### Changes After Forced Termination
 
-Saving occurs on normal exit or window closure. A forced termination or crash
-may lose changes made since the last normal exit.
+Normal exit or window closure checks that saving has completed. A forced
+termination or crash may lose changes made since the last successful save.
 
 ### macOS Key Labels
 

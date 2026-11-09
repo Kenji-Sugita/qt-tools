@@ -47,9 +47,12 @@
 #include <QPropertyAnimation>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QScopedValueRollback>
 #include <QSignalBlocker>
 #include <QSizePolicy>
 #include <QStandardPaths>
+#include <QStatusBar>
+#include <QPushButton>
 #include <QStyle>
 #include <QTimer>
 #include <QToolBar>
@@ -192,8 +195,8 @@ QFont fontForDialog(const QFont &font)
 
 }
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent, const QString &storagePath)
+    : QMainWindow(parent), m_persistence(storagePath.isEmpty() ? saveFilePath() : storagePath)
 {
     setWindowTitle(tr("Whiteboard"));
     m_toolHelpDelayTimer = new QTimer(this);
@@ -231,6 +234,11 @@ MainWindow::MainWindow(QWidget *parent)
     centralLayout->setContentsMargins(0, 0, 0, 0);
     centralLayout->setSpacing(0);
     centralLayout->addWidget(m_scrollArea, 0, 0);
+    m_restoreMessage = new QLabel(tr("Saved data could not be restored.\nEditing and saving are stopped to protect the original file."), centralWidget);
+    m_restoreMessage->setObjectName(QStringLiteral("restoreProtectionMessage"));
+    m_restoreMessage->setAlignment(Qt::AlignCenter);
+    m_restoreMessage->setWordWrap(true);
+    centralLayout->addWidget(m_restoreMessage, 0, 0);
     createFloatingActions(centralWidget);
     setCentralWidget(centralWidget);
 
@@ -239,8 +247,15 @@ MainWindow::MainWindow(QWidget *parent)
     qApp->installEventFilter(this);
     createHelpMenu();
     createToolbar();
+    createPersistenceUi();
     updateUiState();
     restoreCurrentPageScrollPosition();
+    if (m_persistence.state() != BoardPersistence::State::Ready) {
+        m_persistenceNoticePending = true;
+        QTimer::singleShot(0, this, [this]() {
+            if (m_persistenceNoticePending) showPersistenceNotice();
+        });
+    }
 }
 
 bool MainWindow::startMcpServer()
@@ -258,6 +273,10 @@ bool MainWindow::startMcpServer()
         },
         this);
 
+    m_mcpController->setPersistenceCallbacks(
+        [this]() { return persistenceStatus(); },
+        [this](const QString &tool) { return persistenceAccess(tool); },
+        [this](const QString &path, QString *error) { return m_persistence.allowsOutput(path, error); });
     if (m_mcpController->start())
         return true;
 
@@ -280,6 +299,10 @@ bool MainWindow::startMcpHttpServer()
             return approveMcpRequest(toolName, arguments, denyReason);
         },
         this);
+    m_mcpHttpServer->setPersistenceCallbacks(
+        [this]() { return persistenceStatus(); },
+        [this](const QString &tool) { return persistenceAccess(tool); },
+        [this](const QString &path, QString *error) { return m_persistence.allowsOutput(path, error); });
     if (m_mcpHttpServer->start())
         return true;
     return false;
@@ -300,6 +323,7 @@ void MainWindow::handleMcpChange()
 
 bool MainWindow::navigatePage(const QString &direction)
 {
+    if (!documentInteractionAllowed()) return false;
     if (direction != QStringLiteral("next") && direction != QStringLiteral("previous"))
         return false;
     const int previousIndex = m_model.document().currentPageIndex();
@@ -320,6 +344,10 @@ bool MainWindow::approveMcpRequest(const QString &toolName,
                                    const QJsonObject &arguments,
                                    QString *denyReason)
 {
+    if (!persistenceAccess(toolName).isEmpty()) {
+        if (denyReason) *denyReason = persistenceAccess(toolName);
+        return false;
+    }
     if (toolName == QStringLiteral("whiteboard/diagram/apply")) {
         rememberCurrentPageScrollPosition();
         return true;
@@ -364,8 +392,15 @@ bool MainWindow::approveMcpRequest(const QString &toolName,
         return false;
     }
 
-    const QMessageBox::StandardButton answer = QMessageBox::question(
-        this, tr("AI Diagram Request"), requestText, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    QMessageBox::StandardButton answer;
+    {
+        const QScopedValueRollback<bool> guard(m_persistenceDialogActive, true);
+        answer = QMessageBox::question(
+            this, tr("AI Diagram Request"), requestText, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+    }
+    // A queued failure notice may have fired inside the approval dialog's event loop.
+    if (m_persistenceNoticePending)
+        QTimer::singleShot(0, this, [this]() { if (m_persistenceNoticePending) showPersistenceNotice(); });
     if (answer != QMessageBox::Yes) {
         if (denyReason)
             *denyReason = tr("The AI operation was declined by the user.");
@@ -377,6 +412,12 @@ bool MainWindow::approveMcpRequest(const QString &toolName,
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
+    if (!documentInteractionAllowed() && QApplication::activeWindow() == this
+        && (event->type() == QEvent::KeyPress || event->type() == QEvent::ShortcutOverride
+            || event->type() == QEvent::Shortcut)) {
+        event->accept();
+        return true;
+    }
     if (watched == centralWidget() && event->type() == QEvent::Resize) {
         QTimer::singleShot(0, this, [this]() { updateFloatingActionDockGeometry(); });
         return false;
@@ -537,11 +578,40 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    rememberCurrentPageScrollPosition();
-    m_model.setWindowSize(size());
-    m_model.setFloatingActionDockY(m_floatingActionDockY);
-    saveDocument();
-    QMainWindow::closeEvent(event);
+    if (m_persistenceDialogActive || m_persistenceIoActive) {
+        event->ignore();
+        return;
+    }
+    m_persistenceNoticePending = false;
+    if (m_exitWithoutSaving || !m_persistence.documentAvailable()) {
+        event->accept();
+        return;
+    }
+    if (m_persistence.state() == BoardPersistence::State::Ready && saveDocument(false, false)) {
+        event->accept();
+        return;
+    }
+    const QScopedValueRollback<bool> guard(m_persistenceDialogActive, true);
+    QMessageBox notice(QMessageBox::Warning, tr("Unsaved Changes"),
+        tr("Changes and settings have not been saved. Exiting without saving will lose them."), QMessageBox::NoButton, this);
+    notice.setObjectName(QStringLiteral("persistenceCloseDialog"));
+    notice.setDetailedText(persistenceDetails());
+    auto *retry = notice.addButton(tr("Retry Saving"), QMessageBox::AcceptRole);
+    auto *cancel = notice.addButton(tr("Cancel Closing"), QMessageBox::RejectRole);
+    auto *discard = notice.addButton(tr("Exit Without Saving"), QMessageBox::DestructiveRole);
+    notice.setDefaultButton(cancel);
+    notice.setEscapeButton(cancel);
+    notice.exec();
+    if (notice.clickedButton() == discard) {
+        m_exitWithoutSaving = true;
+        event->accept();
+    } else if (notice.clickedButton() == retry && saveDocument(true, false)) {
+        event->accept();
+    } else {
+        event->ignore();
+        if (notice.clickedButton() == retry)
+            QMessageBox::warning(this, tr("Could Not Save Document"), persistenceDetails());
+    }
 }
 
 QAction *MainWindow::addToolAction(const QString &iconName, const QString &text, Tool tool)
@@ -711,7 +781,6 @@ QString MainWindow::saveFilePath() const
     QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     if (directory.isEmpty())
         directory = QDir::homePath() + QStringLiteral("/.whiteboard-app");
-    QDir().mkpath(directory);
     return directory + QStringLiteral("/whiteboard.json");
 }
 
@@ -732,12 +801,20 @@ void MainWindow::createFileMenu()
     m_imageExportAction = new QAction(tr("Save Image..."), this);
     connect(m_imageExportAction, &QAction::triggered, this, [this]() { performImageExport(); });
     fileMenu->addAction(m_imageExportAction);
+    fileMenu->addSeparator();
+    m_retrySavingAction = fileMenu->addAction(tr("Retry Saving"));
+    m_retrySavingAction->setObjectName(QStringLiteral("retrySaving"));
+    connect(m_retrySavingAction, &QAction::triggered, this, &MainWindow::retrySaving);
+    m_reloadSavedDataAction = fileMenu->addAction(tr("Reload Saved Data"));
+    m_reloadSavedDataAction->setObjectName(QStringLiteral("reloadSavedData"));
+    connect(m_reloadSavedDataAction, &QAction::triggered, this, &MainWindow::reloadSavedData);
 }
 
 void MainWindow::createHelpMenu()
 {
     QMenu *helpMenu = menuBar()->addMenu(tr("Help"));
     QAction *shortcutHelpAction = new QAction(tr("Shortcuts"), this);
+    shortcutHelpAction->setProperty("persistenceIndependent", true);
     shortcutHelpAction->setShortcut(QKeySequence::HelpContents);
     connect(shortcutHelpAction, &QAction::triggered, this, [this]() { showShortcutHelp(); });
     helpMenu->addAction(shortcutHelpAction);
@@ -1477,6 +1554,7 @@ void MainWindow::showShortcutHelp()
 
 void MainWindow::applyZoomSpinBoxValue()
 {
+    if (!documentInteractionAllowed()) return;
     if (!m_zoomSpinBox)
         return;
     const int previousZoom = m_model.settings().zoomPercent();
@@ -1490,6 +1568,7 @@ void MainWindow::applyZoomSpinBoxValue()
 
 void MainWindow::applyArrowHeadSettings()
 {
+    if (!documentInteractionAllowed()) return;
     if (!m_startArrowComboBox || !m_endArrowComboBox)
         return;
     const auto startArrow = static_cast<ArrowHead>(m_startArrowComboBox->currentData().toInt());
@@ -1507,6 +1586,7 @@ void MainWindow::applyArrowHeadSettings()
 
 void MainWindow::applyStrokeStyleSettings()
 {
+    if (!documentInteractionAllowed()) return;
     if (!m_strokeStyleComboBox)
         return;
     const auto strokeStyle = static_cast<StrokeStyle>(m_strokeStyleComboBox->currentData().toInt());
@@ -1540,6 +1620,7 @@ void MainWindow::restoreCurrentPageScrollPosition()
 
 void MainWindow::performUndo()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.undo()) {
         m_canvas->refreshSize();
         updateUiState();
@@ -1548,6 +1629,7 @@ void MainWindow::performUndo()
 
 void MainWindow::performRedo()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.redo()) {
         m_canvas->refreshSize();
         updateUiState();
@@ -1556,6 +1638,7 @@ void MainWindow::performRedo()
 
 void MainWindow::performDeleteSelected()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.deleteSelectedElement()) {
         m_canvas->update();
         updateUiState();
@@ -1564,12 +1647,14 @@ void MainWindow::performDeleteSelected()
 
 void MainWindow::performCopy()
 {
+    if (!documentInteractionAllowed()) return;
     m_clipboardElements = m_model.copySelectedElements();
     updateUiState();
 }
 
 void MainWindow::performPaste()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.pasteElements(m_clipboardElements)) {
         m_canvas->update();
         updateUiState();
@@ -1583,6 +1668,7 @@ void MainWindow::performPaste()
 
 bool MainWindow::performClipboardImagePaste()
 {
+    if (!documentInteractionAllowed()) return false;
     if (m_model.currentPageLocked())
         return false;
     const QMimeData *mimeData = QApplication::clipboard()->mimeData();
@@ -1630,6 +1716,7 @@ QPointF MainWindow::visibleCanvasCenter() const
 
 void MainWindow::performResetStyle()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.hasSelection()) {
         if (m_model.resetSelectedStyle()) {
             m_canvas->update();
@@ -1643,6 +1730,7 @@ void MainWindow::performResetStyle()
 
 void MainWindow::performZoomBy(int deltaPercent)
 {
+    if (!documentInteractionAllowed()) return;
     const int previousZoom = m_model.settings().zoomPercent();
     const int appliedZoom = m_model.setZoomPercent(previousZoom + deltaPercent);
     if (appliedZoom != previousZoom)
@@ -1652,6 +1740,7 @@ void MainWindow::performZoomBy(int deltaPercent)
 
 void MainWindow::performAddPage()
 {
+    if (!documentInteractionAllowed()) return;
     rememberCurrentPageScrollPosition();
     if (m_model.addPage()) {
         m_canvas->refreshSize();
@@ -1662,6 +1751,7 @@ void MainWindow::performAddPage()
 
 void MainWindow::performDrawingImport()
 {
+    if (!documentInteractionAllowed()) return;
     if (m_model.currentPageLocked()) return;
     const QString filePath = QFileDialog::getOpenFileName(
         this, tr("Import Drawing Data"), QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
@@ -1686,13 +1776,22 @@ void MainWindow::performDrawingImport()
     }
     m_canvas->refreshSize();
     updateUiState();
-    saveDocument();
-    QMessageBox::information(this, tr("Import Drawing Data"),
-                             tr("Imported %1 pages after the current page. Undo removes this import.").arg(pages.size()));
+    const bool saved = saveDocument(false, false);
+    QString message = tr("Imported %1 pages after the current page. Undo removes this import.").arg(pages.size());
+    if (!saved) message += QLatin1Char('\n') + tr("The import is applied, but saving is stopped. Do not repeat the import.");
+    const QScopedValueRollback<bool> guard(m_persistenceDialogActive, true);
+    QMessageBox notice(saved ? QMessageBox::Information : QMessageBox::Warning, tr("Import Drawing Data"), message,
+                       QMessageBox::Ok, this);
+    if (!saved) {
+        notice.setInformativeText(tr("File: %1\n%2").arg(m_persistence.filePath(), m_persistence.lastResult().message));
+        notice.setDetailedText(persistenceDetails());
+    }
+    notice.exec();
 }
 
 void MainWindow::performDrawingExport()
 {
+    if (!documentInteractionAllowed()) return;
     bool accepted = false;
     const QStringList scopes{tr("All pages"), tr("Current page")};
     const QString choice = QInputDialog::getItem(this, tr("Export Drawing Data"), tr("Export scope:"), scopes, 0, false, &accepted);
@@ -1714,12 +1813,14 @@ void MainWindow::performDrawingExport()
     updateUiState();
     QString error;
     const auto scope = choice == scopes.first() ? BoardDocumentExchange::Scope::AllPages : BoardDocumentExchange::Scope::CurrentPage;
-    if (!BoardDocumentExchange::write(filePath, m_model.document(), scope, &error))
+    if (!m_persistence.allowsOutput(filePath, &error)
+        || !BoardDocumentExchange::write(filePath, m_model.document(), scope, &error))
         QMessageBox::critical(this, tr("Could Not Export Drawing Data"), tr("The drawing data could not be exported.\n%1").arg(error));
 }
 
 void MainWindow::performImageImport()
 {
+    if (!documentInteractionAllowed()) return;
     m_canvas->commitPendingTextEdit();
     updateUiState();
     if (m_model.currentPageLocked())
@@ -1755,6 +1856,7 @@ void MainWindow::performImageImport()
 
 void MainWindow::performImageExport()
 {
+    if (!documentInteractionAllowed()) return;
     m_canvas->commitPendingTextEdit();
     updateUiState();
     const Page page = m_model.currentPage();
@@ -1818,7 +1920,8 @@ void MainWindow::performImageExport()
         ? m_model.selectedElementIndexes() : QVector<int>();
     while (true) {
         QString errorMessage;
-        if (ImageExporter::save(page, selectedIndexes, options, filePath, &errorMessage))
+        if (m_persistence.allowsOutput(filePath, &errorMessage)
+            && ImageExporter::save(page, selectedIndexes, options, filePath, &errorMessage))
             return;
         const QMessageBox::StandardButton answer = QMessageBox::critical(
             this,
@@ -2043,16 +2146,201 @@ void MainWindow::updateFloatingActionPanelMask()
 
 void MainWindow::loadDocument()
 {
-    m_model.loadFromFile(saveFilePath());
+    m_persistence.restore(m_model);
 }
 
-void MainWindow::saveDocument()
+bool MainWindow::saveDocument(bool retry, bool notify)
 {
-    m_model.saveToFile(saveFilePath());
+    if (m_persistenceIoActive || !m_persistence.documentAvailable()
+        || (m_persistence.state() == BoardPersistence::State::SaveFailed && !retry))
+        return false;
+    const QScopedValueRollback<bool> ioGuard(m_persistenceIoActive, true);
+    m_canvas->commitPendingTextEdit();
+    rememberCurrentPageScrollPosition();
+    m_model.setWindowSize(size());
+    m_model.setFloatingActionDockY(m_floatingActionDockY);
+    const bool wasFailed = m_persistence.state() == BoardPersistence::State::SaveFailed;
+    const bool saved = m_persistence.save(m_model.document(), retry);
+    updatePersistenceUi();
+    if (!saved && notify && (!wasFailed || retry)) {
+        m_persistenceNoticePending = true;
+        QTimer::singleShot(0, this, [this]() {
+            if (m_persistenceNoticePending) showPersistenceNotice();
+        });
+    }
+    return saved;
+}
+
+BoardDocument MainWindow::persistenceSnapshot() const
+{
+    BoardDocument candidate = m_model.document();
+    if (!m_persistence.documentAvailable()) return candidate;
+    BoardSettings settings = candidate.settings();
+    settings.setWindowSize(size());
+    settings.setFloatingActionDockY(m_floatingActionDockY);
+    candidate.setSettings(settings);
+    if (m_scrollArea)
+        candidate.currentPage().setScrollPosition(QPoint(m_scrollArea->horizontalScrollBar()->value(),
+                                                        m_scrollArea->verticalScrollBar()->value()));
+    return candidate;
+}
+
+QJsonObject MainWindow::persistenceStatus() const
+{
+    return m_persistence.status(persistenceSnapshot(), m_canvas && m_canvas->hasPendingInput());
+}
+
+bool MainWindow::documentInteractionAllowed() const
+{
+    return m_persistence.documentAvailable() && !m_persistenceDialogActive && !m_persistenceIoActive;
+}
+
+QString MainWindow::persistenceAccess(const QString &toolName) const
+{
+    if (!m_persistence.documentAvailable()) return QStringLiteral("restore_blocked");
+    static const QStringList readOnlyTools{QStringLiteral("whiteboard/state"), QStringLiteral("whiteboard/elements/list"),
+        QStringLiteral("whiteboard/pages/list"), QStringLiteral("whiteboard/page/render"), QStringLiteral("whiteboard/image/export")};
+    if ((m_persistenceDialogActive || m_persistenceIoActive || (m_canvas && m_canvas->hasPendingInput()))
+        && !readOnlyTools.contains(toolName))
+        return QStringLiteral("persistence_busy");
+    return {};
+}
+
+QString MainWindow::persistenceDetails() const
+{
+    const auto &result = m_persistence.lastResult();
+    QString details = tr("File: %1\nStage: %2\n%3").arg(m_persistence.filePath(), result.stage, result.message);
+    if (result.expectedBytes >= 0)
+        details += tr("\nRequested bytes: %1\nWritten bytes: %2").arg(result.expectedBytes).arg(result.writtenBytes);
+    return details;
+}
+
+void MainWindow::createPersistenceUi()
+{
+    m_persistenceLabel = new QLabel(this);
+    m_persistenceLabel->setObjectName(QStringLiteral("persistenceStatus"));
+    statusBar()->addWidget(m_persistenceLabel, 1);
+    m_persistenceDetailsAction = new QAction(tr("Show Details"), this);
+    connect(m_persistenceDetailsAction, &QAction::triggered, this, &MainWindow::showPersistenceNotice);
+    for (QAction *action : {m_persistenceDetailsAction, m_retrySavingAction, m_reloadSavedDataAction}) {
+        action->setProperty("persistenceIndependent", true);
+        auto *button = new QToolButton(this);
+        button->setDefaultAction(action);
+        statusBar()->addPermanentWidget(button);
+    }
+}
+
+void MainWindow::updatePersistenceUi()
+{
+    if (!m_persistenceLabel) return;
+    const bool available = m_persistence.documentAvailable();
+    const bool failed = m_persistence.state() == BoardPersistence::State::SaveFailed;
+    m_persistenceLabel->setText(available ? (failed ? tr("Saving stopped - changes are unsaved") : tr("Saving available"))
+                                        : tr("Restore failed - editing and saving are stopped"));
+    m_persistenceLabel->setToolTip(persistenceDetails());
+    m_retrySavingAction->setEnabled(failed);
+    m_reloadSavedDataAction->setEnabled(!available);
+    m_persistenceDetailsAction->setEnabled(failed || !available);
+    statusBar()->setVisible(failed || !available);
+    m_restoreMessage->setVisible(!available);
+    m_scrollArea->setVisible(available);
+    m_scrollArea->setEnabled(available);
+    m_toolbar->setEnabled(available);
+    if (m_floatingActionPanel) m_floatingActionPanel->setVisible(available);
+    if (!available) {
+        for (QAction *action : findChildren<QAction *>()) {
+            if (action->menu() || action->property("persistenceIndependent").toBool()) continue;
+            if (!action->property("persistenceBlocked").toBool()) {
+                action->setProperty("persistenceWasEnabled", action->isEnabled());
+                action->setProperty("persistenceBlocked", true);
+            }
+            action->setEnabled(false);
+        }
+        m_documentActionsBlocked = true;
+    }
+}
+
+void MainWindow::showPersistenceNotice()
+{
+    if (m_persistenceDialogActive || m_persistenceIoActive) return;
+    m_persistenceNoticePending = false;
+    if (m_persistence.state() == BoardPersistence::State::Ready) return;
+    const bool blocked = !m_persistence.documentAvailable();
+    QMessageBox notice(QMessageBox::Warning, blocked ? tr("Could Not Restore Document") : tr("Could Not Save Document"),
+        blocked ? tr("Saved data could not be restored. Editing and saving are stopped to protect the original file.")
+                : tr("The document could not be saved. Changes remain on screen, but have not been saved to the file. Automatic saving has stopped."),
+        QMessageBox::NoButton, this);
+    notice.setObjectName(QStringLiteral("persistenceNotice"));
+    notice.setInformativeText(tr("File: %1\n%2").arg(m_persistence.filePath(), m_persistence.lastResult().message));
+    notice.setDetailedText(persistenceDetails());
+    auto *retry = notice.addButton(blocked ? tr("Reload Saved Data") : tr("Retry Saving"), QMessageBox::AcceptRole);
+    auto *dismiss = notice.addButton(blocked ? tr("Close Details") : tr("Continue Editing"), QMessageBox::RejectRole);
+    auto *exit = blocked ? notice.addButton(tr("Exit"), QMessageBox::DestructiveRole) : nullptr;
+    notice.setDefaultButton(dismiss);
+    notice.setEscapeButton(dismiss);
+    {
+        const QScopedValueRollback<bool> guard(m_persistenceDialogActive, true);
+        notice.exec();
+    }
+    if (notice.clickedButton() == retry) {
+        if (blocked) reloadSavedData(); else retrySaving();
+    } else if (exit && notice.clickedButton() == exit) {
+        close();
+    }
+}
+
+void MainWindow::retrySaving()
+{
+    if (m_persistenceDialogActive || m_persistenceIoActive || !m_persistence.documentAvailable()) return;
+    if (saveDocument(true, false)) {
+        m_persistenceNoticePending = false;
+        statusBar()->setVisible(true);
+        statusBar()->showMessage(tr("Saved."), 3000);
+        QTimer::singleShot(3000, this, [this]() { updatePersistenceUi(); });
+    } else {
+        m_persistenceNoticePending = true;
+        QTimer::singleShot(0, this, [this]() { if (m_persistenceNoticePending) showPersistenceNotice(); });
+    }
+}
+
+void MainWindow::reloadSavedData()
+{
+    if (m_persistenceDialogActive || m_persistenceIoActive || m_persistence.documentAvailable()) return;
+    bool loaded;
+    {
+        const QScopedValueRollback<bool> guard(m_persistenceIoActive, true);
+        loaded = m_persistence.restore(m_model, true);
+    }
+    if (loaded) {
+        m_persistenceNoticePending = false;
+        m_clipboardElements.clear();
+        resize(m_model.settings().windowSize());
+        m_floatingActionDockY = m_model.settings().floatingActionDockY();
+        m_canvas->refreshSize();
+        updateUiState();
+        restoreCurrentPageScrollPosition();
+    } else {
+        updatePersistenceUi();
+        m_persistenceNoticePending = true;
+        QTimer::singleShot(0, this, [this]() { if (m_persistenceNoticePending) showPersistenceNotice(); });
+    }
 }
 
 void MainWindow::updateUiState()
 {
+    if (!m_persistence.documentAvailable()) {
+        updatePersistenceUi();
+        return;
+    }
+    if (m_documentActionsBlocked) {
+        for (QAction *action : findChildren<QAction *>()) {
+            if (action->property("persistenceBlocked").toBool()) {
+                action->setEnabled(action->property("persistenceWasEnabled").toBool());
+                action->setProperty("persistenceBlocked", false);
+            }
+        }
+        m_documentActionsBlocked = false;
+    }
     const BoardSettings settings = m_model.settings();
     const bool pageLocked = m_model.currentPageLocked();
     const bool hasSelection = m_model.hasSelection();
@@ -2179,4 +2467,5 @@ void MainWindow::updateUiState()
         if (m_persistentToolbar)
             m_persistentToolbar->refreshOverflow();
     }
+    updatePersistenceUi();
 }

@@ -4,10 +4,12 @@
 
 #include <QBuffer>
 #include <QFile>
+#include <QFileInfo>
 #include <QImage>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPlainTextEdit>
 #include <QTest>
 #include <QTemporaryDir>
 
@@ -70,6 +72,11 @@ private slots:
     void rejectsInvalidDiagramWithoutMutation();
     void rejectsChangesToLockedPage();
     void rejectsUnapprovedChange();
+    void blocksAllDocumentToolsDuringRestoreFailure();
+    void rechecksPersistenceAfterApproval();
+    void protectsPendingInputFromChangesAndNavigation();
+    void reportsAppliedEditWhenSavingFails();
+    void rejectsImageOutputToProtectedFile();
 };
 
 namespace {
@@ -150,6 +157,7 @@ struct McpFixture {
     int changeCount = 0;
     int approvalCount = 0;
     bool approveChanges = true;
+    std::function<void()> duringApproval;
     WhiteboardMcpController controller;
 
     McpFixture()
@@ -167,6 +175,8 @@ struct McpFixture {
             },
             [this](const QString &, const QJsonObject &, QString *denyReason) {
                 ++approvalCount;
+                if (duringApproval)
+                    duringApproval();
                 if (!approveChanges && denyReason)
                     *denyReason = QStringLiteral("Declined for test.");
                 return approveChanges;
@@ -688,6 +698,232 @@ void WhiteboardMcpTest::rejectsUnapprovedChange()
     QCOMPARE(fixture.changeCount, 0);
     QVERIFY(fixture.model.currentPage().elements().isEmpty());
     QVERIFY(!fixture.model.canUndo());
+}
+
+void WhiteboardMcpTest::blocksAllDocumentToolsDuringRestoreFailure()
+{
+    McpFixture fixture;
+    const QJsonObject original = fixture.model.document().toJson();
+    fixture.controller.setPersistenceCallbacks(
+        []() { return QJsonObject{{QStringLiteral("status"), QStringLiteral("restore_blocked")},
+                                 {QStringLiteral("persisted"), false}}; },
+        [](const QString &) { return QStringLiteral("restore_blocked"); },
+        {});
+    fixture.start(); // initialize must remain available while restoration is blocked.
+    const QJsonObject toolsResponse = sendMessage(
+        &fixture.input, &fixture.output,
+        QJsonObject{{QStringLiteral("jsonrpc"), QStringLiteral("2.0")},
+                    {QStringLiteral("id"), 100},
+                    {QStringLiteral("method"), QStringLiteral("tools/list")}});
+    const QJsonArray tools = toolsResponse.value(QStringLiteral("result")).toObject()
+                                .value(QStringLiteral("tools")).toArray();
+    QCOMPARE(tools.size(), 16);
+    for (const QJsonValue &tool : tools) {
+        const QJsonObject response = callTool(&fixture.input, &fixture.output, 101,
+                                              tool.toObject().value(QStringLiteral("name")).toString());
+        QVERIFY(!response.contains(QStringLiteral("error")));
+        const QJsonObject result = response.value(QStringLiteral("result")).toObject();
+        QVERIFY(result.value(QStringLiteral("isError")).toBool());
+        const QJsonObject details = result.value(QStringLiteral("structuredContent")).toObject();
+        QCOMPARE(details.value(QStringLiteral("error")).toObject().value(QStringLiteral("code")).toString(),
+                 QStringLiteral("restore_blocked"));
+        QCOMPARE(details.value(QStringLiteral("documentAvailable")).toBool(true), false);
+        QCOMPARE(details.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("status")).toString(),
+                 QStringLiteral("restore_blocked"));
+        QVERIFY(!result.contains(QStringLiteral("pageCount")));
+    }
+    QCOMPARE(fixture.model.document().toJson(), original);
+    QCOMPARE(fixture.changeCount, 0);
+    QCOMPARE(fixture.approvalCount, 0);
+    QVERIFY(!fixture.model.canUndo());
+}
+
+void WhiteboardMcpTest::rechecksPersistenceAfterApproval()
+{
+    McpFixture fixture;
+    bool busy = false;
+    fixture.controller.setPersistenceCallbacks(
+        []() { return QJsonObject{{QStringLiteral("status"), QStringLiteral("save_failed")},
+                                 {QStringLiteral("persisted"), false}}; },
+        [&busy](const QString &tool) {
+            return busy && tool != QStringLiteral("whiteboard/state")
+                ? QStringLiteral("persistence_busy") : QString();
+        },
+        {});
+    fixture.duringApproval = [&busy]() { busy = true; };
+    fixture.start();
+    const QJsonObject original = fixture.model.document().toJson();
+    const QJsonObject response = callTool(
+        &fixture.input, &fixture.output, 110, QStringLiteral("whiteboard/diagram/apply"),
+        QJsonObject{{QStringLiteral("mode"), QStringLiteral("append_current")},
+                    {QStringLiteral("elements"), QJsonArray{rectangleElement(100, 100, 200, 120)}}});
+    const QJsonObject result = response.value(QStringLiteral("result")).toObject();
+    QVERIFY(result.value(QStringLiteral("isError")).toBool());
+    QCOMPARE(result.value(QStringLiteral("structuredContent")).toObject().value(QStringLiteral("error"))
+                 .toObject().value(QStringLiteral("code")).toString(), QStringLiteral("persistence_busy"));
+    QCOMPARE(fixture.approvalCount, 1);
+    QCOMPARE(fixture.changeCount, 0);
+    QCOMPARE(fixture.model.document().toJson(), original);
+    const QJsonObject state = callTool(&fixture.input, &fixture.output, 111, QStringLiteral("whiteboard/state"))
+                                  .value(QStringLiteral("result")).toObject();
+    QCOMPARE(state.value(QStringLiteral("isError")).toBool(true), false);
+    QCOMPARE(state.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("persisted")).toBool(true), false);
+    const QJsonObject stateDetails = state.value(QStringLiteral("structuredContent")).toObject();
+    QCOMPARE(stateDetails.value(QStringLiteral("persistence")), state.value(QStringLiteral("persistence")));
+    QCOMPARE(QJsonDocument::fromJson(state.value(QStringLiteral("content")).toArray().first().toObject()
+                 .value(QStringLiteral("text")).toString().toUtf8()).object(), stateDetails);
+}
+
+void WhiteboardMcpTest::protectsPendingInputFromChangesAndNavigation()
+{
+    McpFixture fixture;
+    fixture.model.addPage();
+    fixture.model.selectTool(Tool::Text);
+    QTest::mouseClick(&fixture.canvas, Qt::LeftButton, Qt::NoModifier, QPoint(40, 50));
+    auto *editor = fixture.canvas.findChild<QPlainTextEdit *>();
+    QVERIFY(editor);
+    editor->setPlainText(QStringLiteral("Keep this input on its original page"));
+    QVERIFY(fixture.canvas.hasPendingInput());
+    const int inputPageIndex = fixture.model.document().currentPageIndex();
+    const QJsonObject original = fixture.model.document().toJson();
+    fixture.controller.setPersistenceCallbacks(
+        [&fixture]() { return QJsonObject{{QStringLiteral("status"), QStringLiteral("ready")},
+                                         {QStringLiteral("persisted"), !fixture.canvas.hasPendingInput()}}; },
+        [&fixture](const QString &tool) {
+            return fixture.canvas.hasPendingInput() && tool != QStringLiteral("whiteboard/state")
+                ? QStringLiteral("persistence_busy") : QString();
+        },
+        {});
+    fixture.start();
+    const QJsonObject diagramArguments{
+        {QStringLiteral("mode"), QStringLiteral("new_page")},
+        {QStringLiteral("elements"), QJsonArray{rectangleElement(100, 100, 200, 120)}},
+    };
+    const QJsonObject diagram = callTool(&fixture.input, &fixture.output, 112,
+        QStringLiteral("whiteboard/diagram/apply"), diagramArguments).value(QStringLiteral("result")).toObject();
+    const QJsonObject navigation = callTool(&fixture.input, &fixture.output, 113,
+        QStringLiteral("whiteboard/page/navigate"), QJsonObject{{QStringLiteral("direction"), QStringLiteral("previous")}})
+                                      .value(QStringLiteral("result")).toObject();
+    for (const QJsonObject &result : {diagram, navigation}) {
+        QVERIFY(result.value(QStringLiteral("isError")).toBool());
+        const QJsonObject error = result.value(QStringLiteral("structuredContent")).toObject()
+                                     .value(QStringLiteral("error")).toObject();
+        QCOMPARE(error.value(QStringLiteral("code")).toString(), QStringLiteral("persistence_busy"));
+        QVERIFY(error.value(QStringLiteral("message")).toString().contains(QStringLiteral("Input")));
+    }
+    QCOMPARE(fixture.approvalCount, 0);
+    QCOMPARE(fixture.changeCount, 0);
+    QCOMPARE(fixture.model.document().toJson(), original);
+    const QJsonObject state = callTool(&fixture.input, &fixture.output, 114, QStringLiteral("whiteboard/state"))
+                                  .value(QStringLiteral("result")).toObject();
+    QVERIFY(!state.value(QStringLiteral("isError")).toBool(true));
+    QVERIFY(!state.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("persisted")).toBool(true));
+    QVERIFY(fixture.canvas.hasPendingInput());
+    QCOMPARE(editor->toPlainText(), QStringLiteral("Keep this input on its original page"));
+    QCOMPARE(fixture.model.document().toJson(), original);
+
+    fixture.canvas.commitPendingTextEdit();
+    QVERIFY(!fixture.canvas.hasPendingInput());
+    const QJsonObject applied = callTool(&fixture.input, &fixture.output, 115,
+        QStringLiteral("whiteboard/diagram/apply"), diagramArguments).value(QStringLiteral("result")).toObject();
+    QVERIFY(!applied.value(QStringLiteral("isError")).toBool(true));
+    QCOMPARE(fixture.approvalCount, 1);
+    QCOMPARE(fixture.changeCount, 1);
+    QCOMPARE(fixture.model.document().pages().at(inputPageIndex).elements().first().text(),
+             QStringLiteral("Keep this input on its original page"));
+    QCOMPARE(fixture.model.currentPage().elements().size(), 1);
+    QCOMPARE(fixture.model.currentPage().elements().first().type(), ElementType::Rectangle);
+}
+
+void WhiteboardMcpTest::reportsAppliedEditWhenSavingFails()
+{
+    McpFixture fixture;
+    fixture.controller.setPersistenceCallbacks(
+        [&fixture]() { return QJsonObject{
+            {QStringLiteral("status"), fixture.changeCount ? QStringLiteral("save_failed") : QStringLiteral("normal")},
+            {QStringLiteral("persisted"), fixture.changeCount == 0},
+        }; },
+        [](const QString &) { return QString(); },
+        {});
+    fixture.start();
+    QJsonObject rectangle = rectangleElement(100, 100, 200, 120);
+    rectangle.insert(QStringLiteral("id"), QStringLiteral("source-rectangle"));
+    const QJsonObject result = callTool(
+        &fixture.input, &fixture.output, 120, QStringLiteral("whiteboard/diagram/apply"),
+        QJsonObject{{QStringLiteral("mode"), QStringLiteral("append_current")},
+                    {QStringLiteral("elements"), QJsonArray{rectangle}}})
+                                  .value(QStringLiteral("result")).toObject();
+    QCOMPARE(result.value(QStringLiteral("isError")).toBool(true), false);
+    QVERIFY(result.value(QStringLiteral("applied")).toBool());
+    QCOMPARE(fixture.model.currentPage().elements().size(), 1);
+    QCOMPARE(result.value(QStringLiteral("revision")).toInteger(), fixture.model.document().revision());
+    QCOMPARE(result.value(QStringLiteral("idMap")).toObject().value(QStringLiteral("source-rectangle")).toString(),
+             fixture.model.currentPage().elements().first().id());
+    QCOMPARE(result.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("status")).toString(),
+             QStringLiteral("save_failed"));
+    QCOMPARE(result.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("persisted")).toBool(true), false);
+    const QJsonObject details = result.value(QStringLiteral("structuredContent")).toObject();
+    QCOMPARE(details.value(QStringLiteral("applied")), result.value(QStringLiteral("applied")));
+    QCOMPARE(details.value(QStringLiteral("idMap")), result.value(QStringLiteral("idMap")));
+    QCOMPARE(details.value(QStringLiteral("revision")), result.value(QStringLiteral("revision")));
+    QCOMPARE(details.value(QStringLiteral("persistence")), result.value(QStringLiteral("persistence")));
+    QCOMPARE(QJsonDocument::fromJson(result.value(QStringLiteral("content")).toArray().first().toObject()
+                 .value(QStringLiteral("text")).toString().toUtf8()).object(), details);
+    QVERIFY(result.value(QStringLiteral("content")).toArray().last().toObject()
+                .value(QStringLiteral("text")).toString().contains(QStringLiteral("Do not resend")));
+    const QJsonObject undo = callTool(&fixture.input, &fixture.output, 121, QStringLiteral("whiteboard/history/undo"))
+                                 .value(QStringLiteral("result")).toObject();
+    QVERIFY(undo.value(QStringLiteral("undone")).toBool());
+    QCOMPARE(undo.value(QStringLiteral("isError")).toBool(true), false);
+    QCOMPARE(undo.value(QStringLiteral("persistence")).toObject().value(QStringLiteral("persisted")).toBool(true), false);
+    QVERIFY(fixture.model.currentPage().elements().isEmpty());
+    QVERIFY(fixture.model.canRedo());
+    QCOMPARE(fixture.changeCount, 2);
+}
+
+void WhiteboardMcpTest::rejectsImageOutputToProtectedFile()
+{
+    McpFixture fixture;
+    fixture.model.addRectangle(QRectF(10, 20, 80, 60));
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString outputPath = directory.filePath(QStringLiteral("protected.svg"));
+#ifdef Q_OS_UNIX
+    const QString originalPath = directory.filePath(QStringLiteral("whiteboard.json"));
+#else
+    const QString originalPath = outputPath;
+#endif
+    QFile original(originalPath);
+    QVERIFY(original.open(QIODevice::WriteOnly));
+    const QByteArray originalBytes("original saved document");
+    QCOMPARE(original.write(originalBytes), originalBytes.size());
+    original.close();
+#ifdef Q_OS_UNIX
+    QVERIFY(QFile::link(originalPath, outputPath));
+#endif
+    int guardCalls = 0;
+    fixture.controller.setPersistenceCallbacks({}, {},
+        [&originalPath, &guardCalls](const QString &path, QString *error) {
+            ++guardCalls;
+            if (QFileInfo(path).canonicalFilePath() == QFileInfo(originalPath).canonicalFilePath()) {
+                *error = QStringLiteral("The destination is the protected document.");
+                return false;
+            }
+            return true;
+        });
+    fixture.start();
+    const QJsonObject response = callTool(
+        &fixture.input, &fixture.output, 130, QStringLiteral("whiteboard/image/save"),
+        QJsonObject{{QStringLiteral("format"), QStringLiteral("svg")},
+                    {QStringLiteral("background"), QStringLiteral("transparent")},
+                    {QStringLiteral("scope"), QStringLiteral("page")},
+                    {QStringLiteral("filePath"), outputPath},
+                    {QStringLiteral("overwrite"), true}});
+    QVERIFY(response.contains(QStringLiteral("error")));
+    QCOMPARE(guardCalls, 1);
+    QVERIFY(original.open(QIODevice::ReadOnly));
+    QCOMPARE(original.readAll(), originalBytes);
+    QCOMPARE(fixture.changeCount, 0);
 }
 
 QTEST_MAIN(WhiteboardMcpTest)

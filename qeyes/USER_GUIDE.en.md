@@ -54,10 +54,10 @@ Everyday use requires only a few short actions.
 
 # 4. Starting the Application
 
-Run the built binary:
+For the macOS distribution, open `qeyes.dmg`, copy `qeyes.app` to Applications, and launch it:
 
 ```text
-$ ./build/qeyes
+$ open /Applications/qeyes.app
 ```
 
 For example, to build from source:
@@ -65,10 +65,13 @@ For example, to build from source:
 ```text
 $ cmake -S . -B build
 $ cmake --build build
-$ ./build/qeyes
 ```
 
+On macOS, use `open build/qeyes.app`; on other platforms, use `./build/qeyes`.
+
 At startup, two eyes appear in a frameless window with a transparent background.
+
+`Always on top` is ON by default. When it is OFF, other applications can cover the window. On macOS, select `qeyes` with Command-Tab to bring it forward. If an appearance or color dialog is open, focus returns to that dialog.
 
 # 5. Basic Controls to Learn First
 

@@ -10,6 +10,11 @@ AI に作業前提を理解させる場合は、次の文書を読ませる。
 
 - `three_key_documents_workflow.md`
 
+工程ごとの開始条件、確認方法、手戻り、再実行・停止の判定は、次の付属手順を併読する。
+
+- [レビューと手戻りの判定手順](review_and_rework.md)
+- `templates/review_record.md`（既存報告へ同じ内容を残す場合は作成不要）
+
 コード生成後の確認、設計文書化、運用判断には、次の文書を使う。
 
 - `docs/post_generation_workflow.md`
@@ -55,6 +60,8 @@ AI に作業前提を理解させる場合は、次の文書を読ませる。
 ```
 
 実装結果の修正が必要な場合は、下流のコードから直さず、上流へ戻る。
+上流が正しく転記や実装だけが誤る場合は、その根拠を確認して該当する生成工程へ戻す。
+仕様判断を変更する場合は、次の順番で反映する。
 
 ```text
 意図違いの指摘
@@ -75,6 +82,7 @@ app-generation-workflow/
 ├─ README.md
 ├─ USER_GUIDE.md
 ├─ three_key_documents_workflow.md
+├─ review_and_rework.md
 └─ templates/
    ├─ requirement.txt
    ├─ source_memo.md
@@ -83,6 +91,7 @@ app-generation-workflow/
    ├─ 02_ui_spec.md
    ├─ 03_business_spec.md
    ├─ implementation_constraints.md
+   ├─ review_record.md
    └─ implementation_prompt.md
 ```
 

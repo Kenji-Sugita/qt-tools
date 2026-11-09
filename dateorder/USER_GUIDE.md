@@ -1,8 +1,28 @@
+---
+genpdf:
+  format: book
+  title: dateorder
+  subtitle: 2026-11-08 配布版
+  author: ""
+  date: 2026-11-08
+  font_size: 12pt
+  page_numbers: true
+---
+
 # dateorder
 
 `dateorder` は、コマンドラインで指定したファイル列が更新日時順に並んでいるかを判定する小さなユーティリティです。
 
 実体コマンドは `younger` で、`older` はそのシンボリックリンクです。起動名に応じて判定方向が切り替わります。
+
+## 配布ファイル
+
+`dateorder-release-20261108.zip` にソース、CMake 設定、このガイドの Markdown 版と PDF 版を収録しています。実装は従来版と同じで、現行名称と配布文書をそろえた版です。
+
+```bash
+unzip dateorder-release-20261108.zip
+cd dateorder-release-20261108
+```
 
 ## 含まれるコマンド
 

@@ -1,8 +1,28 @@
+---
+genpdf:
+  format: book
+  title: dateorder
+  subtitle: 2026-11-08 distribution
+  author: ""
+  date: 2026-11-08
+  font_size: 12pt
+  page_numbers: true
+---
+
 # dateorder
 
 `dateorder` is a small utility that checks whether files supplied on the command line are ordered by modification time.
 
 The executable is `younger`; `older` is a symbolic link to it. The invocation name determines the comparison direction.
+
+## Distribution
+
+`dateorder-release-20261108.zip` contains the source, CMake configuration, and Markdown and PDF versions of the Japanese guide. The implementation is unchanged; this distribution aligns the current name and distribution documentation.
+
+```bash
+unzip dateorder-release-20261108.zip
+cd dateorder-release-20261108
+```
 
 ## Commands
 

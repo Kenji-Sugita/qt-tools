@@ -2,6 +2,37 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja_JP" sourcelanguage="en_US">
 <context>
+    <name>ImageExportDialog</name>
+    <message>
+        <source>Image Export Settings</source>
+        <translation>画像保存設定</translation>
+    </message>
+    <message>
+        <source>PNG</source>
+        <translation>PNG</translation>
+    </message>
+    <message>
+        <source>SVG</source>
+        <translation>SVG</translation>
+    </message>
+    <message>
+        <source>Transparent</source>
+        <translation>透明</translation>
+    </message>
+    <message>
+        <source>White</source>
+        <translation>白</translation>
+    </message>
+    <message>
+        <source>Background</source>
+        <translation>背景</translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>形式:</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <source>Import Drawing Data...</source>
@@ -104,6 +135,12 @@
         <translation>画像を取り込めませんでした</translation>
     </message>
     <message>
+        <source>Saved data could not be restored.
+Editing and saving are stopped to protect the original file.</source>
+        <translation>保存済みデータを復元できませんでした。
+元ファイルを保護するため、編集と保存を停止しています。</translation>
+    </message>
+    <message>
         <source>The image could not be imported.
 %1</source>
         <translation>画像を取り込めませんでした。
@@ -145,7 +182,7 @@
     </message>
     <message>
         <source>Allow AI to apply %1 objects using mode &apos;%2&apos;?</source>
-        <translation>AI がモード「%2」で %1 個のオブジェクトを反映することを許可しますか？</translation>
+        <translation type="vanished">AI がモード「%2」で %1 個のオブジェクトを反映することを許可しますか？</translation>
     </message>
     <message>
         <source>Allow AI to update %1 objects on the current page?</source>
@@ -212,6 +249,30 @@
         <translation>このページを削除しますか</translation>
     </message>
     <message>
+        <source>Unsaved Changes</source>
+        <translation>未保存の変更</translation>
+    </message>
+    <message>
+        <source>Changes and settings have not been saved. Exiting without saving will lose them.</source>
+        <translation>変更内容と設定が保存されていません。保存せず終了すると、今回の変更内容と設定は失われます。</translation>
+    </message>
+    <message>
+        <source>Retry Saving</source>
+        <translation>保存を再試行</translation>
+    </message>
+    <message>
+        <source>Cancel Closing</source>
+        <translation>終了を取り消す</translation>
+    </message>
+    <message>
+        <source>Exit Without Saving</source>
+        <translation>保存せず終了</translation>
+    </message>
+    <message>
+        <source>Could Not Save Document</source>
+        <translation>文書を保存できませんでした</translation>
+    </message>
+    <message>
         <source>None</source>
         <translation>なし</translation>
     </message>
@@ -234,6 +295,10 @@
     <message>
         <source>Increase</source>
         <translation>大きくする</translation>
+    </message>
+    <message>
+        <source>Reload Saved Data</source>
+        <translation>保存済みデータを再読み込み</translation>
     </message>
     <message>
         <source>Help</source>
@@ -436,6 +501,76 @@
         <translation>ページをロック</translation>
     </message>
     <message>
+        <source>The import is applied, but saving is stopped. Do not repeat the import.</source>
+        <translation>取り込みは反映済みですが、保存は停止しています。同じデータを再度取り込まないでください。</translation>
+    </message>
+    <message>
+        <source>File: %1
+Stage: %2
+%3</source>
+        <translation>ファイル: %1
+失敗した処理: %2
+%3</translation>
+    </message>
+    <message>
+        <source>
+Requested bytes: %1
+Written bytes: %2</source>
+        <translation>
+保存予定のバイト数: %1
+書き込んだバイト数: %2</translation>
+    </message>
+    <message>
+        <source>Show Details</source>
+        <translation>詳細を表示</translation>
+    </message>
+    <message>
+        <source>Saving stopped - changes are unsaved</source>
+        <translation>保存停止中 — 変更は未保存です</translation>
+    </message>
+    <message>
+        <source>Saving available</source>
+        <translation>保存可能</translation>
+    </message>
+    <message>
+        <source>Restore failed - editing and saving are stopped</source>
+        <translation>復元失敗 — 編集と保存を停止しています</translation>
+    </message>
+    <message>
+        <source>Could Not Restore Document</source>
+        <translation>文書を復元できませんでした</translation>
+    </message>
+    <message>
+        <source>Saved data could not be restored. Editing and saving are stopped to protect the original file.</source>
+        <translation>保存済みデータを復元できませんでした。元ファイルを保護するため、編集と保存を停止しています。</translation>
+    </message>
+    <message>
+        <source>The document could not be saved. Changes remain on screen, but have not been saved to the file. Automatic saving has stopped.</source>
+        <translation>保存できませんでした。画面上の変更は保持されていますが、今回の内容はファイルに保存できていません。自動保存を停止しました。</translation>
+    </message>
+    <message>
+        <source>File: %1
+%2</source>
+        <translation>ファイル: %1
+%2</translation>
+    </message>
+    <message>
+        <source>Close Details</source>
+        <translation>詳細を閉じる</translation>
+    </message>
+    <message>
+        <source>Continue Editing</source>
+        <translation>編集を続ける</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation>終了</translation>
+    </message>
+    <message>
+        <source>Saved.</source>
+        <translation>保存しました。</translation>
+    </message>
+    <message>
         <source>Unlock Page</source>
         <translation>ページロック解除</translation>
     </message>
@@ -464,37 +599,6 @@
     </message>
 </context>
 <context>
-    <name>ImageExportDialog</name>
-    <message>
-        <source>Image Export Settings</source>
-        <translation>画像保存設定</translation>
-    </message>
-    <message>
-        <source>PNG</source>
-        <translation>PNG</translation>
-    </message>
-    <message>
-        <source>SVG</source>
-        <translation>SVG</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation>透明</translation>
-    </message>
-    <message>
-        <source>White</source>
-        <translation>白</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation>背景</translation>
-    </message>
-    <message>
-        <source>Format:</source>
-        <translation>形式:</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <source>MCP Server</source>
@@ -503,6 +607,18 @@
     <message>
         <source>The local MCP HTTP server could not start: %1</source>
         <translation>ローカル MCP HTTP サーバーを開始できませんでした: %1</translation>
+    </message>
+    <message>
+        <source>The save directory could not be created.</source>
+        <translation>保存先のディレクトリを作成できませんでした。</translation>
+    </message>
+    <message>
+        <source>The saved file is now missing. Restore it and reload, or preserve the original separately before restarting with a new document.</source>
+        <translation>保存ファイルが見つからなくなりました。元の場所へ戻して再読み込みするか、原本を別の場所に保管したうえで再起動し、新しい文書を作成してください。</translation>
+    </message>
+    <message>
+        <source>Choose a different file. The application&apos;s saved document cannot be replaced by an export.</source>
+        <translation>別のファイルを選んでください。アプリの保存文書をエクスポートで置き換えることはできません。</translation>
     </message>
 </context>
 </TS>

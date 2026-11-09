@@ -1,12 +1,10 @@
 #include "BoardModel.h"
 #include "BoardDocumentExchange.h"
+#include "BoardDocumentStorage.h"
 
-#include <QFile>
 #include <QFontMetricsF>
 #include <QHash>
-#include <QJsonDocument>
 #include <QLineF>
-#include <QIODevice>
 #include <QSet>
 #include <QStringList>
 #include <QtGlobal>
@@ -2291,22 +2289,15 @@ bool BoardModel::importPages(const QVector<Page> &importedPages, QString *errorM
 
 bool BoardModel::saveToFile(const QString &filePath) const
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly))
-        return false;
-    file.write(QJsonDocument(m_document.toJson()).toJson(QJsonDocument::Indented));
-    return true;
+    return BoardDocumentStorage::write(filePath, m_document).ok();
 }
 
 bool BoardModel::loadFromFile(const QString &filePath)
 {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly))
+    BoardDocument candidate;
+    if (!BoardDocumentStorage::read(filePath, &candidate).ok())
         return false;
-    const QJsonDocument json = QJsonDocument::fromJson(file.readAll());
-    if (!json.isObject())
-        return false;
-    m_document = BoardDocument::fromJson(json.object());
+    m_document = candidate;
     refreshConnectors();
     clearSelection();
     m_undoStack.clear();

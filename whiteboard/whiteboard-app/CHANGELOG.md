@@ -1,11 +1,19 @@
 # Changelog
 
-## Unreleased
+## 1.3.0 - 2026-11-09
 
 ### Added
 
 - Added editable drawing data export for all pages or the current page using the versioned `.whiteboard` JSON format.
 - Added validated import of `.whiteboard` and legacy autosave JSON as pages after the current page, with remapped element/connector IDs and one-step Undo/Redo.
+- Added persistent save-failure status, explicit save retry, protected startup after restore failure, and close-time choices that preserve unsaved edits.
+- Added persistence information to MCP state and mutation results so applied edits are distinguished from failed saves.
+
+### Fixed
+
+- Verify complete writes and atomic commits for normal document saves, preserving the existing file on failure.
+- Prevent failed restoration from overwriting the original with an empty document; reject malformed structures and documents above 20 pages while retaining supported legacy normalization.
+- Prevent drawing-data and image exports from replacing the normal save file through the same path or a file alias.
 
 ## 1.2.0 - 2026-09-18
 

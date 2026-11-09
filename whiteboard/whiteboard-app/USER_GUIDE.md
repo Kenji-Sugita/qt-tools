@@ -4,8 +4,8 @@ genpdf:
   title: WhiteboardApp 利用ガイド
   subtitle: 説明図作成向けホワイトボード
   author: (株) SRA
-  version: 1.2.0
-  date: 2026-09-02
+  version: 1.3.0
+  date: 2026-11-09
   font_size: 12pt
   page_numbers: true
   copyright: 2026 SRA, Inc. All rights reserved.
@@ -58,11 +58,11 @@ WhiteboardApp は、説明図、技術メモ、オンライン説明用の図を
 
 | 項目 | 内容 |
 | --- | --- |
-| アプリ | WhiteboardApp 1.2.0 |
+| アプリ | WhiteboardApp 1.3.0 |
 | UI フレームワーク | Qt 6 Widgets |
 | ビルドシステム | CMake 3.16 以上 |
 | C++ | C++17 |
-| Qt コンポーネント | Core, Gui, HttpServer, Network, Widgets, Test |
+| Qt コンポーネント | Core, Gui, HttpServer, Network, Svg, Widgets, Test, LinguistTools |
 | MCP 実装 | WhiteboardApp 専用の最小 JSON-RPC / Streamable HTTP 実装 |
 | macOS ビルド | arm64 / x86_64 universal binary |
 | キャンバスサイズ | 1920 x 1080 |
@@ -90,6 +90,8 @@ macOS でライセンス確認をバイパスする環境では、次のよう�
 QTFRAMEWORK_BYPASS_LICENSE_CHECK=1 cmake --build whiteboard-app/build
 ```
 
+<div style="page-break-before: always;"></div>
+
 ### テストを実行する
 
 ```bash
@@ -105,6 +107,10 @@ QTFRAMEWORK_BYPASS_LICENSE_CHECK=1 ctest --test-dir whiteboard-app/build --outpu
 | `WhiteboardCoreCurveTest` | 折れ線、ベジェ曲線、閉じる/開く |
 | `WhiteboardCoreSelectionTest` | 選択、移動、コピー、グループ、コネクター追従 |
 | `WhiteboardCoreDocumentTest` | 保存対象、ページ、設定、描画要素 ID、コネクター ID 張り替え |
+| `WhiteboardDocumentExchangeTest` | 描画データ交換、旧形式、ID と接続、Undo/Redo、不正入力 |
+| `WhiteboardDocumentStorageTest` | 読み書き失敗、原本保護、復元データ検証 |
+| `WhiteboardPersistenceTest` | 保存状態、保存停止、再試行、復元保護 |
+| `WhiteboardPersistenceUiTest` | 保存失敗・復元失敗の画面操作、終了確認、未確定入力、再入防止 |
 | `WhiteboardImageExporterTest` | PNG/SVG の範囲、背景、選択要素、SVG ID、画像埋め込み、拡張子、保存処理 |
 | `WhiteboardImageImporterTest` | PNG/JPEG/BMP/SVG 取り込み、SVG の PNG 化、画像要素の保存読み込み |
 | `WhiteboardImageExportDialogTest` | 画像保存設定ダイアログの既定値と操作部品 |
@@ -153,7 +159,7 @@ MCP Server は WhiteboardApp 内に実装されているため、外部の qtmcp
 
 | MCP tool | 内容 | 実行確認 |
 | --- | --- | --- |
-| `whiteboard/state` | 現在ページ、移動可否、ロック、選択、Undo/Redo、要素を取得 | 不要 |
+| `whiteboard/state` | 現在ページ、移動可否、ロック、選択、Undo/Redo、要素、保存状態を取得 | 不要 |
 | `whiteboard/elements/list` | 現在ページまたは指定ページの要素と永続 ID を取得 | 不要 |
 | `whiteboard/elements/update` | 現在ページの要素を永続 ID で一括更新 | 必要 |
 | `whiteboard/elements/delete` | 現在ページの要素を永続 ID で一括削除 | 必要 |
@@ -163,7 +169,7 @@ MCP Server は WhiteboardApp 内に実装されているため、外部の qtmcp
 | `whiteboard/page/add` | 現在ページの直後へ空ページを追加 | 必要 |
 | `whiteboard/page/delete` | 現在ページを削除 | 必要 |
 | `whiteboard/page/lock` | 現在ページのロック状態を設定 | 必要 |
-| `whiteboard/diagram/apply` | 図を一括反映 | 必要 |
+| `whiteboard/diagram/apply` | 図を一括反映 | 不要（自動承認） |
 | `whiteboard/page/render` | 現在ページを 1920x1080 PNG で取得 | 不要 |
 | `whiteboard/image/export` | 現在ページまたは選択要素を PNG/SVG データで取得 | 不要 |
 | `whiteboard/image/save` | 現在ページまたは選択要素を PNG/SVG ファイルへ保存 | 必要 |
@@ -173,8 +179,8 @@ MCP Server は WhiteboardApp 内に実装されているため、外部の qtmcp
 `whiteboard/diagram/apply` の mode は `new_page`、`append_current`、`replace_current` です。
 `whiteboard/image/save` は絶対パスと一致する `.png` / `.svg` 拡張子を要求し、既存ファイルは
 `overwrite: true` を明示した場合だけ上書きします。
-1 回の一括反映は 1 回の Undo になります。書き込み要求では画面に確認ダイアログが表示され、
-拒否した場合は変更されません。対応する図の詳細は `docs/mcp_diagram_capabilities.md` を参照してください。
+1 回の一括反映は 1 回の Undo になります。図の反映は全モードで自動承認されます。
+その他の変更や画像ファイル保存では画面に確認ダイアログが表示され、拒否した場合は変更されません。対応する図の詳細は `docs/mcp_diagram_capabilities.md` を参照してください。
 
 Codex へ WhiteboardApp 上の描画を依頼する場合は、HTML や `visualize` ではなく
 WhiteboardApp の MCP tool を使うことを明示してください。例:
@@ -193,12 +199,20 @@ HTML や visualize は使わないでください。
 古い状態による変更は拒否されます。`whiteboard/elements/apply` は追加・更新・削除を合計 500 件まで
 一度に反映し、追加要素の `clientId` と新しい永続 ID の対応を返します。
 
+状態取得と文書変更の応答には `persistence` が含まれます。`persisted:false` は未保存を示します。編集後に保存だけが失敗しても、反映結果と採番されたIDは有効です。同じ追加要求を再送せず、画面で原因を確認して保存を再試行してください。
+
+復元に失敗して保護中の文書操作は `restore_blocked` になります。状態取得は `documentAvailable:false` と保護状態を示し、空ページを正常な文書として返しません。通知や終了確認などの処理中に編集要求が来た場合は `persistence_busy` として拒否されます。
+
+テキスト・ドラッグ・折れ線・ベジェ曲線の入力途中は、AIからの編集やページ移動を一時拒否します。入力を完了してから再実行してください。
+
 ## 最小コード例
 
 通常の利用では GUI アプリケーションを起動して操作します。
 開発者がコアモデルを確認したい場合は、`WhiteboardCore` の `BoardModel` を使って描画要素を作成し、JSON ファイルへ保存できます。
 
 次の例は、矩形、矢印付き直線、テキストを 1 ページに追加して保存します。
+
+<div style="page-break-before: always;"></div>
 
 ```cpp
 #include "BoardModel.h"
@@ -211,7 +225,6 @@ HTML や visualize は使わないでください。
 int main()
 {
     BoardModel model;
-
     model.setSelectedColor(QColor(QStringLiteral("#344054")));
     model.setFillColor(QColor(QStringLiteral("#00000000")));
     model.setStrokeWidth(3);
@@ -222,7 +235,6 @@ int main()
     model.addLine(QPointF(480, 210), QPointF(760, 210));
 
     model.addText(QPointF(150, 155), QStringLiteral("Input"));
-
     return model.saveToFile(QStringLiteral("whiteboard.json")) ? 0 : 1;
 }
 ```
@@ -240,6 +252,8 @@ flowchart LR
 - 線の開始点または終了点が矩形、角丸矩形、楕円、円、テキスト、画像の上にある場合、線端点はその図形へ接続されます。
 - `saveToFile()` は描画内容と設定を JSON へ保存します。
 - 選択状態は保存対象ではありません。
+
+<div style="page-break-before: always;"></div>
 
 ## 基本概念
 
@@ -272,6 +286,8 @@ flowchart TD
 | 選択状態 | UI 操作用の一時状態。保存対象ではない |
 
 描画要素の永続 ID は `element-1`, `element-2` のように自動で割り当てます。古い保存ファイルに ID がない場合は、読み込み時に ID を補完します。この補完では図形の見た目、座標、重なり順は変更しません。コピー、貼り付け、MCP の図反映で新しく作られる要素には、コピー元や入力元とは異なる新しい ID を付けます。接続済み直線は、接続先図形の永続 ID を保存します。
+
+<div style="page-break-before: always;"></div>
 
 ### 描画設定と選択中オブジェクト
 
@@ -550,8 +566,8 @@ File メニューの `Save Image...` から、現在表示しているページ�
 
 ## 保存と読み込み
 
-アプリ終了時に、設定情報、ページ、描画内容を `whiteboard.json` へ保存します。
-次回起動時には保存済み内容を読み込みます。
+アプリ終了時に、設定情報、ページ、描画内容を `whiteboard.json` へ保存します。MCPによる文書変更、描画データの取り込み、画像ファイルの取り込みが成功したときにも通常保存を行います。通常の描画や設定変更のたびに保存する方式ではありません。
+次回起動時には保存済み内容を読み込みます。保存が失敗した場合と、保存済みデータを読み込めない場合では、次のように操作が変わります。
 
 保存対象:
 
@@ -580,6 +596,41 @@ File メニューの `Save Image...` から、現在表示しているページ�
 | macOS | `~/Library/Application Support/WhiteboardApp/whiteboard.json` |
 | Linux | `~/.local/share/WhiteboardApp/whiteboard.json` |
 | Windows | `C:\Users\<ユーザー名>\AppData\Roaming\WhiteboardApp\whiteboard.json` |
+
+### 保存できなかった場合
+
+保存先と失敗理由が表示され、自動保存が停止します。画面上の描画・設定・Undo/Redo履歴は保持され、ページロックなどの通常の制限内で編集を続けられます。以後の変更は、保存の再試行に成功するまで未保存です。
+
+1. 保存状態の `Show Details`（詳細を表示）で原因と保存先を確認します。
+2. 空き容量やアクセス権など、表示された原因を解消します。
+3. 保存状態またはFileメニューの `Retry Saving`（保存を再試行）を実行します。
+4. 保存完了が表示されると停止が解除されます。再試行では、その時点の最新の描画と設定が保存されます。
+
+同じ障害で編集のたびに通知が重なることはありません。再試行する前に `Continue Editing`（編集を続ける）を選んだ場合も、保存停止の表示は残ります。
+
+別ファイルへ描画を残したい場合は「描画データをエキスポート…」で「全ページ」を選べます。ただし `.whiteboard` は選択ツールやウィンドウサイズなどの操作設定を含みません。書き出しが成功しても通常保存の停止は解除されません。画像を含む書き出し先には、通常保存の `whiteboard.json` や同じファイルを指すリンクを指定できません。
+
+<div style="page-break-before: always;"></div>
+
+### 保存済みデータを読み込めなかった場合
+
+元ファイルを保護するため、編集と保存を停止した画面になります。空の文書で元ファイルを上書きすることはありません。空ファイル、破損したJSON、不正なページ構造、20ページを超えるデータなども、この状態になります。
+
+原因を解消したら、画面またはFileメニューの `Reload Saved Data`（保存済みデータを再読み込み）を実行してください。同じ保存先をすべて読み込めた場合に編集を再開できます。読み込みに失敗したまま終了しても、元ファイルへの保存は行いません。
+
+`Close Details`（詳細を閉じる）で通知を閉じても、編集と保存の停止は続きます。原因や保存先は、保存状態の `Show Details`（詳細を表示）で再確認できます。
+
+ファイルを削除しても、その起動中は空の文書へ切り替わりません。修復できず新規に始める場合は、原本を別名のファイルとして退避してから再起動してください。退避した原本は後の調査や復旧のために残しておいてください。
+
+### 終了時に未保存の変更がある場合
+
+| 選択肢 | 結果 |
+| --- | --- |
+| Retry Saving／保存を再試行 | 最新の内容を保存できた場合に終了します。失敗した場合は終了しません |
+| Cancel Closing／終了を取り消す | 画面に戻り、編集内容と履歴を保持します。既定の選択です |
+| Exit Without Saving／保存せず終了 | 今回の未保存の変更・設定を破棄して終了します |
+
+終了前に編集中のテキストは確定して保存対象にします。通常保存の成功を確認してから終了してください。この保護機能はバックアップ履歴を作るものではありません。
 
 ### 編集可能な描画データを受け渡す
 
@@ -693,6 +744,8 @@ stateDiagram-v2
 ロック中のページでは、オブジェクトの選択、コピー、ページ移動、ズーム、スクロールだけができます。
 描画追加、削除、貼り付け、移動、サイズ変更、テキスト編集、スタイル変更、グループ化、Undo/Redo、ページ削除はできません。
 
+<div style="page-break-before: always;"></div>
+
 ## 注意点
 
 ### テキストが見えない
@@ -717,13 +770,13 @@ Line を 1 以上に戻してください。
 
 ### 保存されない状態がある
 
-選択状態、作成途中の入力、Undo/Redo 履歴は保存されません。
-作成中の折れ線、ベジェ曲線、テキストは確定してから終了してください。
+選択状態、作成途中の図形入力、Undo/Redo 履歴は保存されません。
+作成中の折れ線やベジェ曲線は確定してから終了してください。編集中のテキストは通常保存前に確定されます。
 
 ### 強制終了時の変更
 
-通常終了またはウィンドウクローズ時に保存します。
-強制終了やクラッシュの場合、最後の正常終了後の変更は失われる可能性があります。
+通常終了またはウィンドウクローズ時には保存完了を確認します。
+強制終了やクラッシュの場合、最後に保存に成功した後の変更は失われる可能性があります。
 
 ### macOS のキー表記
 

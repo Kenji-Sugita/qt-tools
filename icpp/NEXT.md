@@ -6,6 +6,12 @@
 
 ## 現在の状態
 
+- 2026-11-09: Sites正本の修復済み `USER_GUIDE.pdf` と `release/icpp-1.2.0-source.zip` をGitHub公開用へ反映した。
+  - 11月8日にSitesで生成・表示確認された69ページ版をそのままコピーした。今回PDFの再生成や本体の再ビルドはしていない。
+  - 旧ZIPとの内容比較では `icpp-1.2.0/USER_GUIDE.pdf` だけが異なり、ほかの284ファイルの内容は一致。ZIPのCRC、単体PDF・MarkdownとZIP内の対応ファイル、SitesとのSHA-256一致を確認した。
+  - 現行ZIPのSHA-256は `bae52b83ca6197353a60f1f853e9394a49264a68ccf3b56c9d8b09be76b5efef`。以下の9月2日のハッシュは修復前の履歴として保持する。
+  - GitHub側で実装に合わせて修正済みの `QTCREATOR_GUIDE.md` / PDF 0.3.1は維持し、Sitesの0.3.0で上書きしていない。
+
 - 2026-10-24: `QTCREATOR_GUIDE.md` / PDF を 0.3.1 へ更新し、廃止済み `.workflow` の操作例・図・チートシートを現行コマンドへ修正した。
   - `.where` / `.qt` / `.generated` / `.doctor` の使い分け、状態確認と `.r` / `.gen` の違い、autogen の例外、生成時の現在ディレクトリを明記した。
   - 現在の `ReplSessionImpl.cpp` / `ReplSessionWorkflow.cpp` / `ReplSessionHelp.cpp` / `ReplSessionInterpreter.cpp` と照合済み。別クラウドの `efe19b7` はローカルに存在しないため、cherry-pick せず必要な修正を反映した。

@@ -276,6 +276,11 @@ bool CanvasWidget::hasPendingTextEdit() const
     return m_textEditor != nullptr;
 }
 
+bool CanvasWidget::hasPendingInput() const
+{
+    return hasPendingTextEdit() || m_dragging || m_polylineActive || m_bezierActive;
+}
+
 bool CanvasWidget::closeActivePolyline()
 {
     if (!m_polylineActive || m_polylinePoints.size() < 3)

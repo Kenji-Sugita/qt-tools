@@ -692,6 +692,15 @@ void WhiteboardMcpController::setOutputDevice(QIODevice *device)
     m_outputDevice = device;
 }
 
+void WhiteboardMcpController::setPersistenceCallbacks(PersistenceStatusCallback status,
+                                                      PersistenceAccessCallback access,
+                                                      OutputPathGuard outputGuard)
+{
+    m_persistenceStatusCallback = std::move(status);
+    m_persistenceAccessCallback = std::move(access);
+    m_outputPathGuard = std::move(outputGuard);
+}
+
 bool WhiteboardMcpController::start()
 {
     if (!startMessageTransport())
@@ -771,7 +780,7 @@ bool WhiteboardMcpController::registerTools()
 
     const bool stateRegistered = registerTool(
         QStringLiteral("whiteboard/state"),
-        QStringLiteral("Return the 1920 x 1080 canvas, current page, lock, history, and element JSON state."),
+        QStringLiteral("Return the 1920 x 1080 canvas, current page, lock, history, element JSON state, and persistence status."),
         [this](const QJsonObject &arguments, QString *errorMessage) {
             return stateTool(arguments, errorMessage);
         },
@@ -1092,6 +1101,11 @@ QJsonObject WhiteboardMcpController::toolsCallRequest(const QJsonObject &params,
     }
 
     const ToolDefinition &tool = m_tools.at(*toolIt);
+    if (m_persistenceAccessCallback) {
+        const QString code = m_persistenceAccessCallback(tool.name);
+        if (!code.isEmpty())
+            return persistenceErrorResult(code);
+    }
     if (tool.requiresApproval) {
         if (!m_approvalCallback) {
             *errorMessage = QStringLiteral("No approval handler is configured.");
@@ -1106,7 +1120,67 @@ QJsonObject WhiteboardMcpController::toolsCallRequest(const QJsonObject &params,
         }
     }
 
-    return tool.callback(arguments, errorMessage);
+    // Approval may run an event loop. Recheck protection immediately before mutation.
+    if (m_persistenceAccessCallback) {
+        const QString code = m_persistenceAccessCallback(tool.name);
+        if (!code.isEmpty())
+            return persistenceErrorResult(code);
+    }
+
+    QJsonObject result = tool.callback(arguments, errorMessage);
+    const bool changesDocument = tool.requiresApproval
+        && tool.name != QStringLiteral("whiteboard/image/save");
+    const bool reportsPersistence = changesDocument
+        || tool.name == QStringLiteral("whiteboard/state")
+        || tool.name == QStringLiteral("whiteboard/page/navigate");
+    if (errorMessage->isEmpty() && reportsPersistence && m_persistenceStatusCallback) {
+        const QJsonObject persistence = m_persistenceStatusCallback();
+        result.insert(QStringLiteral("persistence"), persistence);
+        // Keep legacy fields while making the same outcome readable by MCP clients
+        // that consume only standard content/structuredContent fields.
+        const QJsonObject details = result;
+        result.insert(QStringLiteral("structuredContent"), details);
+        result.insert(QStringLiteral("isError"), false);
+        QJsonArray content{QJsonObject{
+            {QStringLiteral("type"), QStringLiteral("text")},
+            {QStringLiteral("text"), QString::fromUtf8(QJsonDocument(details).toJson(QJsonDocument::Compact))},
+        }};
+        if (changesDocument && persistence.value(QStringLiteral("status")).toString()
+                == QStringLiteral("save_failed")) {
+            // The model operation has already succeeded. Do not invite a duplicate retry.
+            content.append(QJsonObject{
+                {QStringLiteral("type"), QStringLiteral("text")},
+                {QStringLiteral("text"), QStringLiteral("The edit was applied, but its changes are not saved. "
+                                                        "Do not resend this edit. Resume saving in Whiteboard.")},
+            });
+        }
+        result.insert(QStringLiteral("content"), content);
+    }
+    return result;
+}
+
+QJsonObject WhiteboardMcpController::persistenceErrorResult(const QString &code) const
+{
+    const bool restoreBlocked = code == QStringLiteral("restore_blocked");
+    const QString message = restoreBlocked
+        ? QStringLiteral("The saved document has not been restored. Editing and saving are blocked to protect the original file.")
+        : QStringLiteral("Input, a persistence operation, or a confirmation is in progress. No edit was applied.");
+    QJsonObject details{
+        {QStringLiteral("error"), QJsonObject{{QStringLiteral("code"), code},
+                                             {QStringLiteral("message"), message}}},
+    };
+    if (m_persistenceStatusCallback)
+        details.insert(QStringLiteral("persistence"), m_persistenceStatusCallback());
+    if (restoreBlocked)
+        details.insert(QStringLiteral("documentAvailable"), false);
+    return {
+        {QStringLiteral("isError"), true},
+        {QStringLiteral("structuredContent"), details},
+        {QStringLiteral("content"), QJsonArray{QJsonObject{
+             {QStringLiteral("type"), QStringLiteral("text")},
+             {QStringLiteral("text"), message},
+         }}},
+    };
 }
 
 void WhiteboardMcpController::processInputDeviceMessages()
@@ -1866,6 +1940,11 @@ QJsonObject WhiteboardMcpController::saveImageTool(const QJsonObject &arguments,
     }
     if (fileInfo.exists() && !overwriteValue.toBool()) {
         *errorMessage = QStringLiteral("The destination file already exists and overwrite is false.");
+        return {};
+    }
+    if (m_outputPathGuard && !m_outputPathGuard(filePath, errorMessage)) {
+        if (errorMessage->isEmpty())
+            *errorMessage = QStringLiteral("The destination is reserved for the saved whiteboard document.");
         return {};
     }
 

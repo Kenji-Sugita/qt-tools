@@ -4,7 +4,7 @@ genpdf:
   title: Application Generation Workflow Guide
   subtitle: Creating applications with pre-specification notes
   author: SRA, Inc.
-  version: 0.2.2
+  version: 0.2.3
   date: 2026-06-23
   font_size: 12pt
   page_numbers: true
@@ -23,6 +23,13 @@ genpdf:
     header_align: center
     cell_align: left
 ---
+
+<style>
+@media print {
+  h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
+  table, pre { break-inside: avoid !important; page-break-inside: avoid !important; }
+}
+</style>
 
 # User Guide
 
@@ -52,6 +59,8 @@ To give an AI the working context, use an instruction like:
 Read app-generation-workflow/three_key_documents_workflow.md.
 ```
 
+<div class="page-break"></div>
+
 ## Understanding Roles
 
 The AI drafts, identifies issues, checks correspondence, and assists reviews.
@@ -65,8 +74,11 @@ and which earlier stage to return to.
 | AI-led | AI is asked to draft, identify issues, cross-check, or assist review |
 | Joint | AI proposes candidates and questions; a person decides whether to adopt them |
 
+<div class="page-break"></div>
+
 ## Basic Flow
 
+!mermaid{scale=0.5}
 ```mermaid
 flowchart TB
   understand["Understand pre-specification notes and the three-document set"]
@@ -99,6 +111,8 @@ flowchart TB
   design -->|Review| reflect
 ```
 
+<div class="page-break"></div>
+
 Roles by stage, first half:
 
 | Stage | Lead | Human decision |
@@ -122,6 +136,45 @@ Second half:
 | Application design document | AI-led, human-reviewed | Whether the design can be finalized |
 
 Each relevant section starts with its **Output**.
+
+## Deciding When to Start a Stage or Return for Rework
+
+Stage conditions are defined in `review_and_rework.md` in this directory.
+Check G01–G14, covering requirements through operation, as well as the
+conditions for reverse generation and splitting notes. Before AI checks and
+any required human decisions, identify the authoritative sources, target scope
+and versions, verification methods, and expected results.
+
+Gaps that require inference downstream, disagreement with an authoritative
+source, unapproved provisional decisions, and missing mandatory checks are
+"major inconsistencies" that stop the stage. Typographical errors and similar
+issues that do not affect meaning or downstream decisions may be deferred if
+the reason and correction plan are recorded. When asked only to review, report
+findings and the stage to return to; correction requires a separate instruction.
+
+| Decision | Next action |
+| --- | --- |
+| Pass | Hand the scope that has completed mandatory checks and required human decisions to the next stage |
+| Awaiting correction | Return to the authoritative source or generation stage supported by the evidence |
+| Awaiting human decision | Confirm adoption, scope, or business decisions |
+| Unable to verify | Record missing inputs, environment, or evidence, and conditions for resuming |
+| Stop | Preserve the intermediate state when instructed to stop or a specified limit is reached |
+
+Return to the earliest stage where the decisions diverged. Reflect changed
+specification decisions from the notes onward. For transcription omissions or
+implementation defects alone, verify that the upstream source is correct and
+fix the affected deliverable. Follow a valid implementation prompt when
+changing code.
+
+Before rerunning, identify changed inputs, deliverables, or environment and
+the scope to check. Mark downstream stages affected by upstream changes as
+awaiting rechecking; do not carry an old passing result over to a new version.
+If the same cause recurs and there is no evidence to support another correction,
+stop repeating and return the approach decision to a person. Evaluate automated
+test success separately from manual UI checks and distribution approval.
+
+Record results in the target application's existing review reports or work
+records. Use `templates/review_record.md` if a format is needed.
 
 ## 1. Create Pre-Specification Notes
 
@@ -555,8 +608,9 @@ assets, wording, and manual-check targets that are hard to reconstruct from
 code have not been lost.
 
 Do not fix only code when inconsistencies appear. Return to notes for missing
-specification decisions, to the three documents for incomplete specifications,
-or inspect prompt-to-code correspondence for missing implementation.
+specification decisions. For transcription omissions, check the correct notes
+and reflect them in the three-document set again. For missing implementation,
+check correspondence between the valid implementation prompt and code.
 
 ## 7. Build, Create Tests, Run Automated Tests, and Check Manually
 
@@ -634,20 +688,23 @@ Lead: Human-led, AI-assisted. AI suggests causes and destinations; people decide
 where and how to correct them.
 Output: Corrected notes, specifications, prompt, code, and tests.
 
-| Inconsistency | Update destination |
+| Inconsistency | Check and stage to return to |
 | --- | --- |
-| Missing specification decision | `source_memo.md` or `five_source_memos/` |
-| Incorrect use cases or state transitions | `specs/01_usecase_spec.md` |
-| Incorrect screens, displays, operations, or wording | `specs/02_ui_spec.md` |
-| Incorrect business rules, calculations, validation, or normalization | `specs/03_business_spec.md` |
-| Outdated implementation instructions | `prompts/implementation_prompt.md` |
-| Code does not satisfy specifications or instructions | `include/`, `src/`, `tests/` |
+| Missing or changed specification decision | Check requirements and adoption decisions, then reflect the change from the authoritative notes onward |
+| Incorrect transcription into use case, UI, or business specifications | Check the correct notes and return to generation and review of the three-document set |
+| Outdated implementation instructions or missing constraints | Check the implementation approach and constraints, then return to the implementation prompt |
+| Code does not satisfy specifications or instructions | Check the upstream basis and correct the code under a valid prompt |
+| Incorrect expected test results | Derive them again from the original specifications and return to test creation |
+| Missing execution environment | Identify the cause, restore the environment or procedure, and repeat the necessary checks |
+| An omission only in the contract or design document | Check the source material and return to creation and review of that document |
 | Outdated operating procedure | `README.md` |
 | Outdated resumption notes | Target project's resumption notes |
 
-After correction, repeat the build, automated tests, necessary manual checks,
-and implementation review. Do not mark later design documents complete while
-major inconsistencies remain unresolved.
+After correction, recheck downstream stages that depend on the changed items.
+For code changes, repeat the build, automated tests, necessary manual checks,
+and implementation review. For documentation-only corrections, review related
+statements again and record why existing execution results remain valid.
+Do not mark later design documents complete while major inconsistencies remain unresolved.
 
 ## 10. Create the Implementation Design Contract
 
@@ -736,7 +793,10 @@ Output: Corrected notes, specifications, prompt, and code.
 Do not immediately change code when the implementation differs from intent.
 Do not begin by changing only the specification set either.
 
-Correction order:
+First check the authoritative notes and adoption decisions. When a specification
+decision changes, reflect it in the following order. For transcription omissions
+or implementation defects alone, follow section 2 of `review_and_rework.md`,
+record why upstream material does not need changing, and return to the affected stage.
 
 ```mermaid
 flowchart TB
@@ -757,8 +817,8 @@ flowchart TB
 Do not:
 
 - Change only code immediately after a mismatch is reported.
-- Change only the three-document set without updating `source_memo.md`.
-- Change only code without updating the implementation prompt.
+- Change only the three-document set without checking the authoritative notes.
+- Change only code without checking that the implementation prompt remains valid.
 - Add unspecified behavior directly to code.
 - Leave provisional decisions only in code without reflecting them in specifications.
 
@@ -795,6 +855,8 @@ Carry the application type into all three documents and mark unnecessary optiona
 patterns as out of scope. Treat the generated set as a draft and review it before
 creating an implementation prompt.
 ```
+
+<div class="page-break"></div>
 
 Create the implementation prompt:
 

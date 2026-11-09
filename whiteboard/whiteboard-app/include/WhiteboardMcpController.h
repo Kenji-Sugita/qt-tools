@@ -19,6 +19,9 @@ public:
     using ChangeCallback = std::function<void()>;
     using PageNavigationCallback = std::function<bool(const QString &)>;
     using ApprovalCallback = std::function<bool(const QString &, const QJsonObject &, QString *)>;
+    using PersistenceStatusCallback = std::function<QJsonObject()>;
+    using PersistenceAccessCallback = std::function<QString(const QString &toolName)>;
+    using OutputPathGuard = std::function<bool(const QString &path, QString *error)>;
 
     WhiteboardMcpController(BoardModel *model,
                             CanvasWidget *canvas,
@@ -30,6 +33,9 @@ public:
 
     void setInputDevice(QIODevice *device);
     void setOutputDevice(QIODevice *device);
+    void setPersistenceCallbacks(PersistenceStatusCallback status,
+                                 PersistenceAccessCallback access,
+                                 OutputPathGuard outputGuard);
     bool start();
     bool startMessageTransport();
     bool processMessage(const QByteArray &message, QJsonObject *response, bool *hasResponse);
@@ -59,6 +65,7 @@ private:
     QJsonObject initializeRequest(const QJsonObject &params, QString *errorMessage);
     QJsonObject toolsListRequest() const;
     QJsonObject toolsCallRequest(const QJsonObject &params, QString *errorMessage);
+    QJsonObject persistenceErrorResult(const QString &code) const;
     void processInputDeviceMessages();
     QJsonObject stateTool(const QJsonObject &arguments, QString *errorMessage) const;
     QJsonObject listElementsTool(const QJsonObject &arguments, QString *errorMessage) const;
@@ -82,6 +89,9 @@ private:
     ChangeCallback m_changeCallback;
     PageNavigationCallback m_pageNavigationCallback;
     ApprovalCallback m_approvalCallback;
+    PersistenceStatusCallback m_persistenceStatusCallback;
+    PersistenceAccessCallback m_persistenceAccessCallback;
+    OutputPathGuard m_outputPathGuard;
     QIODevice *m_inputDevice = nullptr;
     QIODevice *m_outputDevice = nullptr;
     QByteArray m_inputBuffer;

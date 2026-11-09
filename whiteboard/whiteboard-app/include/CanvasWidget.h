@@ -26,6 +26,7 @@ public:
     QImage renderPageImage();
     void commitPendingTextEdit();
     bool hasPendingTextEdit() const;
+    bool hasPendingInput() const;
     bool closeActivePolyline();
     bool closeActiveBezier();
 

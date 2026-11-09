@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BoardModel.h"
+#include "BoardPersistence.h"
 #include "FloatingActionButton.h"
 
 #include <QAction>
@@ -32,7 +33,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr, const QString &storagePath = QString());
     bool startMcpServer();
     bool startMcpHttpServer();
     QString mcpHttpErrorString() const;
@@ -42,6 +43,7 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 
 private:
+    friend class WhiteboardPersistenceUiTest;
     QAction *addToolAction(const QString &iconName, const QString &text, Tool tool);
     QAction *addActionButton(const QString &iconName, const QString &text, const std::function<void()> &handler);
     FloatingActionChildButton *addFloatingActionButton(QWidget *parent,
@@ -98,10 +100,31 @@ private:
     void updateFloatingActionButtonPositions();
     void updateFloatingActionPanelMask();
     void loadDocument();
-    void saveDocument();
+    bool saveDocument(bool retry = false, bool notify = true);
+    void createPersistenceUi();
+    void updatePersistenceUi();
+    void showPersistenceNotice();
+    void retrySaving();
+    void reloadSavedData();
+    QString persistenceDetails() const;
+    BoardDocument persistenceSnapshot() const;
+    QJsonObject persistenceStatus() const;
+    QString persistenceAccess(const QString &toolName) const;
+    bool documentInteractionAllowed() const;
     void updateUiState();
 
     BoardModel m_model;
+    BoardPersistence m_persistence;
+    QLabel *m_persistenceLabel = nullptr;
+    QLabel *m_restoreMessage = nullptr;
+    QAction *m_retrySavingAction = nullptr;
+    QAction *m_reloadSavedDataAction = nullptr;
+    QAction *m_persistenceDetailsAction = nullptr;
+    bool m_persistenceDialogActive = false;
+    bool m_persistenceIoActive = false;
+    bool m_persistenceNoticePending = false;
+    bool m_documentActionsBlocked = false;
+    bool m_exitWithoutSaving = false;
     CanvasWidget *m_canvas = nullptr;
     QScrollArea *m_scrollArea = nullptr;
     QToolBar *m_toolbar = nullptr;

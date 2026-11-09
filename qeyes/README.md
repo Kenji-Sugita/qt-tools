@@ -20,6 +20,14 @@ $ cmake --build build
 
 ## 起動方法
 
+macOS:
+
+```text
+$ open build/qeyes.app
+```
+
+その他の環境:
+
 ```text
 $ ./build/qeyes
 ```
@@ -29,9 +37,11 @@ $ ./build/qeyes
 - 左ドラッグ: ウィンドウ移動
 - 左ダブルクリック: 終了
 - 右クリック: 外観設定ダイアログを開く
+- macOSで最前面表示をOFFにした場合: Command-Tabで前面へ戻す。設定・色選択ダイアログが開いていれば、そのダイアログへ戻る
 
 ## 関連文書
 
+- 現行の利用ガイド: [USER_GUIDE.md](USER_GUIDE.md)
 - docs の案内: `docs/README.md`
 - 利用ガイド 1.0: `docs/guides/USER_GUIDE-1.0.md`
 - 利用ガイド 1.1: `docs/guides/USER_GUIDE-1.1.md`

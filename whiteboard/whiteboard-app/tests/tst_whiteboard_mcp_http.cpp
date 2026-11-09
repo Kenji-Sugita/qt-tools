@@ -3,6 +3,7 @@
 #include "WhiteboardMcpHttpServer.h"
 
 #include <QEventLoop>
+#include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -10,6 +11,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QTest>
+#include <QTemporaryDir>
 #include <QTimer>
 
 #ifndef WHITEBOARD_APP_VERSION
@@ -21,6 +23,7 @@ class WhiteboardMcpHttpTest : public QObject {
 
 private slots:
     void streamableHttpLifecycleAndDiagramApply();
+    void propagatesPersistenceCallbacksToExistingAndNewSessions();
 };
 
 namespace {
@@ -233,6 +236,97 @@ void WhiteboardMcpHttpTest::streamableHttpLifecycleAndDiagramApply()
         initializeResult.sessionId,
         QByteArrayLiteral("2025-06-18"));
     QCOMPARE(expiredResult.status, 404);
+}
+
+void WhiteboardMcpHttpTest::propagatesPersistenceCallbacksToExistingAndNewSessions()
+{
+    BoardModel model;
+    CanvasWidget canvas;
+    canvas.setModel(&model);
+    WhiteboardMcpHttpServer server(&model, &canvas, {}, {},
+                                  [](const QString &, const QJsonObject &, QString *) { return true; });
+    server.setPersistenceCallbacks(
+        []() { return QJsonObject{{QStringLiteral("status"), QStringLiteral("restore_blocked")},
+                                 {QStringLiteral("persisted"), false}}; },
+        [](const QString &) { return QStringLiteral("restore_blocked"); },
+        {});
+    QVERIFY2(server.start(0), qPrintable(server.errorString()));
+    QNetworkAccessManager manager;
+    const QUrl endpoint(server.endpointUrl());
+    const QJsonObject initialize = requestMessage(1, QStringLiteral("initialize"),
+        QJsonObject{{QStringLiteral("protocolVersion"), QStringLiteral("2025-06-18")}});
+    const HttpResult firstSession = sendRequest(&manager, endpoint, QByteArrayLiteral("POST"), initialize);
+    QCOMPARE(firstSession.status, 200);
+    QVERIFY(!firstSession.sessionId.isEmpty());
+    const auto queryState = [&manager, &endpoint](const QByteArray &session) {
+        return sendRequest(&manager, endpoint, QByteArrayLiteral("POST"),
+            requestMessage(2, QStringLiteral("tools/call"),
+                QJsonObject{{QStringLiteral("name"), QStringLiteral("whiteboard/state")}}),
+            session, QByteArrayLiteral("2025-06-18"));
+    };
+    const HttpResult blocked = queryState(firstSession.sessionId);
+    QCOMPARE(blocked.status, 200);
+    const QJsonObject blockedResult = QJsonDocument::fromJson(blocked.body).object()
+                                         .value(QStringLiteral("result")).toObject();
+    QVERIFY(blockedResult.value(QStringLiteral("isError")).toBool());
+    QCOMPARE(blockedResult.value(QStringLiteral("structuredContent")).toObject()
+                 .value(QStringLiteral("error")).toObject().value(QStringLiteral("code")).toString(),
+             QStringLiteral("restore_blocked"));
+    QVERIFY(!blockedResult.contains(QStringLiteral("pageCount")));
+
+    int outputGuardCalls = 0;
+    server.setPersistenceCallbacks(
+        []() { return QJsonObject{{QStringLiteral("status"), QStringLiteral("normal")},
+                                 {QStringLiteral("persisted"), false}}; },
+        [](const QString &) { return QString(); },
+        [&outputGuardCalls](const QString &, QString *error) {
+            ++outputGuardCalls;
+            *error = QStringLiteral("The destination is reserved for the document.");
+            return false;
+        });
+    const HttpResult existing = queryState(firstSession.sessionId);
+    QCOMPARE(existing.status, 200);
+    const QJsonObject existingResult = QJsonDocument::fromJson(existing.body).object()
+                                          .value(QStringLiteral("result")).toObject();
+    QCOMPARE(existingResult.value(QStringLiteral("isError")).toBool(true), false);
+    QCOMPARE(existingResult.value(QStringLiteral("pageCount")).toInt(), 1);
+    QCOMPARE(existingResult.value(QStringLiteral("persistence")).toObject()
+                 .value(QStringLiteral("status")).toString(), QStringLiteral("normal"));
+
+    const HttpResult secondSession = sendRequest(&manager, endpoint, QByteArrayLiteral("POST"), initialize);
+    QCOMPARE(secondSession.status, 200);
+    QVERIFY(secondSession.sessionId != firstSession.sessionId);
+    const HttpResult fresh = queryState(secondSession.sessionId);
+    QCOMPARE(fresh.status, 200);
+    const QJsonObject freshResult = QJsonDocument::fromJson(fresh.body).object()
+                                       .value(QStringLiteral("result")).toObject();
+    QCOMPARE(freshResult.value(QStringLiteral("isError")).toBool(true), false);
+    QCOMPARE(freshResult.value(QStringLiteral("persistence")).toObject()
+                 .value(QStringLiteral("persisted")).toBool(true), false);
+    QCOMPARE(model.document().pages().size(), 1);
+    QVERIFY(!model.canUndo());
+
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+    const QString outputPath = directory.filePath(QStringLiteral("protected.svg"));
+    model.addRectangle(QRectF(10, 20, 80, 60));
+    for (const QByteArray &session : {firstSession.sessionId, secondSession.sessionId}) {
+        const HttpResult rejectedOutput = sendRequest(&manager, endpoint, QByteArrayLiteral("POST"),
+            requestMessage(3, QStringLiteral("tools/call"),
+                QJsonObject{{QStringLiteral("name"), QStringLiteral("whiteboard/image/save")},
+                            {QStringLiteral("arguments"), QJsonObject{
+                                 {QStringLiteral("format"), QStringLiteral("svg")},
+                                 {QStringLiteral("background"), QStringLiteral("transparent")},
+                                 {QStringLiteral("scope"), QStringLiteral("page")},
+                                 {QStringLiteral("filePath"), outputPath},
+                                 {QStringLiteral("overwrite"), true},
+                             }}}),
+            session, QByteArrayLiteral("2025-06-18"));
+        QCOMPARE(rejectedOutput.status, 200);
+        QVERIFY(QJsonDocument::fromJson(rejectedOutput.body).object().contains(QStringLiteral("error")));
+        QVERIFY(!QFileInfo::exists(outputPath));
+    }
+    QCOMPARE(outputGuardCalls, 2);
 }
 
 QTEST_MAIN(WhiteboardMcpHttpTest)

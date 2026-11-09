@@ -7,8 +7,13 @@ line_style="unicode"
 include_hidden=0
 show_full_root=0
 show_summary=0
+verbose_level=0
+max_files_per_dir=""
+exclude_names=()
+sort_mode="name"
 directory_count=0
 file_count=0
+omitted_files_marker=$'\001dtree-omitted-files\001'
 
 usage() {
   cat <<USAGE
@@ -21,7 +26,12 @@ Options:
   --ascii           Same as --lines ascii
   -a, --all         Include hidden files and directories
   -f, --full-root   Show the root directory as a full path
-  -s, --summary        Show directory and file counts
+  --sort name|date Sort entries by name (default) or modified time
+  --max-files N    Limit displayed files per directory
+  --exclude NAME   Exclude entries with this name; repeatable
+  -s, --summary     Show directory and file counts
+  -v, --verbose     Show more details; repeat for more detail
+  --version        Show version information
   -h, --help        Show this help
 USAGE
 }
@@ -48,6 +58,53 @@ set_line_characters() {
   esac
 }
 
+is_traversable_directory() {
+  local path="$1"
+
+  [ -d "$path" ] && [ ! -L "$path" ]
+}
+
+is_excluded_name() {
+  local name="$1"
+  local exclude_name
+
+  for exclude_name in "${exclude_names[@]}"; do
+    if [ "$name" = "$exclude_name" ]; then
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+script_dir() {
+  local script_path="$0"
+
+  case "$script_path" in
+    */*) ;;
+    *)
+      script_path=$(command -v -- "$script_path")
+      ;;
+  esac
+
+  (
+    cd "$(dirname "$script_path")" 2>/dev/null &&
+    pwd
+  )
+}
+
+show_version() {
+  local version_file
+  version_file="$(script_dir)/VERSION"
+
+  if [ ! -r "$version_file" ]; then
+    echo "$progname: VERSION file not found" >&2
+    exit 1
+  fi
+
+  printf "%s %s\n" "$progname" "$(sed -n '1p' "$version_file")"
+}
+
 # Print one entry (file/dir) with proper tree lines.
 # args: path, display_name, prefix, is_last(0/1)
 print_item() {
@@ -61,12 +118,20 @@ print_item() {
     mark="$last_mark"
   fi
 
-  if [ -d "$path" ]; then
+  if [ "$path" = "$omitted_files_marker" ]; then
+    printf "%s%s...\n" "$prefix" "$mark"
+    return
+  fi
+
+  if [ -L "$path" ]; then
+    file_count=$((file_count + 1))
+    printf "%s%s%s%s\n" "$prefix" "$mark" "$display_name" "$(format_metadata "$path")"
+  elif [ -d "$path" ]; then
     directory_count=$((directory_count + 1))
-    printf "%s%s%s/\n" "$prefix" "$mark" "$display_name"
+    printf "%s%s%s/%s\n" "$prefix" "$mark" "$display_name" "$(format_metadata "$path")"
   else
     file_count=$((file_count + 1))
-    printf "%s%s%s\n" "$prefix" "$mark" "$display_name"
+    printf "%s%s%s%s\n" "$prefix" "$mark" "$display_name" "$(format_metadata "$path")"
   fi
 }
 
@@ -92,15 +157,230 @@ format_root_name() {
   fi
 }
 
+get_size() {
+  local path="$1"
+
+  if stat -f "%z" "$path" >/dev/null 2>&1; then
+    stat -f "%z" "$path"
+  else
+    stat -c "%s" "$path"
+  fi
+}
+
+get_permissions() {
+  local path="$1"
+
+  if stat -f "%Sp" "$path" >/dev/null 2>&1; then
+    stat -f "%Sp" "$path"
+  else
+    stat -c "%A" "$path"
+  fi
+}
+
+get_owner() {
+  local path="$1"
+
+  if stat -f "%Su" "$path" >/dev/null 2>&1; then
+    stat -f "%Su" "$path"
+  else
+    stat -c "%U" "$path"
+  fi
+}
+
+get_link_target() {
+  local path="$1"
+
+  readlink "$path"
+}
+
+format_mtime() {
+  local path="$1"
+  local mtime
+  mtime=$(get_mtime "$path")
+
+  if date -r "$mtime" "+%Y-%m-%d %H:%M" >/dev/null 2>&1; then
+    date -r "$mtime" "+%Y-%m-%d %H:%M"
+  else
+    date -d "@$mtime" "+%Y-%m-%d %H:%M"
+  fi
+}
+
+format_size() {
+  local size="$1"
+
+  awk -v size="$size" '
+    BEGIN {
+      split("B K M G T P", units, " ")
+      value = size + 0
+      unit_index = 1
+      while (value >= 1024 && unit_index < 6) {
+        value = value / 1024
+        unit_index++
+      }
+      if (unit_index == 1) {
+        printf "%d%s", value, units[unit_index]
+      } else if (value >= 10) {
+        printf "%.0f%s", value, units[unit_index]
+      } else {
+        printf "%.1f%s", value, units[unit_index]
+      }
+    }
+  '
+}
+
+format_metadata() {
+  local path="$1"
+
+  if [ "$verbose_level" -le 0 ]; then
+    return
+  fi
+
+  local type="file"
+  local link_target=""
+  local size=""
+  if [ -L "$path" ]; then
+    type="link"
+    link_target=$(get_link_target "$path")
+    size=$(format_size "$(get_size "$path")")
+  elif [ -d "$path" ]; then
+    type="dir"
+  else
+    size=$(format_size "$(get_size "$path")")
+  fi
+
+  case "$verbose_level" in
+    1)
+      if [ "$type" = "link" ]; then
+        printf " [%s -> %s]" "$type" "$link_target"
+      else
+        printf " [%s]" "$type"
+      fi
+      ;;
+    2)
+      if [ "$type" = "dir" ]; then
+        printf " [%s, %s]" "$type" "$(format_mtime "$path")"
+      elif [ "$type" = "link" ]; then
+        printf " [%s -> %s, %s, %s]" "$type" "$link_target" "$size" "$(format_mtime "$path")"
+      else
+        printf " [%s, %s, %s]" "$type" "$size" "$(format_mtime "$path")"
+      fi
+      ;;
+    *)
+      if [ "$type" = "dir" ]; then
+        printf " [%s, %s, %s, %s]" "$type" "$(get_permissions "$path")" "$(get_owner "$path")" "$(format_mtime "$path")"
+      elif [ "$type" = "link" ]; then
+        printf " [%s -> %s, %s, %s, %s, %s]" "$type" "$link_target" "$(get_permissions "$path")" "$(get_owner "$path")" "$size" "$(format_mtime "$path")"
+      else
+        printf " [%s, %s, %s, %s, %s]" "$type" "$(get_permissions "$path")" "$(get_owner "$path")" "$size" "$(format_mtime "$path")"
+      fi
+      ;;
+  esac
+}
+
 append_matches() {
   local array_name="$1"
   shift
 
   local path
+  local name
   for path in "$@"; do
-    [ -e "$path" ] || continue
+    [ -e "$path" ] || [ -L "$path" ] || continue
+    name=$(basename "$path")
+    is_excluded_name "$name" && continue
     eval "$array_name+=(\"\$path\")"
   done
+}
+
+filter_children_by_file_limit() {
+  local array_name="$1"
+
+  if [ -z "$max_files_per_dir" ]; then
+    return
+  fi
+
+  local limit_children=()
+  local filtered_children=()
+  local child_path
+  local displayed_file_count=0
+  local omitted_files_pending=0
+
+  eval "limit_children=(\"\${${array_name}[@]}\")"
+
+  for child_path in "${limit_children[@]}"; do
+    if is_traversable_directory "$child_path"; then
+      if [ "$omitted_files_pending" -eq 1 ]; then
+        filtered_children+=("$omitted_files_marker")
+        omitted_files_pending=0
+      fi
+      filtered_children+=("$child_path")
+    elif [ "$displayed_file_count" -lt "$max_files_per_dir" ]; then
+      filtered_children+=("$child_path")
+      displayed_file_count=$((displayed_file_count + 1))
+    else
+      omitted_files_pending=1
+    fi
+  done
+
+  if [ "$omitted_files_pending" -eq 1 ]; then
+    filtered_children+=("$omitted_files_marker")
+  fi
+
+  eval "$array_name=(\"\${filtered_children[@]}\")"
+}
+
+get_mtime() {
+  local path="$1"
+
+  if stat -f "%m" "$path" >/dev/null 2>&1; then
+    stat -f "%m" "$path"
+  else
+    stat -c "%Y" "$path"
+  fi
+}
+
+sort_children() {
+  local array_name="$1"
+  local children=()
+  local sorted_lines=()
+  local child_path
+  local child_name
+  local child_mtime
+  local sort_input=""
+  local line
+  local sorted_path
+
+  eval "children=(\"\${${array_name}[@]}\")"
+
+  case "$sort_mode" in
+    name)
+      return
+      ;;
+    date)
+      for child_path in "${children[@]}"; do
+        child_name=$(basename "$child_path")
+        child_mtime=$(get_mtime "$child_path")
+        sort_input="${sort_input}${child_mtime}"$'\t'"${child_name}"$'\t'"${child_path}"$'\n'
+      done
+
+      while IFS= read -r line; do
+        [ -n "$line" ] || continue
+        sorted_lines+=("$line")
+      done < <(printf "%s" "$sort_input" | LC_ALL=C sort -t "$(printf '\t')" -k1,1nr -k2,2)
+
+      children=()
+      for line in "${sorted_lines[@]}"; do
+        IFS=$'\t' read -r _ _ sorted_path <<< "$line"
+        children+=("$sorted_path")
+      done
+
+      eval "$array_name=(\"\${children[@]}\")"
+      ;;
+    *)
+      echo "$progname: invalid sort mode: $sort_mode" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
 }
 
 # Traverse directory recursively.
@@ -110,27 +390,39 @@ traverse_dir() {
   local prefix="$2"
 
   local children=()
-  append_matches children "$dir"/*
+  local visible_children=()
+  local hidden_children=()
+
+  append_matches visible_children "$dir"/*
+  sort_children visible_children
 
   if [ "$include_hidden" -eq 1 ]; then
-    append_matches children "$dir"/.[!.]* "$dir"/..?*
+    append_matches hidden_children "$dir"/.[!.]* "$dir"/..?*
+    sort_children hidden_children
   fi
+
+  children=("${visible_children[@]}" "${hidden_children[@]}")
+  filter_children_by_file_limit children
 
   local child_count=${#children[@]}
   local child_index=0
-  while [ $child_index -lt $child_count ]; do
+  while [ "$child_index" -lt "$child_count" ]; do
     local child_path="${children[$child_index]}"
     local child_name
-    child_name=$(basename "$child_path")
+    if [ "$child_path" = "$omitted_files_marker" ]; then
+      child_name="..."
+    else
+      child_name=$(basename "$child_path")
+    fi
 
     local is_last=0
-    if [ $child_index -eq $((child_count - 1)) ]; then
+    if [ "$child_index" -eq $((child_count - 1)) ]; then
       is_last=1
     fi
 
     print_item "$child_path" "$child_name" "$prefix" "$is_last"
 
-    if [ -d "$child_path" ] && [ ! -L "$child_path" ]; then
+    if is_traversable_directory "$child_path"; then
       local next_prefix="$prefix"
       if [ "$is_last" -eq 1 ]; then
         next_prefix="${next_prefix}${blank_mark}"
@@ -166,6 +458,56 @@ parse_arguments() {
         line_style="ascii"
         shift
         ;;
+      --sort)
+        if [ $# -lt 2 ]; then
+          echo "$progname: missing value for --sort" >&2
+          usage >&2
+          exit 1
+        fi
+        case "$2" in
+          name|date)
+            sort_mode="$2"
+            ;;
+          *)
+            echo "$progname: invalid sort mode: $2" >&2
+            usage >&2
+            exit 1
+            ;;
+        esac
+        shift 2
+        ;;
+      --max-files)
+        if [ $# -lt 2 ]; then
+          echo "$progname: missing value for --max-files" >&2
+          usage >&2
+          exit 1
+        fi
+        case "$2" in
+          ''|*[!0-9]*)
+            echo "$progname: invalid file limit: $2" >&2
+            usage >&2
+            exit 1
+            ;;
+          *)
+            max_files_per_dir="$2"
+            ;;
+        esac
+        shift 2
+        ;;
+      --exclude)
+        if [ $# -lt 2 ]; then
+          echo "$progname: missing value for --exclude" >&2
+          usage >&2
+          exit 1
+        fi
+        if [ -z "$2" ]; then
+          echo "$progname: invalid exclude name: $2" >&2
+          usage >&2
+          exit 1
+        fi
+        exclude_names+=("$2")
+        shift 2
+        ;;
       -a|--all)
         include_hidden=1
         shift
@@ -178,6 +520,14 @@ parse_arguments() {
         show_summary=1
         shift
         ;;
+      -v|--verbose)
+        verbose_level=$((verbose_level + 1))
+        shift
+        ;;
+      --version)
+        show_version
+        exit 0
+        ;;
       -h|--help)
         usage
         exit 0
@@ -187,7 +537,7 @@ parse_arguments() {
         local short_index=1
         local short_length=${#short_options}
 
-        while [ $short_index -le $short_length ]; do
+        while [ "$short_index" -le "$short_length" ]; do
           local short_option="${short_options:$((short_index - 1)):1}"
 
           case "$short_option" in
@@ -199,6 +549,9 @@ parse_arguments() {
               ;;
             s)
               show_summary=1
+              ;;
+            v)
+              verbose_level=$((verbose_level + 1))
               ;;
             h)
               usage
@@ -255,7 +608,7 @@ parse_arguments() {
 parse_arguments "$@"
 set_line_characters
 
-printf "%s/\n" "$(format_root_name "$rootdir")"
+printf "%s/%s\n" "$(format_root_name "$rootdir")" "$(format_metadata "$rootdir")"
 
 traverse_dir "$rootdir" ""
 

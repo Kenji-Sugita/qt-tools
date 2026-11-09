@@ -54,10 +54,10 @@ genpdf:
 
 # 4. 起動
 
-ビルド済みバイナリーを起動します。
+macOS の配布版は `qeyes.dmg` を開き、`qeyes.app` を「アプリケーション」へコピーして起動します。
 
 ```text
-$ ./build/qeyes
+$ open /Applications/qeyes.app
 ```
 
 ソースからビルドする場合の一例です。
@@ -65,8 +65,9 @@ $ ./build/qeyes
 ```text
 $ cmake -S . -B build
 $ cmake --build build
-$ ./build/qeyes
 ```
+
+macOS では `open build/qeyes.app`、その他の環境では `./build/qeyes` で起動します。
 
 起動すると、透明背景のフレームレスウィンドウとして 2 つの目が表示されます。
 
@@ -108,6 +109,8 @@ $ ./build/qeyes
 色プレビューをクリックすると色選択ダイアログが開きます。色コード表示には等幅フォントを使っているため、値を見比べやすくなっています。
 
 このダイアログでは、常時最前面にするかどうかも切り替えられます。
+
+`Always on top` は既定で ON です。OFF にすると他のアプリのウィンドウが前面に重なります。macOS では Command-Tab で `qeyes` を選ぶと前面へ戻れます。外観設定や色選択のダイアログを開いている場合は、そのダイアログへ戻ります。
 
 ```text
 右クリック: 外観設定ダイアログを開く

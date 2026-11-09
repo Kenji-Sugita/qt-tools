@@ -26,6 +26,9 @@ public:
                             QObject *parent = nullptr);
     ~WhiteboardMcpHttpServer() override;
 
+    void setPersistenceCallbacks(WhiteboardMcpController::PersistenceStatusCallback status,
+                                 WhiteboardMcpController::PersistenceAccessCallback access,
+                                 WhiteboardMcpController::OutputPathGuard outputGuard);
     bool start(quint16 port = DefaultPort);
     void stop();
     quint16 port() const;
@@ -50,6 +53,9 @@ private:
     WhiteboardMcpController::ChangeCallback m_changeCallback;
     WhiteboardMcpController::PageNavigationCallback m_pageNavigationCallback;
     WhiteboardMcpController::ApprovalCallback m_approvalCallback;
+    WhiteboardMcpController::PersistenceStatusCallback m_persistenceStatusCallback;
+    WhiteboardMcpController::PersistenceAccessCallback m_persistenceAccessCallback;
+    WhiteboardMcpController::OutputPathGuard m_outputPathGuard;
     QPointer<QHttpServer> m_httpServer;
     QPointer<QTcpServer> m_tcpServer;
     QHash<QString, Session> m_sessions;

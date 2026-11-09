@@ -67,6 +67,20 @@ WhiteboardMcpHttpServer::~WhiteboardMcpHttpServer()
     stop();
 }
 
+void WhiteboardMcpHttpServer::setPersistenceCallbacks(
+    WhiteboardMcpController::PersistenceStatusCallback status,
+    WhiteboardMcpController::PersistenceAccessCallback access,
+    WhiteboardMcpController::OutputPathGuard outputGuard)
+{
+    m_persistenceStatusCallback = std::move(status);
+    m_persistenceAccessCallback = std::move(access);
+    m_outputPathGuard = std::move(outputGuard);
+    for (const Session &session : std::as_const(m_sessions)) {
+        session.controller->setPersistenceCallbacks(
+            m_persistenceStatusCallback, m_persistenceAccessCallback, m_outputPathGuard);
+    }
+}
+
 bool WhiteboardMcpHttpServer::start(quint16 requestedPort)
 {
     if (m_httpServer)
@@ -243,8 +257,11 @@ QHttpServerResponse WhiteboardMcpHttpServer::handleDelete(const QHttpServerReque
 
 WhiteboardMcpController *WhiteboardMcpHttpServer::createSessionController()
 {
-    return new WhiteboardMcpController(
+    auto *controller = new WhiteboardMcpController(
         m_model, m_canvas, m_changeCallback, m_pageNavigationCallback, m_approvalCallback, this);
+    controller->setPersistenceCallbacks(
+        m_persistenceStatusCallback, m_persistenceAccessCallback, m_outputPathGuard);
+    return controller;
 }
 
 void WhiteboardMcpHttpServer::cleanupExpiredSessions()

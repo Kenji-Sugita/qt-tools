@@ -7,6 +7,17 @@
 
 ## 現在の状態
 
+- 2026-11-09: 利用者の依頼で、Sites正本の更新をGitHub公開用へ同期した。着手時のローカルは古かったため、`git fetch origin` とfast-forwardでGitHubの `915e678` を取得してから比較した。
+  - `work-templates/` の11月5日の更新はGitHubに反映済みで、今回の追加変更は不要。テンプレートと改善履歴はSites正本と一致し、公開用の汎用パス・英語版・ガイド補足は保持した。
+  - `app-generation-workflow/` を0.2.3へ同期。レビュー・手戻り手順、記録テンプレート、事例文書、ガイドMD/PDFを反映し、既存の日英README・ガイドを整合した。
+  - `whiteboard/whiteboard-app/` を配布中の1.3.0へ同期。通常保存・復元失敗の保護、保存再試行、終了確認、MCP保存状態、関連テストとガイドを反映し、新版のソースZIPを追加した。
+  - `dateorder/` は11月8日の改訂ガイドMD/PDFと配布ZIP、`dtree/` は1.0.1の実装・版番号・履歴・ガイドMD/PDF・ZIPを反映。`qeyes/` はmacOS復帰処理と起動・操作説明を同期した。各英語ガイドも同じ差分に追随した。
+  - `icpp/` はSitesの修復済み69ページPDFと配布ZIPを同期。旧ZIPとの内容差はPDF1件だけで、他の284ファイルは一致。実装とQt Creatorガイド0.3.1は保持した。
+  - 正本ZIPと公開用の対応ファイルを全バイト照合し、ワークフロー38件・Whiteboard122件・dateorder4件・dtree5件・qeyes21件の一致、各ZIPのCRCを確認。PDF・配布ZIPは再生成せず正本を使用した。
+  - macOS arm64 / Qt 6.12.0でWhiteboardとqeyesを公開用ツリーから一時ディレクトリーへビルド。WhiteboardはoffscreenでCTest 19件が成功。dtreeは構文・版表示・除外・件数上限・日時ソート・隠し項目・symlink非再帰・不正引数を確認。日英の変更箇所を独立レビューし、差分の空白も確認した。
+  - qeyesのCommand-Tab・モーダルダイアログの実機操作、Windowsなど別OS、実ディスク障害、PDF再生成・全ページ目視を今回やり直したものではない。ワークフローの実案件での運用・自動反復も未検証。
+  - Sitesの旧版ZIPにしかない差分、BOMのみの差分、未収録であるだけのPDFは追加しなかった。全20ツールの対応を確認した結果と、保留すべき版の差は `backlog.md` を参照。Sites自体と既存の旧版ZIPは変更していない。
+
 - 2026-11-05: 正本 `/Users/sugita/Sites/work-templates` の更新を反映済み。`NEXT_HISTORY.md` と日英 README の案内は `192e712` に収録済み。
 - 共通ルールの「作業の区切りでの案内」は、日本語版を `073c5ba`、英語版と日英利用ガイドを `192e712` で同期済み。
 - 公開用の汎用コピー手順と既存の英語版・利用ガイドを維持した。改善履歴は新規プロジェクトへコピーするテンプレートには含めない。
@@ -48,7 +59,7 @@
 
 - README 更新時と翻訳文書の継続方針は `DECISIONS.md` を参照する。
 - 翻訳対象は README.en.md の直接のリンク先、追加依頼の `USER_GUIDE.md` 8件、および `work-templates` の英語版テンプレート4件。各ガイド内で参照する補助文書や版別の `USER_GUIDE-<version>.md` までは再帰的に翻訳していない。
-- `whiteboard/app-generation-workflow/USER_GUIDE.en.md` は同じ場所の日本語原文（0.1.0）に対応する。別ディレクトリーの `app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md`（0.2.2）とは版が異なる。
+- `whiteboard/app-generation-workflow/USER_GUIDE.en.md` は同じ場所の日本語原文（0.1.0）に対応する。別ディレクトリーの `app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md`（0.2.3）とは版が異なる。
 - `work-templates` の軽量な構成と英語版の配置・コピー時の命名方針は `DECISIONS.md` を参照する。日英 README のコピー例では、`WORK_TEMPLATES_DIR` を実際の `work-templates` ディレクトリーのパスへ置き換える。
 
 ## 関連ファイル

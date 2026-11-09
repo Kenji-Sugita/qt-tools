@@ -11,6 +11,12 @@ To give an AI the working context, have it read:
 
 - `three_key_documents_workflow.md`
 
+Also consult the companion procedure for each stage's entry conditions,
+checks, rework, rerun criteria, and stopping conditions:
+
+- `review_and_rework.md` (Japanese)
+- `templates/review_record.md` (optional if an existing report records the same information)
+
 For post-generation checks, design documentation, and operational decisions, use:
 
 - `docs/post_generation_workflow.md`
@@ -58,6 +64,9 @@ Check that changes are reflected in specifications
 
 If the implementation needs correction, return upstream rather than starting
 with downstream code changes.
+If the upstream source is correct and only transcription or implementation is
+wrong, verify that source and return to the relevant generation stage.
+When a specification decision changes, apply corrections in this order:
 
 ```text
 Report a mismatch with intent
@@ -78,6 +87,7 @@ app-generation-workflow/
 ├─ README.md
 ├─ USER_GUIDE.md
 ├─ three_key_documents_workflow.md
+├─ review_and_rework.md
 └─ templates/
    ├─ requirement.txt
    ├─ source_memo.md
@@ -86,6 +96,7 @@ app-generation-workflow/
    ├─ 02_ui_spec.md
    ├─ 03_business_spec.md
    ├─ implementation_constraints.md
+   ├─ review_record.md
    └─ implementation_prompt.md
 ```
 
