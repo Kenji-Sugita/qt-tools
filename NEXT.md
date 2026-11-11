@@ -13,7 +13,7 @@
   - 独立レビューで原資料との整合と日英対応を確認。コピー元は内側の `app-generation-workflow/app-generation-workflow/`、コピー先は作業場所の `app-generation-workflow/` と明記した。紹介の継続方針は `DECISIONS.md` 第9項を参照する。
   - 参照したワークフロー本体のREADME・利用ガイド・`three_key_documents_workflow.md`・`review_and_rework.md` はSites正本とバイト一致を確認。今回の編集対象はトップREADME2件で、正本やワークフロー本体・PDF・ZIPは変更していない。
   - 追加節以外のREADME本文がHEADと一致すること、各READMEのローカルリンク26件、全20ツールの重複・欠落がないこと、コードフェンス、`git diff --check` を確認した。今回アプリ生成・ビルド・実機試験は行っていない。
-  - READMEと今回の引き継ぎ更新は未コミット・未push。追加部分のGitHub表示確認は未実施。既存の未追跡 `release-order.txt` は変更せず保持した。
+  - 利用者のpush依頼を受け、README2件と管理記録2件を `8b4a325` でコミットし、GitHubの `main` へpushした。SafariでトップREADMEを再読込し、追加節・導入文・工程図・三点セットの表の表示を確認した。英語版も同コミットに収録したが、英語ページの描画確認は未実施。既存の未追跡 `release-order.txt` は変更せず保持した。
 
 - 2026-11-09: 利用者の依頼で、Sites正本の更新をGitHub公開用へ同期した。着手時のローカルは古かったため、`git fetch origin` とfast-forwardでGitHubの `915e678` を取得してから比較した。
   - `work-templates/` の11月5日の更新はGitHubに反映済みで、今回の追加変更は不要。テンプレートと改善履歴はSites正本と一致し、公開用の汎用パス・英語版・ガイド補足は保持した。
@@ -53,17 +53,17 @@
 
 ## 次にやること
 
-- READMEの説明追加は完了。コミット・pushを依頼された場合は、下記4ファイルの差分とGit状態を再確認し、今回の変更だけを対象にする。`release-order.txt` は含めない。
-- GitHubへ反映した場合は、日英READMEの追加節、表、図、リンクが表示されることを確認する。
+- アプリ生成ワークフローのREADME紹介はGitHubへ反映済み。再度追加する必要はない。
+- 利用者から `work-templates` も同様にトップで詳しく説明する依頼を受けている。公開画面を先に確認し、アプリ生成ワークフローのpushを先行した。次は日英トップREADMEへ `work-templates` の紹介を追加する。資料確認は完了している。
 
 ## 未完了
 
-- 日英READMEの追記と引き継ぎ更新のコミット・push、および公開反映後の表示確認。実施は利用者の指示に合わせる。
+- `work-templates` の詳しい紹介の追加。今回のpush依頼はアプリ生成ワークフローを対象とする。
 
 ## 触るファイル
 
-- `README.md` / `README.en.md`: アプリ生成ワークフローの詳しい紹介。
-- `NEXT.md` / `DECISIONS.md`: 今回の状態と紹介の継続方針。
+- `README.md` / `README.en.md`: `work-templates` の詳しい紹介の追加。
+- `NEXT.md` / `DECISIONS.md`: 引き継ぎ更新を依頼された場合の状態と紹介方針。
 
 ## 注意
 
