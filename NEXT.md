@@ -7,6 +7,14 @@
 
 ## 現在の状態
 
+- 2026-11-12: 利用者の依頼で、トップの日英READMEに「Featured: App Generation Workflow」を追加した。
+  - Safariの公開画面で `main` の最新コミット `db5f779` を確認。ローカルを `git fetch origin` とfast-forwardで同コミットへ更新してから、最新のワークフロー0.2.3を参照した。
+  - Qt Cling／icppなどの紹介に続けて、要求整理から実装・テスト・設計文書化までの流れ、UC・UI・ビジネスレイヤーの三点セット、「ファイルを開く」の説明例、人とAIの役割、修正時の戻り先、始め方を追加した。
+  - 独立レビューで原資料との整合と日英対応を確認。コピー元は内側の `app-generation-workflow/app-generation-workflow/`、コピー先は作業場所の `app-generation-workflow/` と明記した。紹介の継続方針は `DECISIONS.md` 第9項を参照する。
+  - 参照したワークフロー本体のREADME・利用ガイド・`three_key_documents_workflow.md`・`review_and_rework.md` はSites正本とバイト一致を確認。今回の編集対象はトップREADME2件で、正本やワークフロー本体・PDF・ZIPは変更していない。
+  - 追加節以外のREADME本文がHEADと一致すること、各READMEのローカルリンク26件、全20ツールの重複・欠落がないこと、コードフェンス、`git diff --check` を確認した。今回アプリ生成・ビルド・実機試験は行っていない。
+  - READMEと今回の引き継ぎ更新は未コミット・未push。追加部分のGitHub表示確認は未実施。既存の未追跡 `release-order.txt` は変更せず保持した。
+
 - 2026-11-09: 利用者の依頼で、Sites正本の更新をGitHub公開用へ同期した。着手時のローカルは古かったため、`git fetch origin` とfast-forwardでGitHubの `915e678` を取得してから比較した。
   - `work-templates/` の11月5日の更新はGitHubに反映済みで、今回の追加変更は不要。テンプレートと改善履歴はSites正本と一致し、公開用の汎用パス・英語版・ガイド補足は保持した。
   - `app-generation-workflow/` を0.2.3へ同期。レビュー・手戻り手順、記録テンプレート、事例文書、ガイドMD/PDFを反映し、既存の日英README・ガイドを整合した。
@@ -45,15 +53,17 @@
 
 ## 次にやること
 
-- 今回の依頼に関する追加作業はない。次回は新たな依頼内容と Git の状態を確認して着手する。
+- READMEの説明追加は完了。コミット・pushを依頼された場合は、下記4ファイルの差分とGit状態を再確認し、今回の変更だけを対象にする。`release-order.txt` は含めない。
+- GitHubへ反映した場合は、日英READMEの追加節、表、図、リンクが表示されることを確認する。
 
 ## 未完了
 
-- 今回の依頼範囲ではなし。
+- 日英READMEの追記と引き継ぎ更新のコミット・push、および公開反映後の表示確認。実施は利用者の指示に合わせる。
 
 ## 触るファイル
 
-- 現時点で次回の変更予定はなし。
+- `README.md` / `README.en.md`: アプリ生成ワークフローの詳しい紹介。
+- `NEXT.md` / `DECISIONS.md`: 今回の状態と紹介の継続方針。
 
 ## 注意
 
