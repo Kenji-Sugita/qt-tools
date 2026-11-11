@@ -306,6 +306,12 @@ See the [work-templates README](work-templates/README.en.md) and
 | [objectselector](objectselector/USER_GUIDE.en.md) | ObjectSelector | Select `QObject` and `QWidget` instances on screen or from an object tree. |
 | [propertyeditor](propertyeditor/README.en.md) | PropertyEditor | View and edit `QObject` properties. |
 
+### Qt Widgets Layouts
+
+| Directory | Tool | Description |
+|---|---|---|
+| [anker-layout](anker-layout/README.en.md) | Anker Layout | A `QLayout` implementation providing Motif `XmForm`-style attachments for Qt Widgets. Position widgets relative to form edges, other widgets, or proportional positions. |
+
 ### QML Tools
 
 | Directory | Tool | Description |

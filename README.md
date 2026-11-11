@@ -302,6 +302,13 @@ NEXT.md を読んでください。
 | [propertyeditor](propertyeditor/README.md) | PropertyEditor | `QObject` のプロパティーを表示・編集します |
 
 
+### Qt Widgets Layouts
+
+| Directory | Tool | Description |
+|---|---|---|
+| [anker-layout](anker-layout/README.md) | Anker Layout | Motif の `XmForm` に近い attachment レイアウトを Qt Widgets で利用するための `QLayout` 実装です。フォーム端、他のウィジェット、割合位置を基準に配置します |
+
+
 ### QML Tools
 
 | Directory | Tool | Description |
