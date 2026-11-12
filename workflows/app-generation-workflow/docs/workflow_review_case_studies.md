@@ -161,7 +161,7 @@
 
 ### 観測事実と根拠
 
-- Whiteboardの [regeneration_alignment_plan.md](../../whiteboard/whiteboard-app/regeneration_alignment_plan.md)
+- Whiteboardの [regeneration_alignment_plan.md](../../../tools/whiteboard/whiteboard-app/regeneration_alignment_plan.md)
   「現状認識」（15–18行）には、既存テストが通る一方、`src/`、`include/`、`CMakeLists.txt` に
   大きな差分が出た再生成比較の記録がある。
 - 同「差分を分類して戻す」（209–218行）は、機能仕様、実装設計契約、実装制約、表現の4種類へ分けている。
@@ -196,12 +196,12 @@
 
 ### 観測事実と根拠
 
-- Whiteboardの [backlog.md](../../whiteboard/backlog.md) 「問題点」（18–21行）には、
+- Whiteboardの [backlog.md](../../../tools/whiteboard/backlog.md) 「問題点」（18–21行）には、
   通常保存の書込結果未確認と、復元失敗後の初期状態が元の保存先へ上書きされ得る既存経路を
   レビューで確認した記録がある。修正は未実施で、対応範囲の承認が必要と記載されている。
 - 同「保留事項」（25–29行）は、ページ上限変更を保留し、未決事項の整理と実装指示まで
   コード・正式仕様・配布物を変更しないと定義している。
-- [page_limit_change_prompt_draft.md](../../whiteboard/whiteboard-app/prompts/page_limit_change_prompt_draft.md)
+- [page_limit_change_prompt_draft.md](../../../tools/whiteboard/whiteboard-app/prompts/page_limit_change_prompt_draft.md)
   6–7行は草案作成の承認と仕様変更の採用を区別している。D09（92行と198–204行）には、
   保存保護を同時対応・別変更・今回対象外とする選択肢があり、231行では部分回答だけで
   実装開始条件を満たしたとしないことを明示している。

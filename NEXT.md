@@ -7,6 +7,21 @@
 
 ## 現在の状態
 
+- 2026-11-12: 利用者の依頼で、公開用リポジトリーを `tools/`（18件）、`workflows/`（3件）、`docs/`（7カテゴリー）へ再構成した。
+  - トップREADMEを3系統への入口とし、既存の詳しい紹介・用途別一覧を各系統の日英READMEへ移した。文書カテゴリーは既存資料への索引で、新規候補10件の本文はまだ追加していない。
+  - 移動した3,090ファイル中3,088件はGitの内容が同一。残る2件は参照修正のみで、実装・CMake・PDF・ZIPは保持した。正本は移動せず、対応は `PUBLICATION_MAP.md` に記録した。
+  - 日英の一覧（18ツール・3ワークフロー）、新規案内のローカルリンク・見出し参照、既存ファイルの保持を確認した。既存の未解決Markdownリンク70件は増えていない。
+  - macOS arm64 / Qt 6.11.2でAnker Layoutとicppを新配置からビルド。Anker Layoutのoffscreen CTest 1件、icppの統合・MCP・ソース構成CTest 3件がすべて成功した。全ツール・別OS・手動GUIを再検証したものではない。
+  - 利用者からコミット・pushまで依頼された。今回の構成変更と本管理記録を同じコミットで扱い、反映先はGitHubの `main` とする。既存の未追跡 `release-order.txt` は対象外として保持する。
+
+- 2026-11-12: `work-templates` のトップ紹介と Anker Layout の公開を完了した。
+  - トップの日英READMEへ「Featured: Work Templates」を追加し、3ファイルの役割、開始・更新・再開の流れ、人とAIの役割を説明した。コピー手順は既存ファイルを上書きしない案内を日英で揃えた。`c867697` でコミット・push済みで、SafariのGitHub画面でも追加節の表示を確認した。
+  - 正本 `/Users/sugita/Sites/tools/anker-layout/anker-layout.zip` の27ファイルを `anker-layout/` に展開し、元ZIPも収録した。26ファイルはバイト一致し、`iccp/README.md` だけ公開用の相対パスと `go()` 呼び出しを含む手順へ調整した。実装・CMake・日本語利用ガイド・PDF・元ZIPは正本のまま保持した。
+  - Anker Layoutの日英README、英語利用ガイド、対話操作例の英語READMEを追加。トップの日英READMEに「Qt Widgets Layouts」分類を設け、一覧は全21ツールになった。公開用補足と正本の扱いは `DECISIONS.md` 第10・11項を参照する。
+  - macOS arm64 / Qt 6.11.2でライブラリー・6サンプル・テストの全体ビルドと `basic_form` 単体ビルドが成功。offscreenで実行したCTestは1ターゲットが成功し、その中の6振舞いテストと初期化・終了処理を合わせて8 passedだった。日英文書・リンク・配布物との対応・`git diff --check` も確認した。
+  - Anker Layoutは `1b92fa2` でコミット・push済み。SafariでGitHubトップの分類と、`anker-layout/` のREADME・配布物の掲載を確認した。GUIの手動操作、対話REPLでの実行、別OS、PDF再生成・全ページ表示確認は未実施で、追加検証の条件は `backlog.md` を参照する。
+  - この時点では管理記録更新は未コミット・未pushだった。後続の構成変更と合わせ、コミット・push依頼の対象に含めた。既存の未追跡 `release-order.txt` は対象外として保持する。
+
 - 2026-11-12: 利用者の依頼で、トップの日英READMEに「Featured: App Generation Workflow」を追加した。
   - Safariの公開画面で `main` の最新コミット `db5f779` を確認。ローカルを `git fetch origin` とfast-forwardで同コミットへ更新してから、最新のワークフロー0.2.3を参照した。
   - Qt Cling／icppなどの紹介に続けて、要求整理から実装・テスト・設計文書化までの流れ、UC・UI・ビジネスレイヤーの三点セット、「ファイルを開く」の説明例、人とAIの役割、修正時の戻り先、始め方を追加した。
@@ -53,32 +68,34 @@
 
 ## 次にやること
 
-- アプリ生成ワークフローのREADME紹介はGitHubへ反映済み。再度追加する必要はない。
-- 利用者から `work-templates` も同様にトップで詳しく説明する依頼を受けている。公開画面を先に確認し、アプリ生成ワークフローのpushを先行した。次は日英トップREADMEへ `work-templates` の紹介を追加する。資料確認は完了している。
+- アプリ生成ワークフローと `work-templates` のREADME紹介、Anker Layoutの公開はGitHubへ反映済み。今回の公開依頼に追加作業はない。
+- 次の依頼時はGitの状態と該当ツールのSites正本を確認する。追加の実機・環境別検証を行う場合は `backlog.md` の条件を参照する。
 
 ## 未完了
 
-- `work-templates` の詳しい紹介の追加。今回のpush依頼はアプリ生成ワークフローを対象とする。
+- 構成変更の実装・検証は完了。GitHubへの反映結果は今回のコミットとリモートの `main` で確認する。未解決リンクなど既存の課題は `backlog.md` を参照する。
 
 ## 触るファイル
 
-- `README.md` / `README.en.md`: `work-templates` の詳しい紹介の追加。
-- `NEXT.md` / `DECISIONS.md`: 引き継ぎ更新を依頼された場合の状態と紹介方針。
+- 次の作業対象は追加依頼に応じて決める。現時点でREADMEや公開用ツール本体への未完了の編集はない。
+- 新規候補を追加する場合は `docs/` の適切なカテゴリーを使う。公開済み資料の同期先は `PUBLICATION_MAP.md` を参照する。
 
 ## 注意
 
 - README 更新時と翻訳文書の継続方針は `DECISIONS.md` を参照する。
 - 翻訳対象は README.en.md の直接のリンク先、追加依頼の `USER_GUIDE.md` 8件、および `work-templates` の英語版テンプレート4件。各ガイド内で参照する補助文書や版別の `USER_GUIDE-<version>.md` までは再帰的に翻訳していない。
-- `whiteboard/app-generation-workflow/USER_GUIDE.en.md` は同じ場所の日本語原文（0.1.0）に対応する。別ディレクトリーの `app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md`（0.2.3）とは版が異なる。
+- `tools/whiteboard/app-generation-workflow/USER_GUIDE.en.md` は同じ場所の日本語原文（0.1.0）に対応する。別ディレクトリーの `workflows/app-generation-workflow/app-generation-workflow/USER_GUIDE.en.md`（0.2.3）とは版が異なる。
 - `work-templates` の軽量な構成と英語版の配置・コピー時の命名方針は `DECISIONS.md` を参照する。日英 README のコピー例では、`WORK_TEMPLATES_DIR` を実際の `work-templates` ディレクトリーのパスへ置き換える。
 
 ## 関連ファイル
 
-- `work-templates/NEXT_HISTORY.md`: 正本から取り込んだテンプレートの改善履歴。文中の Git コミット番号は正本側のリポジトリーを指す。
-- `work-templates/README.md` / `work-templates/README.en.md`: 正本・コピーの位置付けと汎用コピー手順。
+- `workflows/work-templates/NEXT_HISTORY.md`: 正本から取り込んだテンプレートの改善履歴。文中の Git コミット番号は正本側のリポジトリーを指す。
+- `workflows/work-templates/README.md` / `workflows/work-templates/README.en.md`: 正本・コピーの位置付けと汎用コピー手順。
+- `tools/anker-layout/README.md` / `tools/anker-layout/README.en.md`: 機能、通常・単体ビルド、サンプル、元配布物と公開用補足の案内。
+- `tools/anker-layout/iccp/README.md` / `tools/anker-layout/iccp/README.en.md`: Qt Cling／icppでの対話操作例。`iccp/` は元配布物のディレクトリー名を保持している。
 
 - `README.md` / `README.en.md`: リポジトリー全体の案内とツール一覧。
-- 各ツールの `README.en.md` / `USER_GUIDE.en.md`、`cling/README.en.txt`: 日本語文書に対応する英語版。
-- `qmlprofileranalyzer/USER_GUIDE.md` / `qmlprofileranalyzer/USER_GUIDE.en.md`: QML Profiler トレース解析・比較・形式変換の利用方法。
+- 各ツールの `README.en.md` / `USER_GUIDE.en.md`、`tools/cling/README.en.txt`: 日本語文書に対応する英語版。
+- `tools/qmlprofileranalyzer/USER_GUIDE.md` / `tools/qmlprofileranalyzer/USER_GUIDE.en.md`: QML Profiler トレース解析・比較・形式変換の利用方法。
 - `DECISIONS.md`: 継続する判断、仕様、運用制約。
 - `backlog.md`: 長期の残作業、問題点、保留事項。

@@ -1,0 +1,185 @@
+# Tools
+
+[English](README.en.md) / [Qt Tools](../README.md)
+
+実行するツールとアプリへ組み込むライブラリーの一覧です。各ツールの内部構成・ビルド手順は各ガイドを参照してください。
+
+この案内の相対パスは、このディレクトリーを基準にしています。個別のビルドは対象プロジェクトへ移動して実行してください。
+
+## Featured: Interactive Qt/C++
+
+C++/Qt を、ビルドして実行するだけではなく、
+対話的に試し、実行中のオブジェクトを調べ、変更するためのツール群です。
+
+```text
+          Qt Cling
+       Qt/C++ GUI REPL
+             │
+             ▼
+           icpp
+    practical REPL frontend
+
+
+   Running Qt application
+             │
+             ▼
+      ObjectSelector
+    select QObject/QWidget
+             │
+             ▼
+      PropertyEditor
+    inspect/edit QObject
+```
+
+4つのツールは組み合わせて利用できます。
+ObjectSelector と PropertyEditor は独立したライブラリーとしても利用できます。
+
+
+### Qt Cling (`cling`)
+
+Cling から Qt を対話的に利用するための環境です。
+
+Qt の初期化とイベント処理を Cling に組み合わせることで、
+端末から `QObject` や `QWidget` を生成し、その場で操作できます。
+
+```cpp
+QPushButton *button = new QPushButton("Hello");
+button->resize(200, 80);
+button->show();
+```
+
+通常の Qt/C++ コードを、コンパイルとリンクを繰り返さずに試すことを目的としています。
+
+
+### icpp (`icpp`)
+
+Cling / Qt Cling を実用的に使うための REPL ラッパーです。
+
+icpp 自体は C++ を解釈せず、cling または qtcling をサブプロセスとして起動します。
+
+主な機能:
+
+- 複数行の C++ コードを編集バッファとして扱う
+- 外部エディターで関数やクラスを編集する
+- 編集したコードを最初から再実行する
+- 複数ファイルを登録してまとめて再実行する
+- クリップボード経由でコードを出し入れする
+- 試したコードをファイルへ保存する
+- Qt 型の値を簡単に表示する
+- Qt の moc / uic / rcc を利用する
+- MCP からコード評価、状態取得、リセットを行う
+
+Cling をサブプロセスとして分離することで、
+対話実行中の C++ コードによって Cling がクラッシュしても、
+icpp 自体を生き残らせて作業を継続できるようにしています。
+
+
+### ObjectSelector (`objectselector`)
+
+Qt アプリケーション内の `QObject` / `QWidget` を選択するための
+Qt Widgets ライブラリーです。
+
+- 画面上の `QWidget` を直接指して選択
+- オブジェクトツリーから選択
+- 選択対象をハイライト表示
+
+ObjectSelector は「選択」だけを担当します。
+選択したオブジェクトの表示や編集は行いません。
+
+
+### PropertyEditor (`propertyeditor`)
+
+`QObject` / `QMetaObject` / `QMetaProperty` を利用して、
+実行中の Qt オブジェクトのプロパティーを表示・編集するための
+Qt Widgets ライブラリーです。
+
+`QMetaProperty` と dynamic property を表示し、
+型に応じたエディターで値を変更できます。
+
+代表的な対応型:
+
+- `bool`
+- `int`
+- `double`
+- `QString`
+- `QStringList`
+- enum / flags
+- `QPoint`
+- `QSize`
+- `QRect`
+- `QColor`
+- `QByteArray`
+- dynamic property
+
+ObjectSelector と組み合わせるほか、
+任意の `QObject` を直接渡して単独で利用することもできます。
+
+
+## All Tools
+
+### Interactive C++ / Qt
+
+| Directory | Tool | Description |
+|---|---|---|
+| [cling](cling/README.txt) | Qt Cling / qtcling | Cling 上で Qt/C++ を対話的に実行します |
+| [icpp](icpp/README.md) | icpp | Cling / Qt Cling を実用的に扱う REPL ラッパーです |
+
+
+### Qt Object Inspection
+
+| Directory | Tool | Description |
+|---|---|---|
+| [objectselector](objectselector/USER_GUIDE.md) | ObjectSelector | `QObject` / `QWidget` を画面またはオブジェクトツリーから選択します |
+| [propertyeditor](propertyeditor/README.md) | PropertyEditor | `QObject` のプロパティーを表示・編集します |
+
+
+### Qt Widgets Layouts
+
+| Directory | Tool | Description |
+|---|---|---|
+| [anker-layout](anker-layout/README.md) | Anker Layout | Motif の `XmForm` に近い attachment レイアウトを Qt Widgets で利用するための `QLayout` 実装です。フォーム端、他のウィジェット、割合位置を基準に配置します |
+
+
+### QML Tools
+
+| Directory | Tool | Description |
+|---|---|---|
+| [qmlprop](qmlprop/README.md) | qmlprop | QML 型のプロパティー、メソッド、列挙子、継承関係などを調査します |
+| [qmlprofileranalyzer](qmlprofileranalyzer/USER_GUIDE.md) | qmlprofileranalyzer | QML Profiler の `.qtd` / `.qzt` トレースを解析するコマンドラインツールです。概要・ホットスポット・イベントの親子関係の確認、2 つのトレースの比較、形式の相互変換に対応します |
+
+
+### Documents, Images and Diagrams
+
+| Directory | Tool | Description |
+|---|---|---|
+| [markdown](markdown/USER_GUIDE.md) | genpdf | Markdown から文書やスライドの PDF を生成します |
+| [cutter](cutter/USER_GUIDE.md) | cutter | 数値指定で画像を切り抜きます。背景の透明化にも対応します |
+| [whiteboard](whiteboard/whiteboard-app/USER_GUIDE.md) | WhiteboardApp | 説明図を作成・編集する Whiteboard。複数ページ、PNG/SVG 出力、MCP に対応します |
+
+
+### General-purpose Command-line Utilities
+
+| Directory | Tool | Description |
+|---|---|---|
+| [dateorder](dateorder/USER_GUIDE.md) | younger / older | ファイルが更新日時順に並んでいるかを判定します |
+| [dtree](dtree/USER_GUIDE.md) | dtree | ディレクトリー構造を枝線付きのツリーとして表示します |
+| [now](now/USER_GUIDE.md) | now | 現在日時をさまざまな形式で表示します |
+| [tl](tl/USER_GUIDE.md) | tl | 日本語と英語を自動判定して相互翻訳します |
+
+
+### Presentation and Seminar Tools
+
+| Directory | Tool | Description |
+|---|---|---|
+| [LaserPointer](LaserPointer/README.md) | LaserPointer | 画面上にレーザー光点を表示する説明用ツールです。ドラッグ移動、マウスポインター追従、点滅、軌跡に対応します |
+| [seminartimer](seminartimer/USER_GUIDE.md) | SeminarTimer | セミナー、演習、休憩などの残り時間を表示するタイマーです |
+
+説明図の作成や画面共有には、[Documents, Images and Diagrams](#documents-images-and-diagrams) の WhiteboardApp も利用できます。
+
+
+### Desktop Accessories
+
+| Directory | Tool | Description |
+|---|---|---|
+| [qeyes](qeyes/README.md) | Qeyes | classic Xeyes を Qt Widgets で再実装したデスクトップアクセサリーです |
+| [vu-stereo](vu-stereo/README.md) | VuStereo | macOS のシステム再生音をアナログ風 VU メーターで表示します |

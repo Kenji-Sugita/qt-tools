@@ -5,7 +5,7 @@
 ## どのファイルを見ればよいか
 
 ### 1. 完全なやりとりを確認したい
-- [session-log-2026-04-18.md](./session-log-2026-04-18.md)
+- [session-log-2026-04-18.md](session-log-2026-04-18.md)
 
 分かること:
 - ユーザーとアシスタントのやりとり全体
@@ -18,7 +18,7 @@
 - 何を根拠に判断したか会話レベルで見たい
 
 ### 2. 短く結果だけ把握したい
-- [session-summary-2026-04-18.md](./session-summary-2026-04-18.md)
+- [session-summary-2026-04-18.md](session-summary-2026-04-18.md)
 
 分かること:
 - セッションの目的
@@ -33,7 +33,7 @@
 - 何が完了したかをすぐ知りたい
 
 ### 3. 技術的な理由や実装判断を確認したい
-- [session-technical-notes-2026-04-18.md](./session-technical-notes-2026-04-18.md)
+- [session-technical-notes-2026-04-18.md](session-technical-notes-2026-04-18.md)
 
 分かること:
 - 不具合の根本原因
@@ -47,7 +47,7 @@
 - 設計上の判断材料だけを読みたい
 
 ### 4. 時系列で進め方を確認したい
-- [session-timeline-2026-04-18.md](./session-timeline-2026-04-18.md)
+- [session-timeline-2026-04-18.md](session-timeline-2026-04-18.md)
 
 分かること:
 - 依頼から完了までをどの順番で進めたか
