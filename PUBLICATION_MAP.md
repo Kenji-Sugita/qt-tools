@@ -29,6 +29,9 @@ The canonical sources remain in `~/Sites`; this repository holds the public dist
 | `technical-document/threekeydoctolargesystem/` | [docs/development/three-key-documents/](docs/development/three-key-documents/) | 新規 / New |
 | `technical-document/tech-seminar/next-md/` | [docs/seminars/next-md/](docs/seminars/next-md/) | 新規 / New |
 | `technical-document/ai-assisted-book-writing/` | [docs/practice/ai-assisted-book-writing/](docs/practice/ai-assisted-book-writing/) | 新規 / New |
+| `technical-document/markdown/` | [docs/basics/markdown-for-ai/](docs/basics/markdown-for-ai/) | 新規 / New |
+| `technical-document/ai-usage-tips/` | [docs/basics/ai-usage-tips/](docs/basics/ai-usage-tips/) | 新規 / New |
+| `technical-document/codex/` | [docs/safety/personal-ai-usage-rules/](docs/safety/personal-ai-usage-rules/) | 新規 / New |
 
 ## 同期・移行時の注意 / Synchronization and Migration
 

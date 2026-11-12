@@ -35,6 +35,8 @@ See the [detailed introduction and examples](workflows/README.en.md#featured-wor
 
 ## Documentation
 
+New guides for working with AI: [Writing Markdown for Generative AI](docs/basics/markdown-for-ai/README.en.md), [AI Usage Tips and Precautions](docs/basics/ai-usage-tips/README.en.md), [Personal Rules for Safer AI Use](docs/safety/personal-ai-usage-rules/README.en.md).
+
 New documents: [Three-Specification Guides](docs/development/three-key-documents/README.en.md), [NEXT.md Seminar](docs/seminars/next-md/README.en.md), and [Writing a Book with AI](docs/practice/ai-assisted-book-writing/README.en.md).
 
 Keep project-specific guides and examples with their tools or workflows.

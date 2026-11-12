@@ -16,6 +16,9 @@
 
 ## 新しく収録した資料
 
+- [生成AIに伝わりやすいMarkdownの書き方](basics/markdown-for-ai/README.md)
+- [AI利用時の注意点とコツ](basics/ai-usage-tips/README.md)
+- [個人で安全に使うための生成AI利用ルール](safety/personal-ai-usage-rules/README.md)
 - [三点セット解説書一式](development/three-key-documents/README.md)
 - [作業コンテキスト管理とNEXT.md](seminars/next-md/README.md)
 - [AIと協力して本を書く方法](practice/ai-assisted-book-writing/README.md)

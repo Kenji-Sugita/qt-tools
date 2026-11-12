@@ -35,6 +35,8 @@ Qt Clingとicppで対話的に試し、ObjectSelector・PropertyEditorで実行�
 
 ## Documentation
 
+AIとの作業を始めるための [生成AIに伝わりやすいMarkdownの書き方](docs/basics/markdown-for-ai/README.md)、[AI利用時の注意点とコツ](docs/basics/ai-usage-tips/README.md)、[個人で安全に使うための生成AI利用ルール](docs/safety/personal-ai-usage-rules/README.md) を追加しました。
+
 新たに [三点セット解説書](docs/development/three-key-documents/README.md)、[NEXT.mdセミナー](docs/seminars/next-md/README.md)、[AIと協力して本を書く方法](docs/practice/ai-assisted-book-writing/README.md) を収録しました。
 
 各ツールに密接なガイドとサンプルは、そのプロジェクト内に置いています。

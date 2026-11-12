@@ -16,6 +16,9 @@ Browse by topic, then follow links to project guides. Documents have one home; i
 
 ## Featured Publications
 
+- [Writing Markdown for Generative AI](basics/markdown-for-ai/README.en.md)
+- [AI Usage Tips and Precautions](basics/ai-usage-tips/README.en.md)
+- [Personal Rules for Safer AI Use](safety/personal-ai-usage-rules/README.en.md)
 - [Three-Specification Guides](development/three-key-documents/README.en.md)
 - [Work Context Management with NEXT.md](seminars/next-md/README.en.md)
 - [Writing a Book with AI](practice/ai-assisted-book-writing/README.en.md)
