@@ -2,6 +2,10 @@
 
 [English](README.en.md) / [文書一覧](../README.md)
 
+## 公開資料
+
+- [三点セット解説書一式](three-key-documents/README.md)
+
 ## 既存の資料
 
 - [レビューと手戻り](../../workflows/app-generation-workflow/app-generation-workflow/review_and_rework.md)

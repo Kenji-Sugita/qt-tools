@@ -2,6 +2,10 @@
 
 [日本語](README.md) / [Documentation](../README.en.md)
 
+## Published Materials
+
+- [Work Context Management with NEXT.md](next-md/README.en.md)
+
 ## Existing Resources
 
 - [App generation workflow seminar (Japanese)](../../workflows/app-generation-workflow/seminars/app-generation-workflow/seminar_slides.md)

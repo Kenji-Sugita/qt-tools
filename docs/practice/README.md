@@ -2,6 +2,10 @@
 
 [English](README.en.md) / [文書一覧](../README.md)
 
+## 公開資料
+
+- [AIと協力して本を書く方法](ai-assisted-book-writing/README.md)
+
 ## 既存の資料
 
 - [VimでのMarkdown作成](../../tools/markdown/VIM_NEOSNIPPET_GUIDE.md)

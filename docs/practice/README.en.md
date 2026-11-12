@@ -2,6 +2,10 @@
 
 [日本語](README.md) / [Documentation](../README.en.md)
 
+## Published Materials
+
+- [Writing a Book with AI](ai-assisted-book-writing/README.en.md)
+
 ## Existing Resources
 
 - [Markdown editing with Vim (Japanese)](../../tools/markdown/VIM_NEOSNIPPET_GUIDE.md)

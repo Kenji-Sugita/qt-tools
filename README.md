@@ -35,6 +35,8 @@ Qt Clingとicppで対話的に試し、ObjectSelector・PropertyEditorで実行�
 
 ## Documentation
 
+新たに [三点セット解説書](docs/development/three-key-documents/README.md)、[NEXT.mdセミナー](docs/seminars/next-md/README.md)、[AIと協力して本を書く方法](docs/practice/ai-assisted-book-writing/README.md) を収録しました。
+
 各ツールに密接なガイドとサンプルは、そのプロジェクト内に置いています。
 横断的な読書案内は [docs/](docs/README.md)、Sites正本と公開先・旧配置の対応は [PUBLICATION_MAP.md](PUBLICATION_MAP.md) を参照してください。
 

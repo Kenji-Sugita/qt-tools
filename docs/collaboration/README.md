@@ -2,6 +2,10 @@
 
 [English](README.en.md) / [文書一覧](../README.md)
 
+## 公開資料
+
+- [NEXT.mdセミナーと同時更新の補足](../seminars/next-md/README.md)
+
 ## 既存の資料
 
 - [作業コンテキストのテンプレート](../../workflows/work-templates/README.md)

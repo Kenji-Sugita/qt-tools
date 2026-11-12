@@ -2,6 +2,10 @@
 
 [日本語](README.md) / [Documentation](../README.en.md)
 
+## Published Materials
+
+- [NEXT.md Seminar and Concurrency Supplement](../seminars/next-md/README.en.md)
+
 ## Existing Resources
 
 - [Work context templates](../../workflows/work-templates/README.en.md)

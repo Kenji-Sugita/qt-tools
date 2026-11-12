@@ -35,6 +35,8 @@ See the [detailed introduction and examples](workflows/README.en.md#featured-wor
 
 ## Documentation
 
+New documents: [Three-Specification Guides](docs/development/three-key-documents/README.en.md), [NEXT.md Seminar](docs/seminars/next-md/README.en.md), and [Writing a Book with AI](docs/practice/ai-assisted-book-writing/README.en.md).
+
 Keep project-specific guides and examples with their tools or workflows.
 Use [docs/](docs/README.en.md) for reading routes and [PUBLICATION_MAP.md](PUBLICATION_MAP.md) for Sites sources, published destinations, and previous locations.
 

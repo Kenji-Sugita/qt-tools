@@ -26,6 +26,9 @@ The canonical sources remain in `~/Sites`; this repository holds the public dist
 | `tools/vu-stereo/` | [tools/vu-stereo/](tools/vu-stereo/) | `vu-stereo/` |
 | `tools/whiteboard/` | [tools/whiteboard/](tools/whiteboard/) | `whiteboard/` |
 | `work-templates/ + tools/work-templates/` | [workflows/work-templates/](workflows/work-templates/) | `work-templates/` |
+| `technical-document/threekeydoctolargesystem/` | [docs/development/three-key-documents/](docs/development/three-key-documents/) | 新規 / New |
+| `technical-document/tech-seminar/next-md/` | [docs/seminars/next-md/](docs/seminars/next-md/) | 新規 / New |
+| `technical-document/ai-assisted-book-writing/` | [docs/practice/ai-assisted-book-writing/](docs/practice/ai-assisted-book-writing/) | 新規 / New |
 
 ## 同期・移行時の注意 / Synchronization and Migration
 

@@ -14,6 +14,12 @@ Browse by topic, then follow links to project guides. Documents have one home; i
 | Value, Perspectives and Future Concepts | [perspectives/](perspectives/README.en.md) |
 | Seminars and Presentations | [seminars/](seminars/README.en.md) |
 
+## Featured Publications
+
+- [Three-Specification Guides](development/three-key-documents/README.en.md)
+- [Work Context Management with NEXT.md](seminars/next-md/README.en.md)
+- [Writing a Book with AI](practice/ai-assisted-book-writing/README.en.md)
+
 ## Reading Order
 
 Basics → Practice → Safety → Development → Collaboration → Perspectives. Seminars provide another way to approach the same subjects.

@@ -2,6 +2,10 @@
 
 [日本語](README.md) / [Documentation](../README.en.md)
 
+## Published Materials
+
+- [Three-Specification Guides](three-key-documents/README.en.md)
+
 ## Existing Resources
 
 - [Review and rework (Japanese)](../../workflows/app-generation-workflow/app-generation-workflow/review_and_rework.md)

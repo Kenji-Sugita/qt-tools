@@ -2,6 +2,10 @@
 
 [English](README.en.md) / [文書一覧](../README.md)
 
+## 公開資料
+
+- [作業コンテキスト管理とNEXT.md：本編・説明書](next-md/README.md)
+
 ## 既存の資料
 
 - [アプリ生成ワークフローセミナー](../../workflows/app-generation-workflow/seminars/app-generation-workflow/seminar_slides.md)
