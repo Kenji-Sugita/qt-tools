@@ -1,0 +1,296 @@
+{
+  "published_commit": "3f68a99e322d5ed9c6f35eeb84e958314bba84e4",
+  "remote_main": "3f68a99e322d5ed9c6f35eeb84e958314bba84e4",
+  "http_files": [
+    {
+      "path": "docs/basics/prompt-tips/prompt_tips.md",
+      "status": 200,
+      "sha256": "c3695cfddd99e1675807cbe90d12408336af2e604e2d12ff367629ce209571ab",
+      "matches": true
+    },
+    {
+      "path": "docs/basics/prompt-tips/prompt_tips.pdf",
+      "status": 200,
+      "sha256": "db1dcc2394f10cc69e71983b90e1b83e5c789861f3f0a9ad7fa3a27c78553f0a",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/01_getting_started.md",
+      "status": 200,
+      "sha256": "1446577e0106b32906821c868bdb504a666a9575bfaaa0621594d59b121bcaa4",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/02_more_examples.md",
+      "status": 200,
+      "sha256": "74f6b93216926597ad3982803cc17312e7b8fe808646d6f60a915e50f869296a",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/03_work_documents.md",
+      "status": 200,
+      "sha256": "f27667b6d7996645749fbf19404541a057c621465e4c07bc4dcfcc73816730fe",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/04_request_and_review.md",
+      "status": 200,
+      "sha256": "0d163b81ea7835b38aada44c478c2e09a8f2b34aa1282e24e48c1a6aa0026172",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/README.md",
+      "status": 200,
+      "sha256": "f4913064a71686c87969c9809290ebfa64d68c34012296eee79fff075c1bddb5",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/TRYOUT.md",
+      "status": 200,
+      "sha256": "4071d19a3df910595df8b7b2bcc96845b90d6b3681e1e42ecfde219dbfb3c66c",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-workbook-general/general-lessons.zip",
+      "status": 200,
+      "sha256": "7ace4542ab3473cd54d13d1fbabf2fd57841fbd5600725b8b1f6c248e75a37ef",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-presentations/slide-for-ai.md",
+      "status": 200,
+      "sha256": "dbed96fd04b16df297243ee46d269d6541689d23abf23e355b78a0de8b7c8f07",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-presentations/slide-for-ai.pdf",
+      "status": 200,
+      "sha256": "d68d9cb4e894a20dbb18f9c785f948b210de9308f5bd59aadf670b396116473f",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide.md",
+      "status": 200,
+      "sha256": "63a4e76f0103e6c5bc97cc62da0b7b9c13ff5b15321105ff4987c422cc3ee057",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide.pdf",
+      "status": 200,
+      "sha256": "41f7040acb8c84b94159e41851db33a003cb13e9f4f253e18b644cbf47f51115",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide-windows.md",
+      "status": 200,
+      "sha256": "ff20634ee187593503448758554ca9a0f5062ad559de2f000618fd67a57f4170",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide-windows.pdf",
+      "status": 200,
+      "sha256": "863f65974b8dc6f05474fce3225a6f87c0637f72c795685fb0ee52c67e00b404",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide-intro-slides.md",
+      "status": 200,
+      "sha256": "65be8118c5c2e9399a20cc5bda4667f72bdd9250c81f6288fa9292e53d7862ff",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/codex-safe-work-guide-intro-slides.pdf",
+      "status": 200,
+      "sha256": "6ab478c95ca72c639411a9feb31505104d3730dc2f8452200ab6e091050f7861",
+      "matches": true
+    },
+    {
+      "path": "docs/development/waterfall-ai-workflow/waterfall_ai_workflow_guide.md",
+      "status": 200,
+      "sha256": "666ec575316c2b43abfd8f056e1314000c106b578b813c6248002033c3484d99",
+      "matches": true
+    },
+    {
+      "path": "docs/development/waterfall-ai-workflow/waterfall_ai_workflow_guide.pdf",
+      "status": 200,
+      "sha256": "62bf8d3362c7336ff6eb6c4bb624416bdbdecd1d65aeb1d728ea800d6eae24df",
+      "matches": true
+    },
+    {
+      "path": "docs/development/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.md",
+      "status": 200,
+      "sha256": "515855ca97b89a0c531a64b003a159f19cd7ea0d55e4d6344aa16dbcc820bc84",
+      "matches": true
+    },
+    {
+      "path": "docs/development/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.pdf",
+      "status": 200,
+      "sha256": "f0355f7e3db69a6a314cae460f7cb7db41cd5eb30fe4e5d16977c01c2b8ffd95",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-install.md",
+      "status": 200,
+      "sha256": "ed96c0832479c56b1ac1a48d1eaf6b6be280257a1c66c14cfe42bcd6661208e7",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-install.pdf",
+      "status": 200,
+      "sha256": "8719127e4a934fdd8a6a812e03ce4fa08da81fc78e2a94a67ab0e8c219fe6abc",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-codex-setup.md",
+      "status": 200,
+      "sha256": "9fe2a0ade5a8a885384eb4f4ff1397bbb2ff7517b895565b603270b83de8ed41",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-codex-setup.pdf",
+      "status": 200,
+      "sha256": "e164ced5827a6237278b18732d41ed814fcfd1e7f90b59c1f614ba66700e66ff",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-usage.md",
+      "status": 200,
+      "sha256": "23ba3629fcc187ce7acb2d553b7fd88ef7e543b79ad202587239235b4382b113",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/qtcreator-mcp-usage.pdf",
+      "status": 200,
+      "sha256": "89d42937f1025183e13a7c138de5cb3ec4300045d04f6feeb4d00a0912164e8e",
+      "matches": true
+    },
+    {
+      "path": "tools/fileservermcp/USER_GUIDE.md",
+      "status": 200,
+      "sha256": "71f971dd49e74b9dcf5ced01308a7007889230145bd8f5deec5fdc65dfa2e578",
+      "matches": true
+    },
+    {
+      "path": "tools/fileservermcp/USER_GUIDE.pdf",
+      "status": 200,
+      "sha256": "996b3e692d6b5618bb7e036a366828b4dbf0de0d95cc0b443d4802ef5b635345",
+      "matches": true
+    },
+    {
+      "path": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "status": 200,
+      "sha256": "3ff3047e9a837f2948bdf71b7f836637f092b2f6c5f8fd3a3aa30028c6513463",
+      "matches": true
+    },
+    {
+      "path": "tools/warikan/USER_GUIDE.md",
+      "status": 200,
+      "sha256": "4e8024a07cb0eb2183bbbe5b3a2421b99445172285981031afe2ca11b9e45bca",
+      "matches": true
+    },
+    {
+      "path": "tools/warikan/USER_GUIDE.pdf",
+      "status": 200,
+      "sha256": "41d147922fc4e6e6a347fd215b5a274988dedde7adb2c0011fac1a0b79af9f1c",
+      "matches": true
+    },
+    {
+      "path": "tools/warikan/warikan-release-20261108.zip",
+      "status": 200,
+      "sha256": "026eb49d9f1d4dd851e06a03b74a230e88a33e912da5a4072f0dbd8c4c995651",
+      "matches": true
+    },
+    {
+      "path": "docs/perspectives/programmer-value/programmer-value-change.md",
+      "status": 200,
+      "sha256": "3fab940d8e74eabe5055fa70882ce3504a2513920134189f5476b675507d69ad",
+      "matches": true
+    },
+    {
+      "path": "docs/perspectives/programmer-value/programmer-value-change.pdf",
+      "status": 200,
+      "sha256": "c2f2ddf00c030bcbc6e66e9021eb4a203a11179a4c4910e4b2b45f9918d2b264",
+      "matches": true
+    },
+    {
+      "path": "docs/basics/prompt-tips/README.md",
+      "status": 200,
+      "sha256": "a3611a0c6a2e5391a5168a75d81d255b83e233d82939357fe672ea1be237849d",
+      "matches": true
+    },
+    {
+      "path": "docs/practice/ai-presentations/README.md",
+      "status": 200,
+      "sha256": "13ee17367ac1975f4c57d555704f0c971fe5995eacea39b5c351bc4b51e61017",
+      "matches": true
+    },
+    {
+      "path": "docs/safety/codex-at-work/README.md",
+      "status": 200,
+      "sha256": "ec953812275c7b35b14fef5862dbb5751c50bba7ac2eea3f2384c9c6b42835a3",
+      "matches": true
+    },
+    {
+      "path": "docs/development/waterfall-ai-workflow/README.md",
+      "status": 200,
+      "sha256": "a45a3464c69806b2e6abdecc62288b54846cabc760d208f0a56d47a395ca054b",
+      "matches": true
+    },
+    {
+      "path": "docs/development/ai-codegen-reproducibility/README.md",
+      "status": 200,
+      "sha256": "2117dec52ebf1b984541a55916988a2dc87cf207cd15f5ae2ce952f403b0c059",
+      "matches": true
+    },
+    {
+      "path": "docs/development/qtcreator-mcp/README.md",
+      "status": 200,
+      "sha256": "dc2d9e9870e5d11fc9cac8d6d49f953d82628d7761e4e400b50cd0eb181ef485",
+      "matches": true
+    },
+    {
+      "path": "tools/fileservermcp/README.md",
+      "status": 200,
+      "sha256": "9ff5639bfbbaf5f549ba403bbd59c6db12c206d66733021a7b24369564e44062",
+      "matches": true
+    },
+    {
+      "path": "tools/warikan/README.md",
+      "status": 200,
+      "sha256": "f2557d476d9f1fc6bd5f2f851404cb19c124f304d6a3b7ae538f0f9ef6617674",
+      "matches": true
+    },
+    {
+      "path": "docs/perspectives/programmer-value/README.md",
+      "status": 200,
+      "sha256": "5f9234590286820c7ca44a6f4a89fd00fd6a9ffce3ff876eba7a7f47794e3ab6",
+      "matches": true
+    },
+    {
+      "path": "README.md",
+      "status": 200,
+      "sha256": "f9a2b90eef2a0fc3094042f0882f5fa44acbed233f3a3f21d5d9a45f95b75105",
+      "matches": true
+    },
+    {
+      "path": "README.en.md",
+      "status": 200,
+      "sha256": "35ff0d140b7b758901f16c45e7e0c0692ae3310a7eb8cf0b9824c88f8fb882bc",
+      "matches": true
+    },
+    {
+      "path": "docs/README.md",
+      "status": 200,
+      "sha256": "4b17973dfbcc97959c027be1290cba49e32c44a222f59761c564f6594db2150b",
+      "matches": true
+    },
+    {
+      "path": "tools/README.md",
+      "status": 200,
+      "sha256": "6c159a0e5eda8ac55522292f1a31ddb12940dd305e0b43ee45c424e7320647ed",
+      "matches": true
+    }
+  ],
+  "all_http_bytes_match": true,
+  "scope": "Commit-pinned public raw URLs; main ref verified via Git; GitHub browser rendering not inspected. curl with system certificate verification."
+}

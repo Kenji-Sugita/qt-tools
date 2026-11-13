@@ -14,7 +14,7 @@
   - 資料の日英README、索引・トップ、PUBLICATION_MAPを更新。ツール2件に英語利用ガイドを追加し、fileservermcpの82コード例はMermaidの翻訳ラベル以外を保持した。横断文書8資料群は日本語本文への英語案内であり、全文英訳ではない。
   - fileservermcpを別作業先でQt 6.12.0/macOS arm64によりビルドし、ループバック・ダミーファイルで13項目を確認。warikanは構文・Node.jsの7ロジック項目と永続化API検索を確認。ブラウザーGUI・別OS・実案件の効果測定は未実施。
   - `verification/next10-20261113/` に正本対応ハッシュ・ZIP照合・リンクとコードフェンスの確認・実行結果を保存。差分の空白は正本由来の空白と公開用の追加文書を区別する。SitesのHTML・作業記録・バックアップはコピーしない。既存のWhiteboard旧ワークフローも保持する。
-  - 利用者の公開指示に基づき、この追加と索引・管理記録をコミットし、GitHub mainへpushする。push後にHEADとリモートの一致、公開ファイルのHTTP取得を確認する。
+  - 追加120ファイルは `3f68a99e322d5ed9c6f35eeb84e958314bba84e4` にコミットし、GitHub mainへpush済み。公開コミットとリモートmainの一致、公開HTTP48ファイルの全バイト／ハッシュ一致を確認した（`remote-verification.json`）。ブラウザー上のGitHub描画確認は未実施。この後続記録も公開用へ保存する。
 
 - 2026-11-13: 利用者の依頼で、Sitesで見直したAI公開候補1～3を公開用へ追加した。
   - `docs/basics/markdown-for-ai/` と `docs/basics/ai-usage-tips/` に原稿・既存PDF、`docs/safety/personal-ai-usage-rules/` に原稿を収録。正本はSitesの `6846fa7` に保存済みの2026-11-13改訂版で、本文・PDFはバイト一致のコピーとする。

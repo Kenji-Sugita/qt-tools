@@ -19,3 +19,7 @@ The copied fileservermcp CMake file already follows the canonical CMake guidance
 - Git whitespace validation applies to added navigation, English guides, indexes, verification scripts and maintenance records. Whitespace in exact canonical/archive copies is preserved and checked by byte/hash comparison instead of rewriting the originals.
 
 The runtime environment was macOS arm64 / Qt 6.12.0. Current Qt Creator connectivity, browser GUI interactions, other operating systems, beginner usability and production effectiveness are not newly tested. Qt Creator examples retain the 19.0.0/legacy HTTP+SSE qualification; the tutorial server remains non-production. A link annotation or Git copy is not a test of an external service.
+
+## GitHub Publication Verification
+
+The 120-file publication was committed and pushed as `3f68a99e322d5ed9c6f35eeb84e958314bba84e4`. At verification time, local HEAD and GitHub main matched that commit. All 48 checked public HTTP files matched local bytes/SHA-256: the 35 canonical files, the ten resource READMEs (one overlaps the canonical set), and four top-level indexes. See `remote-verification.json` for paths and hashes. URLs were pinned to that publication commit. curl used system TLS certificate verification; browser rendering was not inspected. This verification record is saved in a subsequent maintenance commit; it does not change the published artifacts.
