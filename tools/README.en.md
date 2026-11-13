@@ -171,3 +171,9 @@ For creating explanatory diagrams and sharing them on screen, see WhiteboardApp 
 |---|---|---|
 | [qeyes](qeyes/README.en.md) | Qeyes | A desktop accessory that reimplements the classic Xeyes using Qt Widgets. |
 | [vu-stereo](vu-stereo/README.en.md) | VuStereo | Display macOS system audio playback levels on analog-style VU meters. |
+
+
+## MCP Learning and Specification-Based Examples
+
+- [fileservermcp](fileservermcp/README.en.md): CLI server and client for learning legacy MCP HTTP+SSE with Qt Core/Network. This is not a production server with authentication, TLS or Origin validation. Use dummy files over loopback.
+- [warikan: Bill Splitting and Collection Tracking](warikan/README.en.md): Static web application, use-case/UI/business specifications, implementation instructions and reference material. State is not restored after reload or closing. Historical trial timings are not guarantees.

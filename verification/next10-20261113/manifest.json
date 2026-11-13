@@ -1,0 +1,415 @@
+{
+  "canonical_root": "~/Sites",
+  "canonical_commit": "ee33ffd",
+  "files": [
+    {
+      "source": "technical-document/prompt_tips/prompt_tips.md",
+      "target": "docs/basics/prompt-tips/prompt_tips.md",
+      "sha256": "c3695cfddd99e1675807cbe90d12408336af2e604e2d12ff367629ce209571ab"
+    },
+    {
+      "source": "technical-document/prompt_tips/prompt_tips.pdf",
+      "target": "docs/basics/prompt-tips/prompt_tips.pdf",
+      "sha256": "db1dcc2394f10cc69e71983b90e1b83e5c789861f3f0a9ad7fa3a27c78553f0a"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/01_getting_started.md",
+      "target": "docs/practice/ai-workbook-general/01_getting_started.md",
+      "sha256": "1446577e0106b32906821c868bdb504a666a9575bfaaa0621594d59b121bcaa4"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/02_more_examples.md",
+      "target": "docs/practice/ai-workbook-general/02_more_examples.md",
+      "sha256": "74f6b93216926597ad3982803cc17312e7b8fe808646d6f60a915e50f869296a"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/03_work_documents.md",
+      "target": "docs/practice/ai-workbook-general/03_work_documents.md",
+      "sha256": "f27667b6d7996645749fbf19404541a057c621465e4c07bc4dcfcc73816730fe"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/04_request_and_review.md",
+      "target": "docs/practice/ai-workbook-general/04_request_and_review.md",
+      "sha256": "0d163b81ea7835b38aada44c478c2e09a8f2b34aa1282e24e48c1a6aa0026172"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/README.md",
+      "target": "docs/practice/ai-workbook-general/README.md",
+      "sha256": "f4913064a71686c87969c9809290ebfa64d68c34012296eee79fff075c1bddb5"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/TRYOUT.md",
+      "target": "docs/practice/ai-workbook-general/TRYOUT.md",
+      "sha256": "4071d19a3df910595df8b7b2bcc96845b90d6b3681e1e42ecfde219dbfb3c66c"
+    },
+    {
+      "source": "technical-document/how-we-use-ai-general/general-lessons.zip",
+      "target": "docs/practice/ai-workbook-general/general-lessons.zip",
+      "sha256": "7ace4542ab3473cd54d13d1fbabf2fd57841fbd5600725b8b1f6c248e75a37ef"
+    },
+    {
+      "source": "technical-document/slide_for_ai/slide-for-ai.md",
+      "target": "docs/practice/ai-presentations/slide-for-ai.md",
+      "sha256": "dbed96fd04b16df297243ee46d269d6541689d23abf23e355b78a0de8b7c8f07"
+    },
+    {
+      "source": "technical-document/slide_for_ai/slide-for-ai.pdf",
+      "target": "docs/practice/ai-presentations/slide-for-ai.pdf",
+      "sha256": "d68d9cb4e894a20dbb18f9c785f948b210de9308f5bd59aadf670b396116473f"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide.md",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide.md",
+      "sha256": "63a4e76f0103e6c5bc97cc62da0b7b9c13ff5b15321105ff4987c422cc3ee057"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide.pdf",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide.pdf",
+      "sha256": "41f7040acb8c84b94159e41851db33a003cb13e9f4f253e18b644cbf47f51115"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide-windows.md",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide-windows.md",
+      "sha256": "ff20634ee187593503448758554ca9a0f5062ad559de2f000618fd67a57f4170"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide-windows.pdf",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide-windows.pdf",
+      "sha256": "863f65974b8dc6f05474fce3225a6f87c0637f72c795685fb0ee52c67e00b404"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide-intro-slides.md",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide-intro-slides.md",
+      "sha256": "65be8118c5c2e9399a20cc5bda4667f72bdd9250c81f6288fa9292e53d7862ff"
+    },
+    {
+      "source": "technical-document/codex-safe-work-guide/codex-safe-work-guide-intro-slides.pdf",
+      "target": "docs/safety/codex-at-work/codex-safe-work-guide-intro-slides.pdf",
+      "sha256": "6ab478c95ca72c639411a9feb31505104d3730dc2f8452200ab6e091050f7861"
+    },
+    {
+      "source": "technical-document/apply-workflow-to-waterfall/waterfall_ai_workflow_guide.md",
+      "target": "docs/development/waterfall-ai-workflow/waterfall_ai_workflow_guide.md",
+      "sha256": "666ec575316c2b43abfd8f056e1314000c106b578b813c6248002033c3484d99"
+    },
+    {
+      "source": "technical-document/apply-workflow-to-waterfall/waterfall_ai_workflow_guide.pdf",
+      "target": "docs/development/waterfall-ai-workflow/waterfall_ai_workflow_guide.pdf",
+      "sha256": "62bf8d3362c7336ff6eb6c4bb624416bdbdecd1d65aeb1d728ea800d6eae24df"
+    },
+    {
+      "source": "technical-document/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.md",
+      "target": "docs/development/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.md",
+      "sha256": "515855ca97b89a0c531a64b003a159f19cd7ea0d55e4d6344aa16dbcc820bc84"
+    },
+    {
+      "source": "technical-document/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.pdf",
+      "target": "docs/development/ai-codegen-reproducibility/ai-codegen-reproducibility-nondeterminism-warning.pdf",
+      "sha256": "f0355f7e3db69a6a314cae460f7cb7db41cd5eb30fe4e5d16977c01c2b8ffd95"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-install.md",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-install.md",
+      "sha256": "ed96c0832479c56b1ac1a48d1eaf6b6be280257a1c66c14cfe42bcd6661208e7"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-install.pdf",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-install.pdf",
+      "sha256": "8719127e4a934fdd8a6a812e03ce4fa08da81fc78e2a94a67ab0e8c219fe6abc"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-codex-setup.md",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-codex-setup.md",
+      "sha256": "9fe2a0ade5a8a885384eb4f4ff1397bbb2ff7517b895565b603270b83de8ed41"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-codex-setup.pdf",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-codex-setup.pdf",
+      "sha256": "e164ced5827a6237278b18732d41ed814fcfd1e7f90b59c1f614ba66700e66ff"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-usage.md",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-usage.md",
+      "sha256": "23ba3629fcc187ce7acb2d553b7fd88ef7e543b79ad202587239235b4382b113"
+    },
+    {
+      "source": "technical-document/qtcreator-mcp/qtcreator-mcp-usage.pdf",
+      "target": "docs/development/qtcreator-mcp/qtcreator-mcp-usage.pdf",
+      "sha256": "89d42937f1025183e13a7c138de5cb3ec4300045d04f6feeb4d00a0912164e8e"
+    },
+    {
+      "source": "tools/fileservermcp/USER_GUIDE.md",
+      "target": "tools/fileservermcp/USER_GUIDE.md",
+      "sha256": "71f971dd49e74b9dcf5ced01308a7007889230145bd8f5deec5fdc65dfa2e578"
+    },
+    {
+      "source": "tools/fileservermcp/USER_GUIDE.pdf",
+      "target": "tools/fileservermcp/USER_GUIDE.pdf",
+      "sha256": "996b3e692d6b5618bb7e036a366828b4dbf0de0d95cc0b443d4802ef5b635345"
+    },
+    {
+      "source": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "target": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "sha256": "3ff3047e9a837f2948bdf71b7f836637f092b2f6c5f8fd3a3aa30028c6513463"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/USER_GUIDE.pdf",
+      "target": "tools/fileservermcp/USER_GUIDE.pdf",
+      "sha256": "996b3e692d6b5618bb7e036a366828b4dbf0de0d95cc0b443d4802ef5b635345"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/server/ServerOptions.h",
+      "target": "tools/fileservermcp/include/server/ServerOptions.h",
+      "sha256": "123e9da54baa357864c310eabf43d4cb85c5c1dac649ffc494b435617f603606"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/server/SseSession.h",
+      "target": "tools/fileservermcp/include/server/SseSession.h",
+      "sha256": "1c28538712097cffafd25ebeb59f7ecad24197a235c4cf1e77cfcd9da28ac411"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/server/McpToolHandler.h",
+      "target": "tools/fileservermcp/include/server/McpToolHandler.h",
+      "sha256": "32f5cead7b6327f5cac0e49b6fa46214b36279a3abd5d3ebde76060d7efe5d9a"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/server/FileRepository.h",
+      "target": "tools/fileservermcp/include/server/FileRepository.h",
+      "sha256": "ecd0ff9b75bd911c38882351d6e34cec923f8048d6df925eed741d65abcb78a6"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/server/SseMcpServer.h",
+      "target": "tools/fileservermcp/include/server/SseMcpServer.h",
+      "sha256": "31d08a1afa6169abbabc2aa1250eaa8a85d6a4a99bb9a794c7e411a4d925ab9c"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/common/JsonRpcMessage.h",
+      "target": "tools/fileservermcp/include/common/JsonRpcMessage.h",
+      "sha256": "cf7565725cea5a440fb2333805132472abdc06e2b9afab77244bd4a05c3086b7"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/Output.h",
+      "target": "tools/fileservermcp/include/client/Output.h",
+      "sha256": "23ddc49c586af43fc7d15c5c91d8130196fdcb2d8fd7125abd3799d8a06f4220"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/SseMcpClient.h",
+      "target": "tools/fileservermcp/include/client/SseMcpClient.h",
+      "sha256": "2c2bb9a0ef88dd7636149a49a2ba0485b0156f474cb1413ddd1c2a77c653a137"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/Repl.h",
+      "target": "tools/fileservermcp/include/client/Repl.h",
+      "sha256": "69199567d649835728b676c97023592e619b517dd4ded4a6b80e69c72ee38dd1"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/Command.h",
+      "target": "tools/fileservermcp/include/client/Command.h",
+      "sha256": "aa0e51486cc1af35d545b1eaade8580a946123c124c864fd6197ff8373d2249a"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/ClientOptions.h",
+      "target": "tools/fileservermcp/include/client/ClientOptions.h",
+      "sha256": "06bb7e77a3e457863c79ba92da0c0c984072b76b6e85390049e73d3ea4bce298"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/include/client/CommandRegistry.h",
+      "target": "tools/fileservermcp/include/client/CommandRegistry.h",
+      "sha256": "b3bf6b1f926bfcd681145791872ee22eff0c31060aea781b1bfdfb6d9a2170f7"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/USER_GUIDE.md",
+      "target": "tools/fileservermcp/USER_GUIDE.md",
+      "sha256": "71f971dd49e74b9dcf5ced01308a7007889230145bd8f5deec5fdc65dfa2e578"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/CMakeLists.txt",
+      "target": "tools/fileservermcp/CMakeLists.txt",
+      "sha256": "c1362e55ebd5b0c2c1cb03624588a05d7ae1dc8c43ad47792030cf6cf098bf9f"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/FileRepository.cpp",
+      "target": "tools/fileservermcp/src/server/FileRepository.cpp",
+      "sha256": "05112bbd82039e085f506521d289a5160576a8a14fec27c5c8e1cbcf646d8838"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/SseSession.cpp",
+      "target": "tools/fileservermcp/src/server/SseSession.cpp",
+      "sha256": "688070bcd92263c4d8501441a5521890b2453feae1659adf87a8786a26b57f01"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/McpToolHandler.cpp",
+      "target": "tools/fileservermcp/src/server/McpToolHandler.cpp",
+      "sha256": "40a858d75ab45624ea4252f117467cbf16bfbc4b5525a091ad0ee254b28020c4"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/SseMcpServer.cpp",
+      "target": "tools/fileservermcp/src/server/SseMcpServer.cpp",
+      "sha256": "dcef11f7ba20862999a0579aa082152c4683ddf0024078a6baeefb3550e9917c"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/ServerOptions.cpp",
+      "target": "tools/fileservermcp/src/server/ServerOptions.cpp",
+      "sha256": "5451c6d576ab9af75f5f1b93b895ae2cb13af94d82780848152750b2d159f64f"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/server/main.cpp",
+      "target": "tools/fileservermcp/src/server/main.cpp",
+      "sha256": "69eb6ba26a9d97d8a68c659b30cb5c3964719006cb87377199acfe40af6f4b6c"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/common/JsonRpcMessage.cpp",
+      "target": "tools/fileservermcp/src/common/JsonRpcMessage.cpp",
+      "sha256": "7245f7eb975dbd6a7d3f42c839dc5a1507abfd317b27139a0973a05bc6ed3cf4"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/Output.cpp",
+      "target": "tools/fileservermcp/src/client/Output.cpp",
+      "sha256": "ccb5ef9363ea9df4db3b5790cca2f3da31ee2ade60d47fe5c20b613df735e1b2"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/SseMcpClient.cpp",
+      "target": "tools/fileservermcp/src/client/SseMcpClient.cpp",
+      "sha256": "96fe7ac8c92e7c9b94991aac3b9b65e023e57d23126c10a4822404148d2d95f2"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/Repl.cpp",
+      "target": "tools/fileservermcp/src/client/Repl.cpp",
+      "sha256": "ebbbe8dfa3a795ad9f480f1f7cf49dfb181033edaf8d1e6d1e7b37191437252c"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/ClientOptions.cpp",
+      "target": "tools/fileservermcp/src/client/ClientOptions.cpp",
+      "sha256": "6ed82cfe08869fae5b805d4cdad4e73452a6d715b10c5c65bd954ea3b3b4c6b2"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/CommandRegistry.cpp",
+      "target": "tools/fileservermcp/src/client/CommandRegistry.cpp",
+      "sha256": "f3302957b743393337ce5f99b193b115f7b48b8943da4a28c4ae4690487776e1"
+    },
+    {
+      "archive": "tools/fileservermcp/fileservermcp-release-20260518.zip",
+      "entry": "fileservermcp/src/client/main.cpp",
+      "target": "tools/fileservermcp/src/client/main.cpp",
+      "sha256": "51455af2cb8b4bcda1ce843504bb8e235cd46499497f84bb93563b6c996cbd57"
+    },
+    {
+      "source": "tools/warikan/USER_GUIDE.md",
+      "target": "tools/warikan/USER_GUIDE.md",
+      "sha256": "4e8024a07cb0eb2183bbbe5b3a2421b99445172285981031afe2ca11b9e45bca"
+    },
+    {
+      "source": "tools/warikan/USER_GUIDE.pdf",
+      "target": "tools/warikan/USER_GUIDE.pdf",
+      "sha256": "41d147922fc4e6e6a347fd215b5a274988dedde7adb2c0011fac1a0b79af9f1c"
+    },
+    {
+      "source": "tools/warikan/warikan-release-20261108.zip",
+      "target": "tools/warikan/warikan-release-20261108.zip",
+      "sha256": "026eb49d9f1d4dd851e06a03b74a230e88a33e912da5a4072f0dbd8c4c995651"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/src/index.html",
+      "target": "tools/warikan/src/index.html",
+      "sha256": "599cbe9e181bb7394d2b8b34088a525b6dc35cd9ed7f5923f28d25580867afe5"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/src/style.css",
+      "target": "tools/warikan/src/style.css",
+      "sha256": "b72075a75ccc72a54e8608110b9e59ed7e5c7766246112eb43eefabbb96bdd56"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/src/app.js",
+      "target": "tools/warikan/src/app.js",
+      "sha256": "056efef475bb208c92e176678276d66238c860c325561dd5ad0901f7e7a3af93"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/docs/01_usecase_spec.md",
+      "target": "tools/warikan/docs/01_usecase_spec.md",
+      "sha256": "4f4aa6017b8570a3d7eac66677f0e1bc8180385ba7f9dcb652ff8bdbcf64ee71"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/docs/02_ui_spec.md",
+      "target": "tools/warikan/docs/02_ui_spec.md",
+      "sha256": "a61d36eb5dd9493568959f7b4826165a77f7bbbe1dffda905bdd9b82f752ea32"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/docs/03_business_spec.md",
+      "target": "tools/warikan/docs/03_business_spec.md",
+      "sha256": "d8087f4852fe772a79586d02ddd58c632691c0a7324bba1248b4549f91f11b8c"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/codex_prompt_without_zip.md",
+      "target": "tools/warikan/codex_prompt_without_zip.md",
+      "sha256": "e024601c23347a36d1824bb66a1b28eb3c7f511664e3e2055d0c4fe021c04875"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/USER_GUIDE.md",
+      "target": "tools/warikan/USER_GUIDE.md",
+      "sha256": "4e8024a07cb0eb2183bbbe5b3a2421b99445172285981031afe2ca11b9e45bca"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/USER_GUIDE.pdf",
+      "target": "tools/warikan/USER_GUIDE.pdf",
+      "sha256": "41d147922fc4e6e6a347fd215b5a274988dedde7adb2c0011fac1a0b79af9f1c"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/warikan.txt",
+      "target": "tools/warikan/warikan.txt",
+      "sha256": "34c8450930a61b36fb360db6e459972f47480536edba275b0a223b4ed62aeb96"
+    },
+    {
+      "archive": "tools/warikan/warikan-release-20261108.zip",
+      "entry": "warikan/warikan.png",
+      "target": "tools/warikan/warikan.png",
+      "sha256": "9282113a3ad0cdc01e10fa188cc1e7886bfc4474af1c8c3706764f020be4328f"
+    },
+    {
+      "source": "technical-document/programmer-value-change/programmer-value-change.md",
+      "target": "docs/perspectives/programmer-value/programmer-value-change.md",
+      "sha256": "3fab940d8e74eabe5055fa70882ce3504a2513920134189f5476b675507d69ad"
+    },
+    {
+      "source": "technical-document/programmer-value-change/programmer-value-change.pdf",
+      "target": "docs/perspectives/programmer-value/programmer-value-change.pdf",
+      "sha256": "c2f2ddf00c030bcbc6e66e9021eb4a203a11179a4c4910e4b2b45f9918d2b264"
+    }
+  ]
+}

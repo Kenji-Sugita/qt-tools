@@ -1,0 +1,58 @@
+{
+  "qt": "6.12.0",
+  "scope": "macOS arm64, dummy files, loopback; no current Qt Creator connection test",
+  "tests": [
+    {
+      "name": "fileservermcp-server help",
+      "passed": true
+    },
+    {
+      "name": "fileservermcp-client help",
+      "passed": true
+    },
+    {
+      "name": "initialize and status",
+      "passed": true
+    },
+    {
+      "name": "tools/list",
+      "passed": true
+    },
+    {
+      "name": "files exclude symlinks and subdirectories",
+      "passed": true
+    },
+    {
+      "name": "download exact bytes",
+      "passed": true
+    },
+    {
+      "name": "refuse overwrite",
+      "passed": true
+    },
+    {
+      "name": "reject missing.txt",
+      "passed": true
+    },
+    {
+      "name": "reject ../outside.txt",
+      "passed": true
+    },
+    {
+      "name": "reject link.txt",
+      "passed": true
+    },
+    {
+      "name": "reject large.bin",
+      "passed": true
+    },
+    {
+      "name": "direct tools/call",
+      "passed": true
+    },
+    {
+      "name": "REPL list and quit",
+      "passed": true
+    }
+  ]
+}

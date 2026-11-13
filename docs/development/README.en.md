@@ -4,6 +4,12 @@
 
 ## Published Materials
 
+- [Qt Creator MCP Server: Installation, Setup and Use](qtcreator-mcp/README.en.md)
+
+- [Non-Determinism in AI Code Generation](ai-codegen-reproducibility/README.en.md)
+
+- [Applying Parts of an AI Workflow to Waterfall Development](waterfall-ai-workflow/README.en.md)
+
 - [Three-Specification Guides](three-key-documents/README.en.md)
 
 ## Existing Resources

@@ -2,6 +2,10 @@
 
 [日本語](README.md) / [Documentation](../README.en.md)
 
+## Published Materials
+
+- [Where Programmer Value Moves in the AI Era](programmer-value/README.en.md)
+
 ## Existing Resources
 
 - [Coordinator concept (Japanese)](../../workflows/app-generation-workflow/docs/teacher_worker_coordinator_concept.md)

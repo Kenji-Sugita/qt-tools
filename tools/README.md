@@ -183,3 +183,9 @@ ObjectSelector と組み合わせるほか、
 |---|---|---|
 | [qeyes](qeyes/README.md) | Qeyes | classic Xeyes を Qt Widgets で再実装したデスクトップアクセサリーです |
 | [vu-stereo](vu-stereo/README.md) | VuStereo | macOS のシステム再生音をアナログ風 VU メーターで表示します |
+
+
+## MCP教材と仕様からの実装例
+
+- [fileservermcp](fileservermcp/README.md): Qt Core/Networkで旧MCP HTTP+SSEを学ぶCLIサーバーとクライアント。認証・TLS・Origin検証を備えた実用サーバーではありません。ダミーファイルとループバック接続で試します。
+- [warikan：ワリカン・集金管理の静的Webアプリ](warikan/README.md): 静的Web版のアプリ、UC/UI/業務仕様、実装指示と参考資料。再読み込み・終了後の保存復元はありません。過去の試行時間を保証とは扱いません。

@@ -17,6 +17,9 @@
 
 ## 保留事項
 
+- 2026-11-13追加のfileservermcpはQt 6.12.0/macOS arm64でビルド・CLI13項目まで確認。旧MCP教材であり、認証・TLS・Origin検証を備えた実用化や現行transport対応は未実装。warikanは静的Web版の構文・代表計算・集金ロジックまでで、今回の公開作業ではGUIを再検証していない。
+- Qt Creator MCP 19.0.0手順の再実行、現行版の接続、別OS、練習帳の初心者による実践は未検証。Codexのヒアリング資料など未選定ファイルは収録待ちの自動追加対象としない。プロンプト集の権利者の確定、実案件での期待効果の測定も文書改訂と区別して扱う。
+
 - Anker LayoutのGUI手動操作、Qt Cling／icppの対話例、macOS以外の環境は未検証。追加依頼があった場合は対象OS・Qt／Qt Cling／icppの版と確認項目を決める。PDF再生成・全ページ表示確認も、今回の配布物とのバイト照合とは分けて必要な対象を決める。
 - qeyesのmacOS復帰・モーダルダイアログの実機操作は今回未検証。Whiteboardはoffscreenの自動テストまでで、別OS・実媒体障害・電源断・手動GUI操作の追加確認は `tools/whiteboard/backlog.md` を参照する。
 - Sitesで既存の原稿・実装と一致したnow、tl、qmlprop、VuStereo、ObjectSelector、PropertyEditor、genpdf、ai-cmakeについて、PDFが未収録であるだけの追加はしていない。qmlprofileranalyzerの単体PDFも同様。PDFの生成・表示確認を追加する場合は、同期時のバイト照合とは分けて対象を決める。

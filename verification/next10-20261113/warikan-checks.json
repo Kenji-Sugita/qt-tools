@@ -1,0 +1,37 @@
+{
+  "scope": "Node.js logic and persistence API inspection; not a browser GUI or other-OS test",
+  "tests": [
+    {
+      "name": "representative per-person amounts",
+      "passed": true
+    },
+    {
+      "name": "total and balance",
+      "passed": true
+    },
+    {
+      "name": "ten participants",
+      "passed": true
+    },
+    {
+      "name": "initial collection summary",
+      "passed": true
+    },
+    {
+      "name": "all collected",
+      "passed": true
+    },
+    {
+      "name": "reject invalid total",
+      "passed": true
+    },
+    {
+      "name": "reject invalid rounding unit",
+      "passed": true
+    },
+    {
+      "name": "no persistence API in implementation",
+      "passed": true
+    }
+  ]
+}

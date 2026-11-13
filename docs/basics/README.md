@@ -4,6 +4,8 @@
 
 ## 収録資料
 
+- [便利なプロンプト集](prompt-tips/README.md)
+
 - [生成AIに伝わりやすいMarkdownの書き方](markdown-for-ai/README.md)
 - [AI利用時の注意点とコツ](ai-usage-tips/README.md)
 

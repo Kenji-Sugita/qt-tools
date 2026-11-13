@@ -1,0 +1,13 @@
+{
+  "canonical_files": 35,
+  "archive_entries": 39,
+  "unique_copied_destinations": 70,
+  "zip_crc_checks": 3,
+  "markdown_files_checked": 62,
+  "local_links_checked": 331,
+  "fileserver_bilingual_code_blocks": 82,
+  "copied_cmake_policy": "Qt console/multiple-target patterns; unchanged archive copy",
+  "internal_qt_workbook": "excluded",
+  "pdfs_regenerated": false,
+  "all_checks_passed": true
+}

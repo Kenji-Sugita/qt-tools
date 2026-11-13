@@ -16,6 +16,22 @@ Browse by topic, then follow links to project guides. Documents have one home; i
 
 ## Featured Publications
 
+- [Where Programmer Value Moves in the AI Era](perspectives/programmer-value/README.en.md)
+
+- [Qt Creator MCP Server: Installation, Setup and Use](development/qtcreator-mcp/README.en.md)
+
+- [Non-Determinism in AI Code Generation](development/ai-codegen-reproducibility/README.en.md)
+
+- [Applying Parts of an AI Workflow to Waterfall Development](development/waterfall-ai-workflow/README.en.md)
+
+- [Using Codex at Work Safely](safety/codex-at-work/README.en.md)
+
+- [Creating Presentations with Generative AI](practice/ai-presentations/README.en.md)
+
+- [AI Request Workbook for Everyday Work](practice/ai-workbook-general/README.en.md)
+
+- [Practical Prompt Tips](basics/prompt-tips/README.en.md)
+
 - [Writing Markdown for Generative AI](basics/markdown-for-ai/README.en.md)
 - [AI Usage Tips and Precautions](basics/ai-usage-tips/README.en.md)
 - [Personal Rules for Safer AI Use](safety/personal-ai-usage-rules/README.en.md)

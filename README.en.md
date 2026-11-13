@@ -46,6 +46,10 @@ Japanese and English documents share directories, using `.md` and `.en.md` (`.tx
 The root `NEXT.md`, `DECISIONS.md`, and `backlog.md` are maintainer working records. Reusable templates are under [work-templates](workflows/work-templates/README.en.md).
 
 
+## Ten New Resources and Tools
+
+The [documentation index](docs/README.en.md) now includes prompt tips, an everyday-work workbook, presentations, safe use, development and verification, Qt Creator MCP and perspectives on programmer value. [fileservermcp](tools/fileservermcp/README.en.md) and [warikan](tools/warikan/README.en.md) include sources, guides and distribution archives.
+
 ## Platforms
 
 Supported environments vary by tool.

@@ -2,6 +2,10 @@
 
 [English](README.en.md) / [文書一覧](../README.md)
 
+## 公開資料
+
+- [AI時代、プログラマーの価値はどこへ移るか](programmer-value/README.md)
+
 ## 既存の資料
 
 - [Coordinator構想](../../workflows/app-generation-workflow/docs/teacher_worker_coordinator_concept.md)

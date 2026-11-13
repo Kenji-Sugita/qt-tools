@@ -32,6 +32,16 @@ The canonical sources remain in `~/Sites`; this repository holds the public dist
 | `technical-document/markdown/` | [docs/basics/markdown-for-ai/](docs/basics/markdown-for-ai/) | 新規 / New |
 | `technical-document/ai-usage-tips/` | [docs/basics/ai-usage-tips/](docs/basics/ai-usage-tips/) | 新規 / New |
 | `technical-document/codex/` | [docs/safety/personal-ai-usage-rules/](docs/safety/personal-ai-usage-rules/) | 新規 / New |
+| `technical-document/prompt_tips/` | [docs/basics/prompt-tips/](docs/basics/prompt-tips/) | 新規 / New |
+| `technical-document/how-we-use-ai-general/` | [docs/practice/ai-workbook-general/](docs/practice/ai-workbook-general/) | 新規 / New |
+| `technical-document/slide_for_ai/` | [docs/practice/ai-presentations/](docs/practice/ai-presentations/) | 新規 / New |
+| `technical-document/codex-safe-work-guide/` | [docs/safety/codex-at-work/](docs/safety/codex-at-work/) | 新規 / New |
+| `technical-document/apply-workflow-to-waterfall/` | [docs/development/waterfall-ai-workflow/](docs/development/waterfall-ai-workflow/) | 新規 / New |
+| `technical-document/ai-codegen-reproducibility/` | [docs/development/ai-codegen-reproducibility/](docs/development/ai-codegen-reproducibility/) | 新規 / New |
+| `technical-document/qtcreator-mcp/` | [docs/development/qtcreator-mcp/](docs/development/qtcreator-mcp/) | 新規 / New |
+| `tools/fileservermcp/` | [tools/fileservermcp/](tools/fileservermcp/) | 新規 / New |
+| `tools/warikan/` | [tools/warikan/](tools/warikan/) | 新規 / New |
+| `technical-document/programmer-value-change/` | [docs/perspectives/programmer-value/](docs/perspectives/programmer-value/) | 新規 / New |
 
 ## 同期・移行時の注意 / Synchronization and Migration
 

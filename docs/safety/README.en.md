@@ -4,6 +4,8 @@
 
 ## Publications
 
+- [Using Codex at Work Safely](codex-at-work/README.en.md)
+
 - [Personal Rules for Safer AI Use](personal-ai-usage-rules/README.en.md)
 
 ## Existing Resources

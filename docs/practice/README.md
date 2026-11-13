@@ -4,6 +4,10 @@
 
 ## 公開資料
 
+- [生成AIによるプレゼン資料作成](ai-presentations/README.md)
+
+- [仕事で試す、AIへの頼み方 練習帳](ai-workbook-general/README.md)
+
 - [AIと協力して本を書く方法](ai-assisted-book-writing/README.md)
 
 ## 既存の資料

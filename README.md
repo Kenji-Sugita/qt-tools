@@ -46,6 +46,10 @@ AIとの作業を始めるための [生成AIに伝わりやすいMarkdownの書
 ルートの `NEXT.md`、`DECISIONS.md`、`backlog.md` はmaintainerの実運用用記録です。再利用用テンプレートは [work-templates](workflows/work-templates/README.md) にあります。
 
 
+## 追加公開した10資料・ツール
+
+プロンプト集、一般業務向け練習帳、プレゼン、安全利用、開発と検証、Qt Creator MCP、価値の考察を[文書一覧](docs/README.md)へ追加しました。[fileservermcp](tools/fileservermcp/README.md)と[warikan](tools/warikan/README.md)はソース・ガイド・配布ZIPを収録しています。
+
 ## Platforms
 
 ツールによって対応環境は異なります。

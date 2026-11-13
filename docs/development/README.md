@@ -4,6 +4,12 @@
 
 ## 公開資料
 
+- [Qt Creator MCP Serverの導入・設定・操作](qtcreator-mcp/README.md)
+
+- [AIコード生成の非決定性](ai-codegen-reproducibility/README.md)
+
+- [ウォーターフォール開発へのAIワークフロー部分適用](waterfall-ai-workflow/README.md)
+
 - [三点セット解説書一式](three-key-documents/README.md)
 
 ## 既存の資料

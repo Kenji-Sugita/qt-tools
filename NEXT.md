@@ -7,6 +7,15 @@
 
 ## 現在の状態
 
+- 2026-11-13: 利用者の「qt-toolsに公開」の依頼により、Sites `ee33ffd` の改訂10候補を追加収録した。
+  - docsへ8資料群、toolsへfileservermcpとwarikanを追加。正本の原稿・PDF・ZIP35ファイルと、ZIP内39ファイルの内容一致を照合した（重複を除いた公開先70ファイル）。13 PDFは正本の既存配布物をそのままコピーし、公開用に再生成していない。
+  - 一般業務向け練習帳は4冊・README・TRYOUT・ZIPを収録。社内向けQt関連業務練習帳は除外した。Codex安全利用は本編・Windows補足・紹介資料だけで、別のヒアリングPDF・codex.pdf・NEXT.pdfは収録しない。
+  - Qt Creator MCPは19.0.0・macOS・旧HTTP+SSEの手順例。現行版の接続・操作を今回検証したとは扱わない。fileservermcpの教材上の制約、warikanの保存復元なしと過去の試行メモの位置付けを維持した。
+  - 資料の日英README、索引・トップ、PUBLICATION_MAPを更新。ツール2件に英語利用ガイドを追加し、fileservermcpの82コード例はMermaidの翻訳ラベル以外を保持した。横断文書8資料群は日本語本文への英語案内であり、全文英訳ではない。
+  - fileservermcpを別作業先でQt 6.12.0/macOS arm64によりビルドし、ループバック・ダミーファイルで13項目を確認。warikanは構文・Node.jsの7ロジック項目と永続化API検索を確認。ブラウザーGUI・別OS・実案件の効果測定は未実施。
+  - `verification/next10-20261113/` に正本対応ハッシュ・ZIP照合・リンクとコードフェンスの確認・実行結果を保存。差分の空白は正本由来の空白と公開用の追加文書を区別する。SitesのHTML・作業記録・バックアップはコピーしない。既存のWhiteboard旧ワークフローも保持する。
+  - 利用者の公開指示に基づき、この追加と索引・管理記録をコミットし、GitHub mainへpushする。push後にHEADとリモートの一致、公開ファイルのHTTP取得を確認する。
+
 - 2026-11-13: 利用者の依頼で、Sitesで見直したAI公開候補1～3を公開用へ追加した。
   - `docs/basics/markdown-for-ai/` と `docs/basics/ai-usage-tips/` に原稿・既存PDF、`docs/safety/personal-ai-usage-rules/` に原稿を収録。正本はSitesの `6846fa7` に保存済みの2026-11-13改訂版で、本文・PDFはバイト一致のコピーとする。
   - 各資料の日英README、カテゴリーと文書一覧・トップの日英索引、`PUBLICATION_MAP.md` を更新。日本語本文への英語案内であり、本文の英訳を追加したものではない。

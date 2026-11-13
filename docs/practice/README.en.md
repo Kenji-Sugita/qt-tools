@@ -4,6 +4,10 @@
 
 ## Published Materials
 
+- [Creating Presentations with Generative AI](ai-presentations/README.en.md)
+
+- [AI Request Workbook for Everyday Work](ai-workbook-general/README.en.md)
+
 - [Writing a Book with AI](ai-assisted-book-writing/README.en.md)
 
 ## Existing Resources

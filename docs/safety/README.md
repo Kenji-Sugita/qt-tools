@@ -4,6 +4,8 @@
 
 ## 収録資料
 
+- [Codexを仕事で安全に使うための説明書](codex-at-work/README.md)
+
 - [個人で安全に使うための生成AI利用ルール](personal-ai-usage-rules/README.md)
 
 ## 既存の資料

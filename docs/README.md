@@ -16,6 +16,22 @@
 
 ## 新しく収録した資料
 
+- [AI時代、プログラマーの価値はどこへ移るか](perspectives/programmer-value/README.md)
+
+- [Qt Creator MCP Serverの導入・設定・操作](development/qtcreator-mcp/README.md)
+
+- [AIコード生成の非決定性](development/ai-codegen-reproducibility/README.md)
+
+- [ウォーターフォール開発へのAIワークフロー部分適用](development/waterfall-ai-workflow/README.md)
+
+- [Codexを仕事で安全に使うための説明書](safety/codex-at-work/README.md)
+
+- [生成AIによるプレゼン資料作成](practice/ai-presentations/README.md)
+
+- [仕事で試す、AIへの頼み方 練習帳](practice/ai-workbook-general/README.md)
+
+- [便利なプロンプト集](basics/prompt-tips/README.md)
+
 - [生成AIに伝わりやすいMarkdownの書き方](basics/markdown-for-ai/README.md)
 - [AI利用時の注意点とコツ](basics/ai-usage-tips/README.md)
 - [個人で安全に使うための生成AI利用ルール](safety/personal-ai-usage-rules/README.md)

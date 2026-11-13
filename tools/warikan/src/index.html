@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ワリカンアプリ</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">WARIKAN SPA</p>
+        <h1>ワリカンアプリ</h1>
+        <p class="lead">会計総額と負担区分を入力すると、比率按分・丸め・差額調整まで含めてワリカン額を計算し、そのまま集金状況の管理まで行えます。</p>
+      </header>
+
+      <div id="notice" class="notice" role="status">入力条件を設定して計算できます。</div>
+
+      <nav class="tabs" aria-label="画面切り替え">
+        <button id="tab-calc" class="tab active" type="button" data-screen="calc">ワリカン計算</button>
+        <button id="tab-collection" class="tab" type="button" data-screen="collection">集金管理</button>
+      </nav>
+
+      <section id="screen-calc" class="screen active" aria-label="ワリカン計算画面">
+        <form id="calc-form" class="calc-grid">
+          <section class="panel input-panel">
+            <div class="section-title">
+              <h2>SCR-1 ワリカン計算画面</h2>
+            </div>
+
+            <div class="top-fields">
+              <label>
+                <span>会計総額</span>
+                <input id="total-amount" name="totalAmount" type="number" inputmode="numeric" min="1" step="1">
+              </label>
+              <label>
+                <span>丸め単位</span>
+                <input id="rounding-unit" name="roundingUnit" type="number" inputmode="numeric" min="1" step="1">
+              </label>
+            </div>
+
+            <div class="section-row">
+              <h3>負担区分</h3>
+              <button id="add-group" class="subtle-button" type="button">区分を追加</button>
+            </div>
+
+            <div id="groups" class="groups"></div>
+
+            <p class="hint">入力内容を変更すると、計算結果と集金記録はリセットされます。</p>
+
+            <button class="primary-button" type="submit">計算する</button>
+          </section>
+
+          <aside class="panel result-panel">
+            <div class="section-title">
+              <h2>計算結果</h2>
+              <span id="balance-badge" class="badge muted">未計算</span>
+            </div>
+            <div id="result-content" class="empty-state">計算すると区分ごとの金額を表示します。</div>
+          </aside>
+        </form>
+      </section>
+
+      <section id="screen-collection" class="screen" aria-label="集金管理画面">
+        <section class="panel collection-panel">
+          <div class="section-title">
+            <h2>SCR-2 集金管理画面</h2>
+          </div>
+          <div id="collection-content" class="empty-state">集金管理を開始するには、先にワリカン計算を行ってください。</div>
+        </section>
+      </section>
+    </main>
+
+    <template id="group-template">
+      <section class="group-card">
+        <div class="group-head">
+          <h4></h4>
+          <button class="danger-button" type="button">削除</button>
+        </div>
+        <div class="group-fields">
+          <label>
+            <span>区分名</span>
+            <input class="group-name" type="text">
+          </label>
+          <label>
+            <span>比率</span>
+            <input class="group-ratio" type="number" inputmode="decimal" min="0.1" step="0.1">
+          </label>
+          <label>
+            <span>人数</span>
+            <input class="group-count" type="number" inputmode="numeric" min="1" step="1">
+          </label>
+        </div>
+      </section>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

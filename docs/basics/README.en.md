@@ -4,6 +4,8 @@
 
 ## Publications
 
+- [Practical Prompt Tips](prompt-tips/README.en.md)
+
 - [Writing Markdown for Generative AI](markdown-for-ai/README.en.md)
 - [AI Usage Tips and Precautions](ai-usage-tips/README.en.md)
 
