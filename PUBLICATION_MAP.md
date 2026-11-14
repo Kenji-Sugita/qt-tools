@@ -52,3 +52,8 @@ The canonical sources remain in `~/Sites`; this repository holds the public dist
 - 同じ本文を複数箇所にコピーせず、索引から参照する。 / Link from indexes instead of duplicating documents.
 - 古いGitHub URLやcheckout直下のパスは変更される。過去版はGit履歴で参照できる。 / Old GitHub URLs and checkout-relative paths change; Git history preserves earlier layouts.
 - 過去のPDF・ZIP内のパスは配布時点の記録として残す。 / Paths inside existing PDFs and ZIPs describe their original distribution.
+
+## GitHub公開用の文書補正 / GitHub-only Documentation Corrections
+
+- 2026-11-14: 利用者の指定により、`tools/markdown/USER_GUIDE{,.en}.md` の導入・ローカル依存配置、`tools/objectselector/USER_GUIDE{,.en}.md` のテスト無効化、`tools/seminartimer/USER_GUIDE{,.en}.md` の最前面設定、`tools/cling/README{,.en}.txt` の未同梱PDF一覧を公開用だけで補正した。Sites正本・実装・PDF・ZIPは変更していない。今後の同期では、これらの補正を一括コピーで上書きせず、正本の更新と現行実装を照合して保持または統合する。
+- These are public-repository documentation corrections only; the Sites originals, implementation, PDFs, and ZIPs remain unchanged. Preserve or reconcile these corrections against canonical updates and the current implementation during future synchronization.

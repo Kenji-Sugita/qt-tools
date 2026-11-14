@@ -34,9 +34,22 @@ Requirements:
 
 Basic installation:
 
+In a GitHub checkout, enter `tools/markdown/` and use the bundled `bin/genpdf` launcher. This distribution has no pip package metadata, so do not use `pip install -e .`.
+
+macOS / Linux (use a Python 3.11 or later `python3`):
+
 ```sh
+python3 -m venv .venv
+. .venv/bin/activate
 python -m pip install pypdf
-python -m pip install -e .
+export PATH="$PWD/bin:$PATH"
+```
+
+Windows (PowerShell, with `py -3` selecting Python 3.11 or later):
+
+```powershell
+py -3 -m pip install pypdf
+$env:Path = "$PWD\bin;$env:Path"
 ```
 
 Verify:
@@ -53,8 +66,10 @@ You do not need to install `md-to-pdf` beforehand. The first run needs a network
 connection for `npx` to fetch it. To install it locally, run this in the project:
 
 ```sh
-npm install md-to-pdf
+npm install --prefix src/resources md-to-pdf
 ```
+
+Run this in `tools/markdown/`. It installs into `src/resources/node_modules/`, matching the launcher's default resource directory. If you override the resource location with `GENPDF_RESOURCE_DIR` on macOS / Linux, use that directory as the `--prefix` instead.
 
 Documents using `!footer{...}` require `pypdf` for PDF merging:
 
