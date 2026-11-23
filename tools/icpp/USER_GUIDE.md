@@ -2387,12 +2387,13 @@ Qt 6 同士でも、minor version が違う Qt library や生成物を同じ `qt
 例:
 
 ```sh
-cmake -S . -B build-qt6.11 \
-  -DCMAKE_PREFIX_PATH=/path/to/Qt/6.11.0/macos
-cmake --build build-qt6.11
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
+cmake -S . -B build-qt6.12 -DCMAKE_PREFIX_PATH="$QTCLING_QT_ROOT"
+cmake --build build-qt6.12
 ```
 
 Qt を切り替える運用では、`qtcling`、Qt tool、`icpp` が同じ Qt を見ているか `.doctor` または `.qt` で確認します。`.doctor` は `icpp Qt` と `active Qt tools` を分けて表示します。
+`.inspect` を使う場合は PropertyEditor も同じキットでビルドし、`icpp` と同じ prefix にインストールしてください。REPL で `qVersion()` を実行すると、子プロセスの Qt のバージョンを確認できます。
 
 # 18. 起動オプション一覧
 

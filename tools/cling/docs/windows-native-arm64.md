@@ -3,6 +3,7 @@
 Windows 11 ARM64ネイティブ版はqtcling 1.2.0の正式対象です。
 2026-08-16にWindows 11 ARM64、Qt 6.11.1 ARM64、Cling 1.3の
 組み合わせで対話動作を確認しました。
+現在の既定キットは Qt 6.12.0 です。この版での Windows 実機確認は未実施です。
 
 ## 確認済みの機能
 
@@ -82,7 +83,7 @@ Windows用Qt runtime callback DLLは次のCMake projectから生成します。
 
 ```powershell
 cmake -S .\windows -B .\build-qtcling-win-runtime -A ARM64 `
-  -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_arm64
+  "-UQt6*_DIR" -DCMAKE_PREFIX_PATH=C:\Qt\6.12.0\msvc2022_arm64
 cmake --build .\build-qtcling-win-runtime --config Release -j 2
 Copy-Item `
   .\build-qtcling-win-runtime\bin\Release\qtcling-win.dll `
@@ -117,7 +118,7 @@ qtclingのrelease versionは`QTCLING_VERSION`に保存します。
 
 ```text
 QTCLING_CLING_ROOT  <source-root>\qtcling-win-arm64
-QTCLING_QT_ROOT     C:\Qt\6.11.1\msvc2022_arm64
+QTCLING_QT_ROOT     C:\Qt\6.12.0\msvc2022_arm64
 QTCLING_STARTUP_FILE <source-root>\src\qtguiwin-startup.cpp
 LIBEDIT_TERMCAP     <source-root>\libedit-win-arm64\share\libedit\termcap
 ```

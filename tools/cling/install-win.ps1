@@ -2,7 +2,7 @@ param(
     [string]$InstallDir = (Join-Path $env:LOCALAPPDATA "qtcling"),
     [string]$QtRoot = $(
         if ($env:QTCLING_QT_ROOT) { $env:QTCLING_QT_ROOT }
-        else { "C:\Qt\6.11.1\msvc2022_arm64" }
+        else { "C:\Qt\6.12.0\msvc2022_arm64" }
     ),
     [string]$Configuration = "Release"
 )
@@ -60,7 +60,7 @@ $CMake = Find-CMake
 Write-Host "Using CMake: $CMake"
 
 Invoke-Checked $CMake -S (Join-Path $PSScriptRoot "windows") -B $RuntimeBuildDir `
-    -G "Visual Studio 17 2022" -A ARM64 "-DCMAKE_PREFIX_PATH=$QtRoot"
+    -G "Visual Studio 17 2022" -A ARM64 "-UQt6*_DIR" "-DCMAKE_PREFIX_PATH=$QtRoot" "-DQt6_DIR=$QtRoot/lib/cmake/Qt6"
 Invoke-Checked $CMake --build $RuntimeBuildDir --config $Configuration -j 2
 
 if (-not (Test-Path -LiteralPath $RuntimeDll)) {

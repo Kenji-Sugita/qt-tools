@@ -6,6 +6,8 @@ and design decisions to keep `NEXT.md` manageable and prevent important decision
 from being lost. The aim is to restore work context from the repository even
 when the host, development environment, or AI session changes.
 
+For day-to-day recording, resuming work, and handoffs, see the [NEXT.md practical guide (PDF, Version 0.1, Japanese)](next_md_practice_guide.pdf).
+
 ## Background
 
 The three-file arrangement and filenames are specific to this template, but the

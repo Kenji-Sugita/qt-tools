@@ -16,9 +16,7 @@ shift
 
 CLING_ROOT=${QTCLING_CLING_ROOT:-/usr/local/qtcling}
 CLING=${CLING_ROOT}/bin/cling
-#QTBASE=/usr/local/qt/Qt/6.10.2/gcc_64
-DEFAULT_QTBASE=/usr/local/qt/Qt/6.11.1/gcc_64
-QTBASE=${QTCLING_QT_ROOT:-${QTCLING_DEFAULT_QT_ROOT:-$DEFAULT_QTBASE}}
+QTBASE=${QTCLING_QT_ROOT:-$QTCLING_DEFAULT_QT_ROOT}
 LIBS="-lQt6Core -lQt6Gui -lQt6Widgets"
 
 if [ ! -d "$QTBASE" ]; then
@@ -33,13 +31,13 @@ if [ ! -f "$QTBASE/lib/libQt6Core.so" ]; then
     exit 1
 fi
 
-${CLING} \
+"$CLING" \
     -std=c++2c \
-    -I ${QTBASE}/include \
-    -I ${QTBASE}/include/QtCore \
-    -I ${QTBASE}/include/QtGui \
-    -I ${QTBASE}/include/QtWidgets \
-    -L ${QTBASE}/lib \
+    -I "$QTBASE/include" \
+    -I "$QTBASE/include/QtCore" \
+    -I "$QTBASE/include/QtGui" \
+    -I "$QTBASE/include/QtWidgets" \
+    -L "$QTBASE/lib" \
     ${LIBS} \
     "$@" \
-    ${PROG}
+    "$PROG"

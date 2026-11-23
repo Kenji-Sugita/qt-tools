@@ -7,6 +7,14 @@
 
 ## 現在の状態
 
+- 2026-11-24: Sites正本 `618894e`（4ツールの配布更新は `9365591`）を公開用へ同期した。着手前にGitHubの `8f2f471` までfast-forwardし、対外紹介の記録を保持した。
+  - qtcling・icpp・ObjectSelector・PropertyEditorのQt 6.12.0対応を反映。起動スクリプト、関連テスト、日英利用ガイド、日本語PDF、配布ZIPを更新した。製品版番号は維持。
+  - Work Templatesの `next_md_practice_guide.pdf` を追加し、日英READMEから日本語PDFとして参照できるようにした。
+  - 公開用の文書補正、icppの新しいQt Creatorガイド・管理記録、旧版ZIPを保持。qtclingはPDFを収録したため日英READMEのPDF案内を復元した。
+  - 配布物26対応のSHA-256、ZIP4件のCRC、変更シェル7件の構文、既定キット選択・上書き5ケース、qtclingの設定と `--check` を確認。PropertyEditorはQt 6.12.0/macOS ARM64でビルドし、offscreen CTest 1件が成功した。リンク・コードフェンス・差分の空白も確認済み。
+  - 検証の詳細と `/tmp` のビルドパス問題の回避は `verification/sites-sync-20261124/README.md`、正本との対応は同ディレクトリーの `manifest.json` を参照する。PDF全ページ表示・再生成、Cling/LLVM全体の再ビルド、対話GUI、Linux/Windows実機試験は未実施。
+  - 利用者の依頼により、この同期内容と管理記録を同じコミットに保存する。pushは未実施。未追跡 `release-order.txt` は対象外として保持する。
+
 - 2026-11-23: Qt GUIをClingから対話操作したいという公開の関心を調査し、qtclingの紹介文を作成した。古い投稿が中心で、現在の利用希望は未確認。
   - Mail.appにherrgahr向け「Qt + Cling today: qtcling, following your Qling demo」とjuangburgos向け「Using Qt from Cling: following up on your ROOT Forum question」の英文下書きを保存した。コード例、icpp・ObjectSelector・PropertyEditorの紹介、導入順序を含む。メールアドレスは未確認で宛先は空欄、メールは未送信。下書き本体はMail.appにあり、Gitには含まれない。
   - 利用者の投稿指示により、Safariからherrgahrの動画へ短い紹介コメントを `@picky2129` で投稿した。qtclingと補助ツールの概要、英語ガイドへのリンク、意見を求める文面を掲載。投稿後の画面表示を確認し、利用者も確認済み。[投稿済みコメント](https://www.youtube.com/watch?v=BrjV1ZgYbbA&lc=UgySfLATBLrNjF0UCjZ4AaABAg)。同じ紹介を重複投稿しない。
@@ -90,12 +98,15 @@
 
 ## 次にやること
 
+- 2026-11-24の同期はローカルへ反映済み。GitHubへのpushは利用者から依頼された時点で行い、反映先のmainを確認する。
+
 - ROOT Forumの承認後、利用者の依頼に応じてログイン・返信可否を確認し、juangburgos向け下書きを公開返信用に短縮する。実際の投稿は対象と文面に対する利用者の指示に従う。
 - アプリ生成ワークフローと `work-templates` のREADME紹介、Anker Layoutの公開はGitHubへ反映済み。今回の公開依頼に追加作業はない。
 - 次の依頼時はGitの状態と該当ツールのSites正本を確認する。追加の実機・環境別検証を行う場合は `backlog.md` の条件を参照する。
 
 ## 未完了
 
+- 2026-11-24の同期内容のGitHubへのpushは未実施。同期の編集・検証に未完了はない。
 - ROOT Forumへの紹介は承認待ちで未投稿。メール2通も宛先未確認のため未送信。YouTubeへの今回の紹介は完了。
 - 構成変更の実装・検証は完了。GitHubへの反映結果は今回のコミットとリモートの `main` で確認する。未解決リンクなど既存の課題は `backlog.md` を参照する。
 

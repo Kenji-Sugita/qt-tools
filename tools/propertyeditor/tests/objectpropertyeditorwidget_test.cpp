@@ -98,7 +98,10 @@ QString testAntialiasingText(const QFont &fontValue)
     if ((styleStrategy & QFont::PreferAntialias) == QFont::PreferAntialias) {
         return QStringLiteral("Prefer Antialias");
     }
-    return QStringLiteral("Prefer Default Antialias");
+    if ((styleStrategy & QFont::NoSubpixelAntialias) == QFont::NoSubpixelAntialias) {
+        return QStringLiteral("NoSubpixelAntialias");
+    }
+    return QStringLiteral("PreferDefault");
 }
 
 QString testHintingPreferenceText(QFont::HintingPreference hintingPreference)
@@ -778,7 +781,7 @@ void ObjectPropertyEditorWidgetTest::fontPropertyExpandsLikeQtDesigner()
              static_cast<int>(ObjectPropertyEditorWidget::PropertyValueKind::Font));
     QVERIFY(fontItem->childCount() >= 10);
     QCOMPARE(fontItem->text(propertyNameColumn), QStringLiteral("font"));
-    QCOMPARE(fontItem->child(0)->text(propertyNameColumn), QStringLiteral("ファミリー"));
+    QCOMPARE(fontItem->child(0)->text(propertyNameColumn), QStringLiteral("Family"));
 
     QTreeWidgetItem *familyItem = findPropertyItem(&propertyEditorWidget, QStringLiteral("font.family"));
     QTreeWidgetItem *pointSizeItem = findPropertyItem(&propertyEditorWidget, QStringLiteral("font.pointSize"));
@@ -920,7 +923,7 @@ void ObjectPropertyEditorWidgetTest::fontEnumSubPropertiesShowComboBoxText()
 
     const QList<FontEnumTestCase> testCases {
         {QStringLiteral("font.weight"), QFont::DemiBold, QStringLiteral("DemiBold")},
-        {QStringLiteral("font.antialiasing"), QFont::PreferAntialias, QStringLiteral("アンチエイリアス優先")},
+        {QStringLiteral("font.antialiasing"), QFont::PreferAntialias, QStringLiteral("Prefer Antialias")},
         {QStringLiteral("font.hintingPreference"), QFont::PreferFullHinting, QStringLiteral("PreferFullHinting")}
     };
 
@@ -1045,13 +1048,13 @@ void ObjectPropertyEditorWidgetTest::palettePropertyShowsInheritedOrChangedText(
 
     QTreeWidgetItem *paletteItem = findPropertyItem(&propertyEditorWidget, QStringLiteral("palette"));
     QVERIFY(paletteItem != nullptr);
-    QCOMPARE(paletteItem->text(propertyValueColumn), QStringLiteral("親から継承"));
+    QCOMPARE(paletteItem->text(propertyValueColumn), QStringLiteral("Inherited from Parent"));
 
     QPalette changedPalette = targetObject.palette();
     changedPalette.setColor(QPalette::Active, QPalette::Window, QColor(Qt::red));
     targetObject.setPalette(changedPalette);
 
-    QTRY_COMPARE(paletteItem->text(propertyValueColumn), QStringLiteral("バレットを変更"));
+    QTRY_COMPARE(paletteItem->text(propertyValueColumn), QStringLiteral("Change Palette"));
 }
 
 void ObjectPropertyEditorWidgetTest::externalSliderValueChangeRefreshesTree()

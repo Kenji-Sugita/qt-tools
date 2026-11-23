@@ -9,7 +9,7 @@ if not defined QTCLING_CLING_ROOT (
     set "QTCLING_CLING_ROOT=%QTCLING_DEV_ROOT%\qtcling-win-arm64"
   )
 )
-if not defined QTCLING_QT_ROOT set "QTCLING_QT_ROOT=C:\Qt\6.11.1\msvc2022_arm64"
+if not defined QTCLING_QT_ROOT set "QTCLING_QT_ROOT=C:\Qt\6.12.0\msvc2022_arm64"
 if not defined QTCLING_STARTUP_FILE set "QTCLING_STARTUP_FILE=%QTCLING_DEV_ROOT%\src\qtguiwin-startup.cpp"
 
 if not exist "%QTCLING_CLING_ROOT%\bin\cling.exe" (

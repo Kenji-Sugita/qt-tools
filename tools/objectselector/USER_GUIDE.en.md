@@ -49,11 +49,13 @@ You need:
 
 Set `CMAKE_PREFIX_PATH` if Qt is installed outside the standard search paths.
 
+If `build/` was configured with a different Qt version, replace `build` in the steps below with a fresh directory name such as `build-qt6.12`.
+
 Example:
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DBUILD_TESTING=ON
 ```
 

@@ -58,11 +58,11 @@ The design therefore supports following changes made to widgets from Cling, as w
 
 # 4. Building
 
-A typical build is:
+The following example uses Qt 6.12.0 on macOS. If `build/` was configured with an older Qt version, replace `build` in the steps below with a fresh directory name such as `build-qt6.12`. For use with icpp's `.inspect`, select the same Qt kit as qtcling:
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos
 
 cmake --build build
 ```
@@ -83,7 +83,7 @@ If `CMAKE_INSTALL_PREFIX` is not explicitly specified during CMake configuration
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos
 
 cmake --build build
 cmake --install build
@@ -106,7 +106,7 @@ Specify `CMAKE_INSTALL_PREFIX` explicitly if `icpp` is unavailable or you want a
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DCMAKE_INSTALL_PREFIX=$HOME/.local
 
 cmake --build build
@@ -117,7 +117,7 @@ To use a specific `icpp` installation instead of the one on `PATH`, override it 
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DICPP_PREFIX=/custom/icpp/prefix
 ```
 
@@ -144,7 +144,7 @@ To build with tests:
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DBUILD_TESTING=ON
 
 cmake --build build

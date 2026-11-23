@@ -5,7 +5,7 @@ default_dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
 cling_root=${QTCLING_CLING_ROOT:-${default_dev_root}/qtcling-win-arm64}
 cling_path="${cling_root}/bin/cling.exe"
 #cling_path=build/bin/cling.exe
-default_qt_base_path=/c/Qt/6.11.1/msvc2022_arm64
+default_qt_base_path=/c/Qt/6.12.0/msvc2022_arm64
 qt_base_path=${QTCLING_QT_ROOT:-$default_qt_base_path}
 
 qt_library_path=${qt_base_path}/bin

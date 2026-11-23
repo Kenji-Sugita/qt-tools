@@ -1,0 +1,132 @@
+[
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/USER_GUIDE.md",
+    "target": "tools/cling/USER_GUIDE.md",
+    "sha256": "b165c84a5d32a18b9a223fe44877a69c8ba267c9f0e3661bb88b48791985ddad"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/iqtcling.linux",
+    "target": "tools/cling/bin/iqtcling.linux",
+    "sha256": "459e45cdd4bc5908f8e8b8a01eee1e2facf36129fcb906a418b20ea65616b613"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/qtcling-defaults.sh",
+    "target": "tools/cling/bin/qtcling-defaults.sh",
+    "sha256": "d0fe93d1ffe1f47a03b34daf1b47a09a44a23422cde25a8559f285cb28a76e0a"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/cqtcling.linux",
+    "target": "tools/cling/bin/cqtcling.linux",
+    "sha256": "32b593b37470ff6aaa22c7805eb8912bb2414ee37188887603970849a6728326"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/iqtcling.macos",
+    "target": "tools/cling/bin/iqtcling.macos",
+    "sha256": "6328455ef02aa1528d2ef45672a03b5ca0104dfe90ababe8cc6547f682543bc6"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/qtcling.cmd",
+    "target": "tools/cling/bin/qtcling.cmd",
+    "sha256": "3cd12ddcf7479e3a977ef689b2b2aa16da2cf8464e5c36d3d191873b47913486"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/iqtcling.win",
+    "target": "tools/cling/bin/iqtcling.win",
+    "sha256": "ffc288ce100dc443df371b309ca4fbcc7527ac51eb790247105962dfbc8a1b86"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/cqtcling.win",
+    "target": "tools/cling/bin/cqtcling.win",
+    "sha256": "3b7f4e85186eed271faa50e0fc1bc8525e7c3c6fba3810d5146e7360900e14d1"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/bin/cqtcling.macos",
+    "target": "tools/cling/bin/cqtcling.macos",
+    "sha256": "c129f8691b8d8635fcc4588780481728a54c99c5ddde63cef536ccf414427644"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/docs/windows-native-arm64.md",
+    "target": "tools/cling/docs/windows-native-arm64.md",
+    "sha256": "ce22684567fce4d9d995815ec51553b1ff10ba9c3a0162edd0c9da90d0f0e21c"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/build.sh",
+    "target": "tools/cling/build.sh",
+    "sha256": "fac149cbfd9e8d9933846ff222b9da711948359768d346a37251fe50b6af4bbf"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/install-win.ps1",
+    "target": "tools/cling/install-win.ps1",
+    "sha256": "69fa8c5c54fb938d458cf65e8be4551c622b93756530dcaefdb82d7ec86bdf52"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip:qtcling-1.2.0/USER_GUIDE.pdf",
+    "target": "tools/cling/USER_GUIDE.pdf",
+    "sha256": "f6411563746714b80873fc03c0a73d8bcb80365a473819be48c17cc6146d833f"
+  },
+  {
+    "source": "tools/qtcling/qtcling-1.2.0-source.zip",
+    "target": "tools/cling/release/qtcling-1.2.0-source.zip",
+    "sha256": "743195e3015991c33a46f6f1e2f76768b020d889f3094dbcaa9b5c47c38dc9a7"
+  },
+  {
+    "source": "tools/qtcling/USER_GUIDE.pdf",
+    "target": "tools/cling/USER_GUIDE.pdf",
+    "sha256": "f6411563746714b80873fc03c0a73d8bcb80365a473819be48c17cc6146d833f"
+  },
+  {
+    "source": "tools/icpp/icpp-1.2.0-source.zip:icpp-1.2.0/USER_GUIDE.pdf",
+    "target": "tools/icpp/USER_GUIDE.pdf",
+    "sha256": "93ce220220df39518b4a35ed6277e77a2bae7a04b38eca07ee72c5132d522cf6"
+  },
+  {
+    "source": "tools/icpp/icpp-1.2.0-source.zip:icpp-1.2.0/USER_GUIDE.md",
+    "target": "tools/icpp/USER_GUIDE.md",
+    "sha256": "3d08454c66e1c6a6eb934d31c2d121573e4085b848af4f2e5bdf2db294661fb6"
+  },
+  {
+    "source": "tools/icpp/icpp-1.2.0-source.zip",
+    "target": "tools/icpp/release/icpp-1.2.0-source.zip",
+    "sha256": "2643f5b3e189f1fb1ea2c842b32776b7c70de1c11681cc98a00ebc359ecccc9b"
+  },
+  {
+    "source": "tools/icpp/USER_GUIDE.pdf",
+    "target": "tools/icpp/USER_GUIDE.pdf",
+    "sha256": "93ce220220df39518b4a35ed6277e77a2bae7a04b38eca07ee72c5132d522cf6"
+  },
+  {
+    "source": "tools/objectselector/objectselector-1.0.0-source.zip",
+    "target": "tools/objectselector/release/objectselector-1.0.0-source.zip",
+    "sha256": "d6458953bf611161fc73e819100669786ef1d16b4e5ddfaf86df114c7323d9c4"
+  },
+  {
+    "source": "tools/objectselector/USER_GUIDE.pdf",
+    "target": "tools/objectselector/USER_GUIDE.pdf",
+    "sha256": "5cd8f07b639ddf2d82224d69486d8a8846362dddeef4396e0d2d71e6e88c4ef3"
+  },
+  {
+    "source": "tools/propertyeditor/propertyeditor-1.0.0-source.zip:propertyeditor-1.0.0/USER_GUIDE.md",
+    "target": "tools/propertyeditor/USER_GUIDE.md",
+    "sha256": "c88c115c9c450876f7ff38447db679ed7c63e45ab4109921d03148ba3c765c2a"
+  },
+  {
+    "source": "tools/propertyeditor/propertyeditor-1.0.0-source.zip:propertyeditor-1.0.0/tests/objectpropertyeditorwidget_test.cpp",
+    "target": "tools/propertyeditor/tests/objectpropertyeditorwidget_test.cpp",
+    "sha256": "91b9f633b32112b5cc4a0aa2ed53cf3658270c40de6809469765c2276d8c3c0a"
+  },
+  {
+    "source": "tools/propertyeditor/propertyeditor-1.0.0-source.zip",
+    "target": "tools/propertyeditor/release/propertyeditor-1.0.0-source.zip",
+    "sha256": "dd63b9941652158629cea5ea703c7956e72190e95e93dbf165061d520176ccf6"
+  },
+  {
+    "source": "tools/propertyeditor/USER_GUIDE.pdf",
+    "target": "tools/propertyeditor/USER_GUIDE.pdf",
+    "sha256": "3b480c9096a66af785a510c022f3051f4a2bc41f971532d35e6de3637c47038c"
+  },
+  {
+    "source": "tools/work-templates/next_md_practice_guide.pdf",
+    "target": "workflows/work-templates/next_md_practice_guide.pdf",
+    "sha256": "a89e6d44b381f6a4fda94ea36b487eb1ec4537538728ff81f39d9d07e919400f"
+  }
+]

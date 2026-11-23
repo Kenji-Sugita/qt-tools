@@ -14,9 +14,7 @@ default_dev_root=$(CDPATH= cd -- "$script_directory_path/.." && pwd)
 . "$script_directory_path/qtcling-defaults.sh"
 cling_root=${QTCLING_CLING_ROOT:-/usr/local/qtcling}
 cling_path="${cling_root}/bin/cling"
-#qt_base_path=/usr/local/qt/Qt/6.10.2/macos
-default_qt_base_path=/usr/local/qt/Qt/6.11.1/macos
-qt_base_path=${QTCLING_QT_ROOT:-${QTCLING_DEFAULT_QT_ROOT:-$default_qt_base_path}}
+qt_base_path=${QTCLING_QT_ROOT:-$QTCLING_DEFAULT_QT_ROOT}
 dev_root=${QTCLING_DEV_ROOT:-$default_dev_root}
 
 qt_framework_path="$qt_base_path/lib"

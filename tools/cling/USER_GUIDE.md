@@ -53,7 +53,7 @@ Windows 11 ARM64ネイティブ版では、REPL編集、履歴、Qt event、widg
 確認済みの基本環境変数です。
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 export QTCLING_CLING_ROOT="$PWD/build"
 export QTCLING_STARTUP_FILE="$PWD/src/qtgui.cpp"
 ```
@@ -66,9 +66,12 @@ export QTCLING_STARTUP_FILE="$PWD/src/qtgui.cpp"
 qtcling
 ```
 
-起動後、`qApp` が使えることを確認します。
+起動後、Qt のヘッダーと実行時ライブラリがどちらも `6.12.0` で、
+`qApp` が有効なポインターであることを確認します。
 
 ```cpp
+QT_VERSION_STR
+qVersion()
 qApp
 ```
 
@@ -97,18 +100,20 @@ cd qtcling-1.2.0
 
 ### 依存 library
 
-Qtの既定installation pathは [`bin/qtcling-defaults.sh`](bin/qtcling-defaults.sh) で指定できます。
-永続的に設定する場合は、build前に同fileの`QTCLING_DEFAULT_QT_ROOT`をQt kitの
-完全なpathへ変更します。現在のshellだけで上書きする場合は、環境変数をexportします。
+macOS / Linux の既定の Qt キットは [`bin/qtcling-defaults.sh`](bin/qtcling-defaults.sh) で選びます。
+`/usr/local/qt/Qt/6.12.0/` の下で、macOS は `macos`、Linux x86_64 は
+`gcc_64`、Linux ARM64 は `gcc_arm64` を使います。別の場所にある場合は、
+シェルでキットのパスを指定できます。
 
 ```sh
-export QTCLING_DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ./build.sh
 ```
 
 `bin/qtcling-defaults.sh`はbuildと起動wrapperの両方で読み込まれ、install時にも
 install先へコピーされます。環境変数`QTCLING_QT_ROOT`は個別起動用の完全なkit pathで、
-`QTCLING_DEFAULT_QT_ROOT`より優先されます。
+`QTCLING_DEFAULT_QT_ROOT`より優先されます。旧版を指す変数が残っている場合は
+値を更新するか、両方を `unset` して既定値に戻してください。
 
 Linuxでは、REPL入力待ち中にQt eventを処理するため、LLVMのlibedit LineEditor supportが
 必要です。Ubuntuではbuild前に`libedit-dev`を入れてください。
@@ -157,7 +162,7 @@ sudo ./install.sh
 macOS では Qt root を指定して確認します。
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 bin/qtcling --check
 bin/qtcling --show-config
 bin/qtcling
@@ -168,7 +173,7 @@ bin/qtcling
 `/usr/local/qtcling` に install しない場合は、build tree を `QTCLING_CLING_ROOT` で指定します。
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 export QTCLING_CLING_ROOT="$PWD/build"
 bin/qtcling --check
 bin/qtcling --show-config
@@ -239,7 +244,7 @@ export QTCLING_STARTUP_FILE="$PWD/src/qtgui.cpp"
 macOS では、まず Qt root を指定します。
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ```
 
 installしたClingとlauncherを確認する場合は、install先を直接実行します。
@@ -267,7 +272,7 @@ export PATH="$PWD/bin:$PATH"
 
 ## Windows 11 ARM64 ネイティブ版
 
-Windows 11 ARM64ネイティブ版は1.2.0の正式対象です。実機では
+Windows 11 ARM64ネイティブ版は1.2.0の正式対象です。Qt 6.11.1 の実機では
 `bin/qtcling.cmd` による起動、libeditの行編集と履歴、`qApp`、Qt widget、入力待ち中の
 Qt event、`QObject::connect`、`qDebug()`のコンソール出力を確認しています。
 
@@ -283,13 +288,13 @@ Qt event、`QObject::connect`、`qDebug()`のコンソール出力を確認し�
 - CMake 3.21以降
 - Git for Windows（Git Bashを含む）
 - Python 3.13 ARM64
-- Qt 6.11.1 `msvc2022_arm64` kit
+- Qt 6.12.0 `msvc2022_arm64` kit
 
-確認済みの配置は次のとおりです。
+Qt 6.12.0 を使う場合の配置例です。
 
 ```text
 Python C:\Users\<user>\AppData\Local\Programs\Python\Python313-arm64\python.exe
-Qt     C:\Qt\6.11.1\msvc2022_arm64
+Qt     C:\Qt\6.12.0\msvc2022_arm64
 ```
 
 コマンドが利用できることをPowerShellで確認します。
@@ -298,7 +303,7 @@ Qt     C:\Qt\6.11.1\msvc2022_arm64
 git --version
 cmake --version
 & "$env:LOCALAPPDATA\Programs\Python\Python313-arm64\python.exe" --version
-Test-Path C:\Qt\6.11.1\msvc2022_arm64\include\QtCore
+Test-Path C:\Qt\6.12.0\msvc2022_arm64\include\QtCore
 ```
 
 ### qtclingソースの用意
@@ -392,7 +397,7 @@ PowerShellでARM64 DLLをビルドします。
 ```powershell
 cmake -S .\windows -B .\build-qtcling-win-runtime `
   -G "Visual Studio 17 2022" -A ARM64 `
-  -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_arm64
+  "-UQt6*_DIR" -DCMAKE_PREFIX_PATH=C:\Qt\6.12.0\msvc2022_arm64
 
 cmake --build .\build-qtcling-win-runtime --config Release -j 2
 
@@ -440,12 +445,14 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -InstallDir C:\Tools\qtcling
 ```
 
-Qtを標準位置以外へinstallしている場合は`-QtRoot`も指定します。
+Qt キットを切り替えたら `install-win.ps1` を再実行して、同じキットで callback DLL を
+ビルドし直します。標準位置以外を使う場合は `-QtRoot` を指定し、起動時の
+`QTCLING_QT_ROOT` も同じパスにしてください。
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\install-win.ps1 `
-  -QtRoot D:\Qt\6.11.1\msvc2022_arm64
+  -QtRoot D:\Qt\6.12.0\msvc2022_arm64
 ```
 
 既定のinstall先から起動する場合は次を実行します。
@@ -465,7 +472,7 @@ bin/qtcling.cmd
 Qtを標準位置以外へインストールした場合は、起動前にWindows形式のpathを指定します。
 
 ```sh
-export QTCLING_QT_ROOT='D:\Qt\6.11.1\msvc2022_arm64'
+export QTCLING_QT_ROOT='D:\Qt\6.12.0\msvc2022_arm64'
 bin/qtcling.cmd
 ```
 
@@ -630,7 +637,7 @@ button->show()
 Qt installation root を指定します。
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ```
 
 macOS では、この下の `lib/*.framework` を使って include path と framework path を組み立てます。

@@ -2390,12 +2390,13 @@ Even within Qt 6, mixing libraries or generated files from different minor versi
 Example:
 
 ```sh
-cmake -S . -B build-qt6.11 \
-  -DCMAKE_PREFIX_PATH=/path/to/Qt/6.11.0/macos
-cmake --build build-qt6.11
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
+cmake -S . -B build-qt6.12 -DCMAKE_PREFIX_PATH="$QTCLING_QT_ROOT"
+cmake --build build-qt6.12
 ```
 
 When switching Qt versions, use `.doctor` or `.qt` to check that qtcling, Qt tools, and icpp refer to the same Qt. `.doctor` displays `icpp Qt` separately from `active Qt tools`.
+For `.inspect`, build PropertyEditor with the same kit and install it under the same prefix as icpp. Run `qVersion()` in the REPL to check the Qt version used by the child process.
 
 # 18. Startup Options
 

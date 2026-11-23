@@ -61,11 +61,11 @@ genpdf:
 
 # 4. ビルド
 
-通常のビルドは次のとおりです。
+macOS の Qt 6.12.0 でビルドする例です。以前の Qt で作った `build/` がある場合は、以下の手順で `build` を `build-qt6.12` などの新しいディレクトリー名に読み替えてください。`icpp` の `.inspect` で使う場合は、`qtcling` と同じ Qt キットを指定します。
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos
 
 cmake --build build
 ```
@@ -90,7 +90,7 @@ install されます。
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos
 
 cmake --build build
 cmake --install build
@@ -115,7 +115,7 @@ cmake --install build
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DCMAKE_INSTALL_PREFIX=$HOME/.local
 
 cmake --build build
@@ -127,7 +127,7 @@ cmake --install build
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DICPP_PREFIX=/custom/icpp/prefix
 ```
 
@@ -155,7 +155,7 @@ cmake -S . -B build \
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DBUILD_TESTING=ON
 
 cmake --build build

@@ -48,12 +48,13 @@
   - `Test`
 
 Qt のインストール場所が標準パスにない場合は、`CMAKE_PREFIX_PATH` を指定してください。
+別の Qt で作った `build/` がある場合は、以下の手順で `build` を `build-qt6.12` などの新しいディレクトリー名に読み替えてください。
 
 例:
 
 ```bash
 cmake -S . -B build \
-  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.11.0/macos \
+  -DCMAKE_PREFIX_PATH=/usr/local/qt/Qt/6.12.0/macos \
   -DBUILD_TESTING=ON
 ```
 

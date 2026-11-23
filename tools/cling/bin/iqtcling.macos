@@ -27,8 +27,7 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-#QT_ROOT=/usr/local/qt/Qt/6.10.2/macos
-DEFAULT_QT_ROOT=${QTCLING_DEFAULT_QT_ROOT:-/usr/local/qt/Qt/6.11.1/macos}
+DEFAULT_QT_ROOT=$QTCLING_DEFAULT_QT_ROOT
 if [ -n "${QTCLING_QT_ROOT+x}" ]; then
     QT_ROOT=$QTCLING_QT_ROOT
     QT_ROOT_SOURCE=QTCLING_QT_ROOT

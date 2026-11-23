@@ -57,3 +57,6 @@ The canonical sources remain in `~/Sites`; this repository holds the public dist
 
 - 2026-11-14: 利用者の指定により、`tools/markdown/USER_GUIDE{,.en}.md` の導入・ローカル依存配置、`tools/objectselector/USER_GUIDE{,.en}.md` のテスト無効化、`tools/seminartimer/USER_GUIDE{,.en}.md` の最前面設定、`tools/cling/README{,.en}.txt` の未同梱PDF一覧を公開用だけで補正した。Sites正本・実装・PDF・ZIPは変更していない。今後の同期では、これらの補正を一括コピーで上書きせず、正本の更新と現行実装を照合して保持または統合する。
 - These are public-repository documentation corrections only; the Sites originals, implementation, PDFs, and ZIPs remain unchanged. Preserve or reconcile these corrections against canonical updates and the current implementation during future synchronization.
+
+- 2026-11-24: Qt 6.12.0 対応の4ツールを同期。ObjectSelector のテスト無効化説明は正本にも反映されたが、公開用の明示的なコマンド例を保持した。qtcling の `USER_GUIDE.pdf` を今回収録したため、日英 README の PDF 案内を復元した。icpp の新しい Qt Creator ガイドと公開側管理記録は、旧版を含む配布 ZIP で上書きしない。同期範囲・照合結果は [検証記録](verification/sites-sync-20261124/README.md) を参照する。
+- The Qt 6.12.0 synchronization preserves ObjectSelector’s explicit test-disable commands and icpp’s newer Qt Creator guides and repository-specific work records. The qtcling PDF listing is restored now that the PDF is included. Work Templates also includes the canonical Japanese NEXT.md practical guide PDF.

@@ -50,7 +50,7 @@ On native Windows 11 ARM64, REPL editing, history, Qt events, widgets, signals/s
 The following basic environment variables have been verified:
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 export QTCLING_CLING_ROOT="$PWD/build"
 export QTCLING_STARTUP_FILE="$PWD/src/qtgui.cpp"
 ```
@@ -63,9 +63,11 @@ Start the terminal version:
 qtcling
 ```
 
-After startup, verify that `qApp` is available:
+After startup, verify that both the Qt headers and runtime libraries report `6.12.0`, and that `qApp` is a valid pointer:
 
 ```cpp
+QT_VERSION_STR
+qVersion()
 qApp
 ```
 
@@ -94,14 +96,14 @@ In addition to Qt, `qtcling` requires Cling with the interactive patches applied
 
 ### Dependencies
 
-Set the default Qt installation path in [`bin/qtcling-defaults.sh`](bin/qtcling-defaults.sh). For a persistent setting, change `QTCLING_DEFAULT_QT_ROOT` in that file to the full Qt kit path before building. To override it only in the current shell, export the environment variable.
+On macOS and Linux, [`bin/qtcling-defaults.sh`](bin/qtcling-defaults.sh) selects the default Qt kit under `/usr/local/qt/Qt/6.12.0/`: `macos` on macOS, `gcc_64` on Linux x86_64, and `gcc_arm64` on Linux ARM64. If Qt is installed elsewhere, specify the kit path in your shell.
 
 ```sh
-export QTCLING_DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_DEFAULT_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ./build.sh
 ```
 
-`bin/qtcling-defaults.sh` is read by both the build and launcher wrappers and is copied to the installation destination. `QTCLING_QT_ROOT` specifies a complete kit path for an individual launch and takes precedence over `QTCLING_DEFAULT_QT_ROOT`.
+`bin/qtcling-defaults.sh` is read by both the build and launcher wrappers and is copied to the installation destination. `QTCLING_QT_ROOT` specifies a complete kit path for an individual launch and takes precedence over `QTCLING_DEFAULT_QT_ROOT`. If either variable still points to an older version, update it or `unset` both variables to restore the defaults.
 
 On Linux, LLVM's libedit LineEditor support is required to process Qt events while the REPL waits for input. On Ubuntu, install `libedit-dev` before building.
 
@@ -148,7 +150,7 @@ In this configuration, the macOS wrapper uses `/usr/local/qtcling/bin/cling` by 
 On macOS, specify the Qt root and check the installation:
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 bin/qtcling --check
 bin/qtcling --show-config
 bin/qtcling
@@ -159,7 +161,7 @@ bin/qtcling
 If you do not install under `/usr/local/qtcling`, specify the build tree with `QTCLING_CLING_ROOT`.
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 export QTCLING_CLING_ROOT="$PWD/build"
 bin/qtcling --check
 bin/qtcling --show-config
@@ -228,7 +230,7 @@ export QTCLING_STARTUP_FILE="$PWD/src/qtgui.cpp"
 On macOS, specify the Qt root first:
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ```
 
 To verify the installed Cling and launcher, run them directly from the installation destination:
@@ -254,7 +256,7 @@ export PATH="$PWD/bin:$PATH"
 
 ## Native Windows 11 ARM64
 
-Native Windows 11 ARM64 is officially supported in 1.2.0. On physical hardware, startup through `bin/qtcling.cmd`, libedit line editing and history, `qApp`, Qt widgets, Qt events while waiting for input, `QObject::connect`, and `qDebug()` console output have been verified.
+Native Windows 11 ARM64 is officially supported in 1.2.0. On physical hardware with Qt 6.11.1, startup through `bin/qtcling.cmd`, libedit line editing and history, `qApp`, Qt widgets, Qt events while waiting for input, `QObject::connect`, and `qDebug()` console output have been verified.
 
 ### Prerequisites
 
@@ -268,13 +270,13 @@ Prepare the following native ARM64 environment. Avoid mixing it with x64 version
 - CMake 3.21 or later
 - Git for Windows (including Git Bash)
 - Python 3.13 ARM64
-- Qt 6.11.1 `msvc2022_arm64` kit
+- Qt 6.12.0 `msvc2022_arm64` kit
 
-Verified installation locations:
+Example installation locations for Qt 6.12.0:
 
 ```text
 Python C:\Users\<user>\AppData\Local\Programs\Python\Python313-arm64\python.exe
-Qt     C:\Qt\6.11.1\msvc2022_arm64
+Qt     C:\Qt\6.12.0\msvc2022_arm64
 ```
 
 Check command availability in PowerShell:
@@ -283,7 +285,7 @@ Check command availability in PowerShell:
 git --version
 cmake --version
 & "$env:LOCALAPPDATA\Programs\Python\Python313-arm64\python.exe" --version
-Test-Path C:\Qt\6.11.1\msvc2022_arm64\include\QtCore
+Test-Path C:\Qt\6.12.0\msvc2022_arm64\include\QtCore
 ```
 
 ### Preparing the qtcling Source
@@ -363,7 +365,7 @@ Build the ARM64 DLL in PowerShell:
 ```powershell
 cmake -S .\windows -B .\build-qtcling-win-runtime `
   -G "Visual Studio 17 2022" -A ARM64 `
-  -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_arm64
+  "-UQt6*_DIR" -DCMAKE_PREFIX_PATH=C:\Qt\6.12.0\msvc2022_arm64
 
 cmake --build .\build-qtcling-win-runtime --config Release -j 2
 
@@ -408,12 +410,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -InstallDir C:\Tools\qtcling
 ```
 
-If Qt is installed outside the standard location, also specify `-QtRoot`:
+After switching Qt kits, rerun `install-win.ps1` to rebuild the callback DLL with the same kit. For a nonstandard location, specify `-QtRoot` and set `QTCLING_QT_ROOT` to the same path when launching:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\install-win.ps1 `
-  -QtRoot D:\Qt\6.11.1\msvc2022_arm64
+  -QtRoot D:\Qt\6.12.0\msvc2022_arm64
 ```
 
 To launch from the default installation destination:
@@ -433,7 +435,7 @@ bin/qtcling.cmd
 If Qt is installed outside the standard location, specify its Windows-style path before launching:
 
 ```sh
-export QTCLING_QT_ROOT='D:\Qt\6.11.1\msvc2022_arm64'
+export QTCLING_QT_ROOT='D:\Qt\6.12.0\msvc2022_arm64'
 bin/qtcling.cmd
 ```
 
@@ -586,7 +588,7 @@ Currently, only single-line input is supported. History, completion, multiline i
 Specifies the Qt installation root.
 
 ```sh
-export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.11.1/macos
+export QTCLING_QT_ROOT=/usr/local/qt/Qt/6.12.0/macos
 ```
 
 On macOS, include and framework paths are constructed from `lib/*.framework` under this root.
