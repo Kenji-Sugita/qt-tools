@@ -97,6 +97,13 @@
 - 日本語原稿・PDF・ZIPはSitesの配布版とバイト一致で保持し、ツールのソース・仕様は同じZIPから変更せず展開する。公開用の日英READMEとツール2件の英語利用ガイドは追加文書として区別する。一般業務練習帳のREADMEは原本を保持する。
 - 検証は正本との同一性、リンク、コード例、今回実行したツール操作の範囲を記録する。コピーしたPDFを今回再生成・全ページ表示確認したと説明せず、実行未確認の現行IDE・他OS・GUI・実案件の効果へ保証を広げない。
 
+### 14. qtclingの対外紹介
+
+- 利用者の指定により動画は追加せず、英文・短いQt操作コード例・公開英語資料へのリンクで説明する。メールは相手の公開発言に合わせ、公開コメントは短い紹介にする。
+- qtcling単独で利用できることと、icpp・ObjectSelector・PropertyEditorが任意の補助ツールであることを区別する。macOS/LinuxでicppとPropertyEditorを併用する場合はQt、qtcling、icpp、PropertyEditorの順で導入し、同じQt 6.x.yとicpp・PropertyEditorの共通インストール先を使う。
+- ObjectSelectorは同じアプリ内の選択用ライブラリー。PropertyEditorには選択コンポーネントが含まれ、単独のObjectSelectorの導入は必須ではない。
+- qtclingのWindows 11 ARM64対応を、補助ツール一式のWindows検証や過去のMinGW環境の問題解決と同一視しない。古い公開投稿から現在の利用意向や需要規模を断定しない。
+
 ## 不採用
 
 - `work-templates` を `ja/`、`en/` に分割する案は採用しない。利用者が重視する軽量でシンプルな構成を保つため、英語版を同じディレクトリーへ配置する。

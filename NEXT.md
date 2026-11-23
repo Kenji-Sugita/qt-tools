@@ -7,6 +7,12 @@
 
 ## 現在の状態
 
+- 2026-11-23: Qt GUIをClingから対話操作したいという公開の関心を調査し、qtclingの紹介文を作成した。古い投稿が中心で、現在の利用希望は未確認。
+  - Mail.appにherrgahr向け「Qt + Cling today: qtcling, following your Qling demo」とjuangburgos向け「Using Qt from Cling: following up on your ROOT Forum question」の英文下書きを保存した。コード例、icpp・ObjectSelector・PropertyEditorの紹介、導入順序を含む。メールアドレスは未確認で宛先は空欄、メールは未送信。下書き本体はMail.appにあり、Gitには含まれない。
+  - 利用者の投稿指示により、Safariからherrgahrの動画へ短い紹介コメントを `@picky2129` で投稿した。qtclingと補助ツールの概要、英語ガイドへのリンク、意見を求める文面を掲載。投稿後の画面表示を確認し、利用者も確認済み。[投稿済みコメント](https://www.youtube.com/watch?v=BrjV1ZgYbbA&lc=UgySfLATBLrNjF0UCjZ4AaABAg)。同じ紹介を重複投稿しない。
+  - ROOT Forumは利用者から承認待ちとの報告あり。[juangburgosの質問](https://root-forum.cern.ch/t/how-to-include-qt-libraries/20587)への返信は未投稿。YouTubeへの投稿指示をROOT Forumへの投稿指示として扱わない。
+  - 紹介内容を利用ガイド・CMake設定・icppのライブラリー探索処理と照合し、英語資料へのリンクを確認した。今回ツールのビルドやコード例の実行検証はしていない。紹介方針は `DECISIONS.md` 第14項を参照する。
+
 - 2026-11-13: 利用者の「qt-toolsに公開」の依頼により、Sites `ee33ffd` の改訂10候補を追加収録した。
   - docsへ8資料群、toolsへfileservermcpとwarikanを追加。正本の原稿・PDF・ZIP35ファイルと、ZIP内39ファイルの内容一致を照合した（重複を除いた公開先70ファイル）。13 PDFは正本の既存配布物をそのままコピーし、公開用に再生成していない。
   - 一般業務向け練習帳は4冊・README・TRYOUT・ZIPを収録。社内向けQt関連業務練習帳は除外した。Codex安全利用は本編・Windows補足・紹介資料だけで、別のヒアリングPDF・codex.pdf・NEXT.pdfは収録しない。
@@ -84,11 +90,13 @@
 
 ## 次にやること
 
+- ROOT Forumの承認後、利用者の依頼に応じてログイン・返信可否を確認し、juangburgos向け下書きを公開返信用に短縮する。実際の投稿は対象と文面に対する利用者の指示に従う。
 - アプリ生成ワークフローと `work-templates` のREADME紹介、Anker Layoutの公開はGitHubへ反映済み。今回の公開依頼に追加作業はない。
 - 次の依頼時はGitの状態と該当ツールのSites正本を確認する。追加の実機・環境別検証を行う場合は `backlog.md` の条件を参照する。
 
 ## 未完了
 
+- ROOT Forumへの紹介は承認待ちで未投稿。メール2通も宛先未確認のため未送信。YouTubeへの今回の紹介は完了。
 - 構成変更の実装・検証は完了。GitHubへの反映結果は今回のコミットとリモートの `main` で確認する。未解決リンクなど既存の課題は `backlog.md` を参照する。
 
 ## 触るファイル
