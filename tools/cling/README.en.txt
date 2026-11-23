@@ -10,7 +10,6 @@ Top-level Files
 ---------------
 
 USER_GUIDE.md   User guide for qtcling 1.2.0.
-USER_GUIDE.pdf  PDF user guide for qtcling 1.2.0.
 build.sh        Fetches Cling/LLVM, applies patches, configures, and builds on macOS/Linux.
 install.sh      Installs macOS/Linux build results and the qtcling launcher.
 install-win.ps1 Installs the Windows 11 ARM64 version in the user's local application data.

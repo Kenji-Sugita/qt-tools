@@ -14,7 +14,7 @@ showing the remaining time**, rather than offering a general-purpose feature set
 
 Main features:
 
-- Compact, always-on-top window without a title bar
+- Compact window without a title bar; always-on-top is enabled by default and can be toggled
 - Circular ring showing time remaining
 - `5 / 10 / 20 / 30` minute presets
 - Custom duration with `SET`
@@ -80,7 +80,7 @@ Launching `SeminarTimer.app` displays the timer near the upper-right corner of t
 
 The window:
 
-- Stays on top
+- Stays on top by default (change this in `SET`)
 - Has no title bar
 - Can be dragged to any position
 
@@ -148,6 +148,12 @@ The range is **1 to 180 minutes**.
 After confirmation, the value becomes the base duration and is also restored by `RESET`.
 
 `Cancel` closes the dialog without changes.
+
+## 7.3 Always-on-Top Setting
+
+Open `SET`, enable or disable `Always on top`, and press `OK`. Enabled keeps the timer above other windows; disabled uses normal window stacking. The setting is saved as `window/alwaysOnTop` in `QSettings` and restored on the next launch. It defaults to enabled when no value has been saved. `Cancel` discards changes.
+
+`OK` also applies the duration, stopping the countdown and restoring the selected duration.
 
 # 8. BREAK Mode
 

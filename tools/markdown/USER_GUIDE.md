@@ -34,9 +34,22 @@ genpdf:
 
 基本の導入:
 
+GitHub のチェックアウトでは `tools/markdown/` に移動し、同梱の `bin/genpdf` を使います。この配布には pip 用のパッケージ定義はないため、`pip install -e .` は使用しません。
+
+macOS / Linux（Python 3.11 以降の `python3` を使用）:
+
 ```sh
+python3 -m venv .venv
+. .venv/bin/activate
 python -m pip install pypdf
-python -m pip install -e .
+export PATH="$PWD/bin:$PATH"
+```
+
+Windows（PowerShell。`py -3` が Python 3.11 以降を選ぶ環境）:
+
+```powershell
+py -3 -m pip install pypdf
+$env:Path = "$PWD\bin;$env:Path"
 ```
 
 確認:
@@ -54,8 +67,10 @@ npx --version
 ローカルへ固定したい場合は、このプロジェクトで次を実行します。
 
 ```sh
-npm install md-to-pdf
+npm install --prefix src/resources md-to-pdf
 ```
+
+上記は `tools/markdown/` 内で実行します。起動スクリプトの既定のリソース配置に合わせ、`src/resources/node_modules/` へ導入します。macOS / Linux で別のリソース配置を `GENPDF_RESOURCE_DIR` で指定している場合は、そのディレクトリーを `--prefix` に指定してください。
 
 `!footer{...}` を使う文書では PDF 結合のために `pypdf` が必要です。
 

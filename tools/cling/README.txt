@@ -9,7 +9,6 @@ qtcling のソース一式を置いています。現在の利用者向けリリ
 ------------------------
 
 USER_GUIDE.md   qtcling 1.2.0 の利用者ガイドです。
-USER_GUIDE.pdf  qtcling 1.2.0 の利用者ガイド PDF です。
 build.sh        macOS/LinuxでCling/LLVMの取得、patch適用、設定、ビルドを行います。
 install.sh      macOS/Linuxのビルド結果とqtcling launcherをインストールします。
 install-win.ps1 Windows 11 ARM64版をユーザーのlocal application dataへインストールします。

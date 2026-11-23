@@ -79,7 +79,14 @@ cmake -S . -B build -DBUILD_TESTING=ON
 cmake --build build
 ```
 
-Omit `-DBUILD_TESTING=ON` if you do not want to build the tests.
+`BUILD_TESTING` defaults to `ON`. Disable it explicitly if you do not want to build the tests:
+
+```bash
+cmake -S . -B build -DBUILD_TESTING=OFF
+cmake --build build
+```
+
+The current CMake configuration still requires the Qt Test module with this setting.
 
 ## Installation
 
